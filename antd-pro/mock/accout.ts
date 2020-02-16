@@ -6,12 +6,12 @@ function getFakeCaptcha(req: Request, res: Response) {
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
-  'GET /adminapi/user/currentUser': {
+  'GET /adminapi/accout/currentAccout': {
     name: 'Serati Ma',
     avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
   },
   // GET POST 可省略
-  'GET /adminapi/user/list': [
+  'GET /adminapi/accout/list': [
     {
       key: '1',
       name: 'John Brown',
@@ -31,7 +31,7 @@ export default {
       address: 'Sidney No. 1 Lake Park',
     },
   ],
-  'POST /adminapi/login/account': (req: Request, res: Response) => {
+  'POST /adminapi/accout/login': (req: Request, res: Response) => {
     const { password, userName, type } = req.body;
     if (password === 'ant.design' && userName === 'admin') {
       res.send({
@@ -95,5 +95,5 @@ export default {
     });
   },
 
-  'GET  /adminapi/login/captcha': getFakeCaptcha,
+  'GET  /adminapi/accout/login/captcha': getFakeCaptcha,
 };

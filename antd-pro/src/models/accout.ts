@@ -1,35 +1,35 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 
-import { queryCurrent, query as queryUsers } from '@/services/user';
+import { queryCurrent, query as queryUsers } from '@/services/accout';
 
-export interface CurrentUser {
+export interface CurrentAccout {
   name?: string;
   avatar?: string;
 }
 
-export interface UserModelState {
-  currentUser?: CurrentUser;
+export interface AccoutModelState {
+  currentAccout?: CurrentAccout;
 }
 
-export interface UserModelType {
-  namespace: 'user';
-  state: UserModelState;
+export interface AccoutModelType {
+  namespace: 'accout';
+  state: AccoutModelState;
   effects: {
     fetch: Effect;
     fetchCurrent: Effect;
   };
   reducers: {
-    saveCurrentUser: Reducer<UserModelState>;
-    changeNotifyCount: Reducer<UserModelState>;
+    saveCurrentAccout: Reducer<AccoutModelState>;
+    changeNotifyCount: Reducer<AccoutModelState>;
   };
 }
 
-const UserModel: UserModelType = {
-  namespace: 'user',
+const UserModel: AccoutModelType = {
+  namespace: 'accout',
 
   state: {
-    currentUser: {},
+    currentAccout: {},
   },
 
   effects: {
@@ -43,29 +43,29 @@ const UserModel: UserModelType = {
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
       yield put({
-        type: 'saveCurrentUser',
+        type: 'saveCurrentAccout',
         payload: response.data,
       });
     },
   },
 
   reducers: {
-    saveCurrentUser(state, action) {
+    saveCurrentAccout(state, action) {
       return {
         ...state,
-        currentUser: action.payload || {},
+        currentAccout: action.payload || {},
       };
     },
     changeNotifyCount(
       state = {
-        currentUser: {},
+        currentAccout: {},
       },
       action,
     ) {
       return {
         ...state,
-        currentUser: {
-          ...state.currentUser,
+        currentAccout: {
+          ...state.currentAccout,
           notifyCount: action.payload.totalCount,
           unreadCount: action.payload.unreadCount,
         },

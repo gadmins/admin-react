@@ -4,7 +4,9 @@ import { list } from '@/services/menu';
 import { MenuDataItem } from '@ant-design/pro-layout';
 
 export interface MenuModelState {
+  hasSysMenu: boolean;
   menus: MenuDataItem[];
+  defMenuTxt: Map<string, string>;
 }
 
 export interface MenuModelType {
@@ -20,7 +22,9 @@ export interface MenuModelType {
 const MenuModel: MenuModelType = {
   namespace: 'menu',
   state: {
+    hasSysMenu: true,
     menus: [],
+    defMenuTxt: new Map(),
   },
   effects: {
     *list(_, { call, put }) {
@@ -35,7 +39,8 @@ const MenuModel: MenuModelType = {
     save(state, action) {
       return {
         ...state,
-        menus: action.payload || [],
+        menus: action.payload.menus || [],
+        defMenuTxt: action.payload.defTex || new Map(),
       };
     },
   },

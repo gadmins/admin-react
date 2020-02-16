@@ -3,10 +3,10 @@ import { Redirect } from 'umi';
 import { connect } from 'dva';
 import Authorized from '@/utils/Authorized';
 import { getRouteAuthority } from '@/utils/utils';
-import { ConnectProps, ConnectState, UserModelState } from '@/models/connect';
+import { ConnectProps, ConnectState, AccoutModelState } from '@/models/connect';
 
 interface AuthComponentProps extends ConnectProps {
-  user: UserModelState;
+  accout: AccoutModelState;
 }
 
 const AuthComponent: React.FC<AuthComponentProps> = ({
@@ -17,21 +17,21 @@ const AuthComponent: React.FC<AuthComponentProps> = ({
   location = {
     pathname: '',
   },
-  user,
+  accout,
 }) => {
-  const { currentUser } = user;
+  const { currentAccout } = accout;
   const { routes = [] } = route;
-  const isLogin = currentUser && currentUser.name;
+  const isLogin = currentAccout && currentAccout.name;
   return (
     <Authorized
       authority={getRouteAuthority(location.pathname, routes) || ''}
-      noMatch={isLogin ? <Redirect to="/exception/403" /> : <Redirect to="/user/login" />}
+      noMatch={isLogin ? <Redirect to="/exception/403" /> : <Redirect to="/accout/login" />}
     >
       {children}
     </Authorized>
   );
 };
 
-export default connect(({ user }: ConnectState) => ({
-  user,
+export default connect(({ accout }: ConnectState) => ({
+  accout,
 }))(AuthComponent);

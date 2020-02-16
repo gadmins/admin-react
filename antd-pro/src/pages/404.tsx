@@ -9,10 +9,10 @@ const NoFoundPage: React.FC<{}> = () => (
   <Result
     status="404"
     title="404"
-    subTitle="Sorry, the page you visited does not exist."
+    subTitle="对不起，页面未找到"
     extra={
       <Button type="primary" onClick={() => router.push('/')}>
-        Back Home
+        返回主页
       </Button>
     }
   />

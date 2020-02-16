@@ -6,12 +6,12 @@ import { connect } from 'dva';
 import { router } from 'umi';
 
 import { ConnectProps, ConnectState } from '@/models/connect';
-import { CurrentUser } from '@/models/user';
+import { CurrentAccout } from '@/models/accout';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
 export interface GlobalHeaderRightProps extends ConnectProps {
-  currentUser?: CurrentUser;
+  currentAccout?: CurrentAccout;
   menu?: boolean;
 }
 
@@ -34,7 +34,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
   render(): React.ReactNode {
     const {
-      currentUser = {
+      currentAccout = {
         avatar: '',
         name: '',
       },
@@ -64,19 +64,19 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
       </Menu>
     );
 
-    return currentUser && currentUser.name ? (
+    return currentAccout && currentAccout.name ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar
             size="small"
             className={styles.avatar}
             src={
-              currentUser.avatar ||
+              currentAccout.avatar ||
               'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
             }
             alt="avatar"
           />
-          <span className={styles.name}>{currentUser.name}</span>
+          <span className={styles.name}>{currentAccout.name}</span>
         </span>
       </HeaderDropdown>
     ) : (
@@ -84,6 +84,6 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     );
   }
 }
-export default connect(({ user }: ConnectState) => ({
-  currentUser: user.currentUser,
+export default connect(({ accout }: ConnectState) => ({
+  currentAccout: accout.currentAccout,
 }))(AvatarDropdown);

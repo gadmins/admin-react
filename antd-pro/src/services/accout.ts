@@ -1,11 +1,11 @@
 import request from '@/utils/request';
 
 export async function query(): Promise<any> {
-  return request('user/list');
+  return request('accout/list');
 }
 
 export async function queryCurrent(): Promise<any> {
-  return request('user/currentUser');
+  return request('accout/currentAccout');
 }
 
 export async function queryNotices(): Promise<any> {

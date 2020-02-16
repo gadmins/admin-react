@@ -6,14 +6,14 @@ import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 
 import { NoticeItem } from '@/models/global';
-import NoticeIcon from '../NoticeIcon';
-import { CurrentUser } from '@/models/user';
 import { ConnectProps, ConnectState } from '@/models/connect';
+import { CurrentAccout } from '@/models/accout';
+import NoticeIcon from '../NoticeIcon';
 import styles from './index.less';
 
 export interface GlobalHeaderRightProps extends ConnectProps {
   notices?: NoticeItem[];
-  currentUser?: CurrentUser;
+  currentAccout?: CurrentAccout;
   fetchingNotices?: boolean;
   onNoticeVisibleChange?: (visible: boolean) => void;
   onNoticeClear?: (tabName?: string) => void;
@@ -97,14 +97,14 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
   };
 
   render() {
-    const { currentUser, fetchingNotices, onNoticeVisibleChange } = this.props;
+    const { currentAccout, fetchingNotices, onNoticeVisibleChange } = this.props;
     const noticeData = this.getNoticeData();
     const unreadMsg = this.getUnreadData(noticeData);
 
     return (
       <NoticeIcon
         className={styles.action}
-        count={currentUser && currentUser.unreadCount}
+        count={currentAccout && currentAccout.unreadCount}
         onItemClick={item => {
           this.changeReadState(item as NoticeItem);
         }}
@@ -145,8 +145,8 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
   }
 }
 
-export default connect(({ user, global, loading }: ConnectState) => ({
-  currentUser: user.currentUser,
+export default connect(({ accout, global, loading }: ConnectState) => ({
+  currentAccout: accout.currentAccout,
   collapsed: global.collapsed,
   fetchingMoreNotices: loading.effects['global/fetchMoreNotices'],
   fetchingNotices: loading.effects['global/fetchNotices'],
