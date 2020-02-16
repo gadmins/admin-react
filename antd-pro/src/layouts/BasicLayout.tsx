@@ -56,31 +56,7 @@ export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
   };
 };
 
-const defaultFooterDom = (
-  <DefaultFooter
-    copyright="2019 蚂蚁金服体验技术部出品"
-    links={[
-      {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
-        blankTarget: true,
-      },
-      {
-        key: 'github',
-        title: <Icon type="github" />,
-        href: 'https://github.com/ant-design/ant-design-pro',
-        blankTarget: true,
-      },
-      {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
-        blankTarget: true,
-      },
-    ]}
-  />
-);
+const defaultFooterDom = <DefaultFooter copyright="2020 通用管理系统" links={[]} />;
 
 const footerRender: BasicLayoutProps['footerRender'] = () => {
   if (!isAntDesignPro()) {
@@ -128,7 +104,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         type: 'accout/fetchCurrent',
       });
       dispatch({
-        type: 'menu/list',
+        type: 'accout/fetchMenu',
       });
     }
   }, []);
@@ -286,10 +262,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   );
 };
 
-export default connect(({ global, settings, menu }: ConnectState) => ({
+export default connect(({ global, settings, accout }: ConnectState) => ({
   collapsed: global.collapsed,
-  hasSysMenu: menu.hasSysMenu,
-  menus: menu.menus,
-  defMenuTxt: menu.defMenuTxt,
+  hasSysMenu: accout.hasSysMenu,
+  menus: accout.menus,
+  defMenuTxt: accout.defMenuTxt,
   settings,
 }))(BasicLayout);

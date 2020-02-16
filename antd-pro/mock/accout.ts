@@ -7,8 +7,11 @@ function getFakeCaptcha(req: Request, res: Response) {
 export default {
   // 支持值为 Object 和 Array
   'GET /adminapi/accout/currentAccout': {
-    name: 'Serati Ma',
-    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+    code: 200,
+    data: {
+      name: 'Serati Ma',
+      avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+    },
   },
   // GET POST 可省略
   'GET /adminapi/accout/list': [
@@ -35,7 +38,7 @@ export default {
     const { password, userName, type } = req.body;
     if (password === 'ant.design' && userName === 'admin') {
       res.send({
-        status: 'ok',
+        code: 200,
         type,
         currentAuthority: 'admin',
       });
@@ -43,7 +46,7 @@ export default {
     }
     if (password === 'ant.design' && userName === 'user') {
       res.send({
-        status: 'ok',
+        code: 200,
         type,
         currentAuthority: 'user',
       });
