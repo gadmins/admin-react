@@ -1,24 +1,14 @@
 import request from '@/utils/request';
 import { TableListParams } from './data.d';
 
-export async function queryAccoutList(params?: TableListParams) {
-  return request('/accout', {
-    params,
-  });
-}
-
-export async function queryRole(params?: TableListParams) {
+export async function queryRule(params?: TableListParams) {
   return request('/role', {
     params,
   });
 }
 
-export async function queryAllRole() {
-  return request('/role/all');
-}
-
-export async function removeRule(params: { ids: number[] }) {
-  return request('/accout', {
+export async function removeRule(params: { key: number[] }) {
+  return request('/api/rule', {
     method: 'POST',
     data: {
       ...params,
@@ -28,7 +18,7 @@ export async function removeRule(params: { ids: number[] }) {
 }
 
 export async function addRule(params: TableListParams) {
-  return request('/accout', {
+  return request('/api/rule', {
     method: 'POST',
     data: {
       ...params,
@@ -38,7 +28,7 @@ export async function addRule(params: TableListParams) {
 }
 
 export async function updateRule(params: TableListParams) {
-  return request('/accout', {
+  return request('/api/rule', {
     method: 'POST',
     data: {
       ...params,

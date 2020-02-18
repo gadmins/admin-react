@@ -1,15 +1,15 @@
 import { DownOutlined } from '@ant-design/icons';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Button, Dropdown, Menu, Divider, message } from 'antd';
-import React, { useState, useRef, useEffect } from 'react';
+import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import React, { useState, useRef } from 'react';
 import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
-import { queryAccoutList, queryAllRole, updateRule, addRule, removeRule } from './service';
+import { queryRule, updateRule, addRule, removeRule } from './service';
 
 interface TableListProps extends FormComponentProps {}
 
@@ -21,7 +21,7 @@ const handleAdd = async (fields: FormValueType) => {
   const hide = message.loading('正在添加');
   try {
     await addRule({
-      name: fields.name,
+      desc: fields.desc,
     });
     hide();
     message.success('添加成功');
@@ -42,7 +42,8 @@ const handleUpdate = async (fields: FormValueType) => {
   try {
     await updateRule({
       name: fields.name,
-      id: fields.id,
+      desc: fields.desc,
+      key: fields.key,
     });
     hide();
 
@@ -64,7 +65,7 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   if (!selectedRows) return true;
   try {
     await removeRule({
-      ids: selectedRows.map(row => row.id),
+      key: selectedRows.map(row => row.key),
     });
     hide();
     message.success('删除成功，即将刷新');
@@ -80,21 +81,6 @@ const TableList: React.FC<TableListProps> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
-
-  const [roleList, setRoleList] = useState({});
-  useEffect(() => {
-    queryAllRole().then(data => {
-      if (data && data.data) {
-        const list = {
-          all: { text: '全部' },
-        };
-        data.data.forEach((item: any) => {
-          list[item.id] = item.name;
-        });
-        setRoleList(list);
-      }
-    });
-  }, []);
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
@@ -104,14 +90,12 @@ const TableList: React.FC<TableListProps> = () => {
       width: 64,
     },
     {
-      title: '用户名',
+      title: '角色名',
       dataIndex: 'name',
     },
     {
-      title: '角色类型',
-      dataIndex: 'roleId',
-      initialValue: 'all',
-      valueEnum: roleList,
+      title: '角色描述',
+      dataIndex: 'rdesc',
     },
     {
       title: '操作',
@@ -125,7 +109,7 @@ const TableList: React.FC<TableListProps> = () => {
               setStepFormValues(record);
             }}
           >
-            编辑
+            修改
           </a>
           <Divider type="vertical" />
           <a href="">复制</a>
@@ -166,8 +150,13 @@ const TableList: React.FC<TableListProps> = () => {
             </Dropdown>
           ),
         ]}
+        tableAlertRender={selectedRowKeys => (
+          <div>
+            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
+          </div>
+        )}
         request={async params => {
-          const data = await queryAccoutList(params);
+          const data = await queryRule(params);
           return data.data;
         }}
         columns={columns}

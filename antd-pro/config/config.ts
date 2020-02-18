@@ -127,6 +127,36 @@ export default {
               component: './system/profile',
             },
             {
+              name: '查询表格',
+              icon: 'smile',
+              path: '/system/role',
+              component: './system/role',
+            },
+            {
+              name: '空白页面',
+              icon: 'smile',
+              path: '/system/menu',
+              component: './system/menu',
+            },
+            {
+              name: '空白页面',
+              icon: 'smile',
+              path: '/system/function',
+              component: './system/function',
+            },
+            {
+              name: '空白页面',
+              icon: 'smile',
+              path: '/system/dict',
+              component: './system/dict',
+            },
+            {
+              name: '空白页面',
+              icon: 'smile',
+              path: '/system/tablemeta',
+              component: './system/tablemeta',
+            },
+            {
               component: './404',
             },
           ],

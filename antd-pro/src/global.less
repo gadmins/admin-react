@@ -1,5 +1,7 @@
 @import '~antd/es/style/themes/default.less';
 
+@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
+
 html,
 body,
 #root {
@@ -27,6 +29,10 @@ body {
 ul,
 ol {
   list-style: none;
+}
+
+.ant-pro-global-header-trigger:hover {
+  background: @pro-header-hover-bg;
 }
 
 @media (max-width: @screen-xs) {
