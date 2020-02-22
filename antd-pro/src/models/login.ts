@@ -6,6 +6,7 @@ import { router } from 'umi';
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
+import { message } from 'antd';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -58,6 +59,8 @@ const Model: LoginModelType = {
           }
         }
         router.replace(redirect || '/');
+      } else {
+        message.error(response.msg);
       }
     },
 

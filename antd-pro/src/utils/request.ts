@@ -54,19 +54,19 @@ const request = extend({
   credentials: 'include', // 默认请求是否带上cookie
 });
 
-request.interceptors.response.use(async (response: Response) => {
-  const data = await response.clone().json();
-  if (data && data.code !== 200) {
-    if (data.code === 401) {
-      // TODO: to login
-    } else {
-      notification.error({
-        description: '参数错误',
-        message: data.msg || '服务器异常',
-      });
-    }
-  }
-  return response;
-});
+// request.interceptors.response.use(async (response: Response) => {
+//   const data = await response.clone().json();
+//   if (data && data.code !== 200) {
+//     if (data.code === 401) {
+//       // TODO: to login
+//     } else {
+//       notification.error({
+//         description: '参数错误',
+//         message: data.msg || '服务器异常',
+//       });
+//     }
+//   }
+//   return response;
+// });
 
 export default request;
