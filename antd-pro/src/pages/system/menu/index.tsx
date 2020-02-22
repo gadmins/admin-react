@@ -2,9 +2,9 @@ import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
 import { Tree, Button, Input, Modal, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import styles from './index.less';
-import { getMenuTree } from './service';
+import { getMenuTree, updateMenu, addMenu, deleteMenus } from './service';
 import CreateForm from './components/CreateForm';
-import UpdateForm from './components/UpdateForm';
+import UpdateForm, { FormValueType } from './components/UpdateForm';
 
 const { TreeNode } = Tree;
 const { Search } = Input;
@@ -17,12 +17,15 @@ const handleAdd = async fields => {
   if (fields.errors) {
     return false;
   }
-  console.log(fields);
   const hide = message.loading('正在添加');
   try {
+    const data = await addMenu(fields);
     hide();
-    message.success('添加成功');
-    return true;
+    if (data && data.code === 200) {
+      message.success('添加成功');
+      return true;
+    }
+    return false;
   } catch (error) {
     hide();
     message.error('添加失败请重试！');
@@ -59,8 +62,8 @@ const findSearchTxtLength = (data: any[], value: string) => {
 };
 
 export default () => {
-  const [checkedKeys, setCheckedKeys] = useState<string[]>([]);
   const [menuTree, setMenuTree] = useState([]);
+  const [checkedKeys, setCheckedKeys] = useState<string[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
 
@@ -87,8 +90,20 @@ export default () => {
   };
 
   const delMenus = async (ids: number[]) => {
-    console.log('delMenus', ids);
-    loadMenuTree();
+    const hide = message.loading('正在删除');
+    try {
+      await deleteMenus(ids);
+      hide();
+      setCheckedKeys([]);
+      if (selectMenu && ids.includes(selectMenu.id)) {
+        setSelectMenu(undefined);
+      }
+      loadMenuTree();
+      message.success('删除成功');
+    } catch (error) {
+      hide();
+      message.error('删除失败请重试！');
+    }
   };
 
   useEffect(() => {
@@ -190,11 +205,15 @@ export default () => {
           // eslint-disable-next-line no-unused-expressions
           ids && setMenuIds(ids);
         }}
-        onSelect={(_, { node }) => {
-          if (updateRef) {
-            updateRef.updateFormVals(node.props.bind);
+        onSelect={(keys, { node }) => {
+          if (keys.length > 0) {
+            if (updateRef) {
+              updateRef.updateFormVals(node.props.bind);
+            }
+            setSelectMenu(node.props.bind);
+          } else {
+            setSelectMenu(undefined);
           }
-          setSelectMenu(node.props.bind);
         }}
       >
         {loop(menuTree)}
@@ -218,6 +237,16 @@ export default () => {
                 <UpdateForm
                   wrappedComponentRef={(form: { updateFormVals: (arg0: any) => void } | null) => {
                     updateRef = form;
+                  }}
+                  onSubmit={(formVals: FormValueType) => {
+                    updateMenu(formVals).then(data => {
+                      if (data && data.code === 200) {
+                        message.success('修改成功');
+                        loadMenuTree();
+                      } else {
+                        message.error(data.msg);
+                      }
+                    });
                   }}
                   values={selectMenu}
                 />
