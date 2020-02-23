@@ -1,59 +1,52 @@
-import { DownOutlined } from '@ant-design/icons';
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Divider, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
-import { FormComponentProps } from '@ant-design/compatible/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import CreateForm from './components/CreateForm';
-import UpdateForm, { FormValueType } from './components/UpdateForm';
 import { TableListItem } from './data.d';
-import { queryAccoutList, queryAllRole, updateRule, addRule, removeRule } from './service';
+import { queryAccoutList, queryAllRole, removeRule } from './service';
 
-interface TableListProps extends FormComponentProps {}
+// /**
+//  * 添加节点
+//  * @param fields
+//  */
+// const handleAdd = async (fields: FormValueType) => {
+//   const hide = message.loading('正在添加');
+//   try {
+//     await addRule({
+//       name: fields.name,
+//     });
+//     hide();
+//     message.success('添加成功');
+//     return true;
+//   } catch (error) {
+//     hide();
+//     message.error('添加失败请重试！');
+//     return false;
+//   }
+// };
 
-/**
- * 添加节点
- * @param fields
- */
-const handleAdd = async (fields: FormValueType) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({
-      name: fields.name,
-    });
-    hide();
-    message.success('添加成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('添加失败请重试！');
-    return false;
-  }
-};
+// /**
+//  * 更新节点
+//  * @param fields
+//  */
+// const handleUpdate = async (fields: FormValueType) => {
+//   const hide = message.loading('正在配置');
+//   try {
+//     await updateRule({
+//       name: fields.name,
+//       id: fields.id,
+//     });
+//     hide();
 
-/**
- * 更新节点
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await updateRule({
-      name: fields.name,
-      id: fields.id,
-    });
-    hide();
-
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
+//     message.success('配置成功');
+//     return true;
+//   } catch (error) {
+//     hide();
+//     message.error('配置失败请重试！');
+//     return false;
+//   }
+// };
 
 /**
  *  删除节点
@@ -76,10 +69,10 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   }
 };
 
-const TableList: React.FC<TableListProps> = () => {
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-  const [stepFormValues, setStepFormValues] = useState({});
+const TableList: React.FC<{}> = () => {
+  // const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  // const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
+  // const [stepFormValues, setStepFormValues] = useState({});
 
   const [roleList, setRoleList] = useState({});
   useEffect(() => {
@@ -117,12 +110,12 @@ const TableList: React.FC<TableListProps> = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => (
+      render: () => (
         <>
           <a
             onClick={() => {
-              handleUpdateModalVisible(true);
-              setStepFormValues(record);
+              // handleUpdateModalVisible(true);
+              // setStepFormValues(record);
             }}
           >
             编辑
@@ -141,7 +134,13 @@ const TableList: React.FC<TableListProps> = () => {
         actionRef={actionRef}
         rowKey="id"
         toolBarRender={(action, { selectedRows }) => [
-          <Button icon="plus" type="primary" onClick={() => handleModalVisible(true)}>
+          <Button
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={() => {
+              // handleModalVisible(true);
+            }}
+          >
             新建
           </Button>,
           selectedRows && selectedRows.length > 0 && (
@@ -173,7 +172,7 @@ const TableList: React.FC<TableListProps> = () => {
         columns={columns}
         rowSelection={{}}
       />
-      <CreateForm
+      {/* <CreateForm
         onSubmit={async value => {
           const success = await handleAdd(value);
           if (success) {
@@ -185,8 +184,8 @@ const TableList: React.FC<TableListProps> = () => {
         }}
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}
-      />
-      {stepFormValues && Object.keys(stepFormValues).length ? (
+      /> */}
+      {/* {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
           onSubmit={async value => {
             const success = await handleUpdate(value);
@@ -205,9 +204,9 @@ const TableList: React.FC<TableListProps> = () => {
           updateModalVisible={updateModalVisible}
           values={stepFormValues}
         />
-      ) : null}
+      ) : null} */}
     </PageHeaderWrapper>
   );
 };
 
-export default Form.create<TableListProps>()(TableList);
+export default TableList;

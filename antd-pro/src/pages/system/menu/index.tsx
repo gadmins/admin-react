@@ -1,6 +1,7 @@
 import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
 import { Tree, Button, Input, Modal, message } from 'antd';
 import React, { useState, useEffect } from 'react';
+import { PlusOutlined, CopyOutlined, MinusOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { getMenuTree, updateMenu, addMenu, deleteMenus } from './service';
 import CreateForm from './components/CreateForm';
@@ -70,12 +71,11 @@ export default () => {
   const [menuIds, setMenuIds] = useState<number[]>([]);
 
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  const [copyModalVisible, handleCopyModalVisible] = useState<boolean>(false);
 
   const [selectMenu, setSelectMenu] = useState(undefined);
 
   const [copyMenu, setCopyMenu] = useState(undefined);
-
-  let updateRef: { updateFormVals: (arg0: any) => void } | null = null;
 
   const loadMenuTree = () => {
     getMenuTree().then(data => {
@@ -152,9 +152,8 @@ export default () => {
   const toolbarDom = (props: { checkedKeys: any; selectMenu: any }) => (
     <>
       <Button
-        icon="plus"
+        icon={<PlusOutlined />}
         onClick={() => {
-          setCopyMenu(null);
           handleModalVisible(true);
         }}
       >
@@ -162,10 +161,13 @@ export default () => {
       </Button>
       {selectMenu && (
         <Button
-          icon="plus"
+          icon={<CopyOutlined />}
           onClick={() => {
-            setCopyMenu(props.selectMenu);
-            handleModalVisible(true);
+            setCopyMenu(undefined);
+            setTimeout(() => {
+              setCopyMenu(props.selectMenu);
+              handleCopyModalVisible(true);
+            }, 0);
           }}
         >
           复制菜单
@@ -173,7 +175,7 @@ export default () => {
       )}
       {props.checkedKeys && props.checkedKeys.length > 0 && (
         <Button
-          icon="minus"
+          icon={<MinusOutlined />}
           onClick={async () => {
             Modal.confirm({
               title: '确定要删除这些菜单?',
@@ -201,16 +203,16 @@ export default () => {
         checkedKeys={checkedKeys}
         onCheck={(keys, { checkedNodes }) => {
           setCheckedKeys(keys);
-          const ids = checkedNodes?.map(it => it.props.bind.id);
+          const ids = checkedNodes?.map(it => it.bind.id);
           // eslint-disable-next-line no-unused-expressions
           ids && setMenuIds(ids);
         }}
         onSelect={(keys, { node }) => {
           if (keys.length > 0) {
-            if (updateRef) {
-              updateRef.updateFormVals(node.props.bind);
-            }
-            setSelectMenu(node.props.bind);
+            setSelectMenu(undefined);
+            setTimeout(() => {
+              setSelectMenu(node.bind);
+            }, 0);
           } else {
             setSelectMenu(undefined);
           }
@@ -235,9 +237,6 @@ export default () => {
             <div className={styles.right}>
               {selectMenu && (
                 <UpdateForm
-                  wrappedComponentRef={(form: { updateFormVals: (arg0: any) => void } | null) => {
-                    updateRef = form;
-                  }}
                   onSubmit={(formVals: FormValueType) => {
                     updateMenu(formVals).then(data => {
                       if (data && data.code === 200) {
@@ -256,7 +255,6 @@ export default () => {
         </GridContent>
       </div>
       <CreateForm
-        formVals={copyMenu}
         onSubmit={async value => {
           const success = await handleAdd(value);
           if (success) {
@@ -267,6 +265,20 @@ export default () => {
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}
       />
+      {copyMenu && (
+        <CreateForm
+          formVals={copyMenu}
+          onSubmit={async value => {
+            const success = await handleAdd(value);
+            if (success) {
+              handleCopyModalVisible(false);
+              loadMenuTree();
+            }
+          }}
+          onCancel={() => handleCopyModalVisible(false)}
+          modalVisible={copyModalVisible}
+        />
+      )}
     </PageHeaderWrapper>
   );
 };

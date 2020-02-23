@@ -14,7 +14,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'umi';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { Icon, Result, Button, Menu } from 'antd';
+import { Result, Button, Menu } from 'antd';
 import { formatMessage } from 'umi-plugin-react/locale';
 
 import Authorized from '@/utils/Authorized';
@@ -24,6 +24,7 @@ import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
 
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { WithFalse } from '@ant-design/pro-layout/lib/typings';
+import { string2Icon } from '@/utils/icon';
 import logo from '../assets/logo.svg';
 
 const noMatch = (
@@ -206,7 +207,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
                   },
                 }}
               >
-                <Icon type={it.icon} />
+                {string2Icon(it.icon)}
                 {it.name && defMenuTxt[it.name]}
               </Link>
             </Menu.Item>

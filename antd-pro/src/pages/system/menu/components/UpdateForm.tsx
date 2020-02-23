@@ -1,9 +1,5 @@
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
-import { Button, Input, Radio, Switch, TreeSelect } from 'antd';
-import React, { Component } from 'react';
-
-import { FormComponentProps } from '@ant-design/compatible/es/form';
+import React, { useState, useEffect } from 'react';
+import { Button, Input, Radio, Switch, TreeSelect, Form } from 'antd';
 import { getMenuParentTree, functionList } from '../service';
 
 const FormItem = Form.Item;
@@ -21,13 +17,8 @@ export interface FormValueType {
   parentId?: number;
   funcId?: number;
 }
-export interface UpdateFormState {
-  formVals: FormValueType;
-  parentMenus: any[];
-  functions: any[];
-}
 
-export interface UpdateFormProps extends FormComponentProps {
+export interface UpdateFormProps {
   onCancel: (flag?: boolean, formVals?: FormValueType) => void;
   onSubmit: (values: FormValueType) => void;
   updateModalVisible: boolean;
@@ -38,188 +29,154 @@ const loopNode = (data: any) =>
   data.map((item: any) => {
     if (item.children && item.children.length) {
       return (
-        <TreeNode key={item.key} value={item.id} title={item.title} bind={item}>
+        <TreeNode key={item.id} value={item.id} title={item.title} bind={item}>
           {loopNode(item.children)}
         </TreeNode>
       );
     }
-    return <TreeNode key={item.key} value={item.id} title={item.title} bind={item} />;
+    return <TreeNode key={item.id} value={item.id} title={item.title} bind={item} />;
   });
 
-class UpdateForm extends Component<UpdateFormProps, UpdateFormState> {
-  formLayout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 10 },
-  };
+const formLayout = {
+  labelCol: { span: 3 },
+  wrapperCol: { span: 10 },
+};
 
-  static defaultProps = {
-    handleUpdate: () => {},
-    values: {},
-  };
+const UpdateForm: React.FC<UpdateFormProps> = props => {
+  const { values } = props;
+  const [parentMenus, setParentMenus] = useState([]);
+  const [functions, setFunctions] = useState([]);
+  const [form] = Form.useForm();
 
-  constructor(props: UpdateFormProps) {
-    super(props);
-    this.state = {
-      functions: [],
-      parentMenus: [],
-      formVals: {
-        ...props.values,
-      },
-    };
-    this.updateParentMenus(props.values.type, [props.values.id]);
-    functionList().then(data => {
-      if (data && data.code === 200) {
-        this.setState({
-          functions: data.data,
-        });
-      }
-    });
-  }
-
-  updateFormVals = (formVals: FormValueType) => {
-    const { form } = this.props;
-    form.resetFields();
-    this.setState({
-      formVals,
-    });
-    this.updateParentMenus(formVals.type, [formVals.id]);
-  };
-
-  updateParentMenus = (type: string, ids?: number[]) => {
+  const updateParentMenus = (type: string, ids?: number[]) => {
     if (type === 'SYS_MENU') {
       return;
     }
     getMenuParentTree(ids).then(data => {
       if (data && data.code === 200) {
-        this.setState({
-          parentMenus: data.data,
-        });
+        setParentMenus(data.data);
       }
     });
   };
 
-  handleSubmit: React.FormEventHandler<HTMLFormElement> = e => {
-    e.preventDefault();
-    const { form, onSubmit: handleUpdate } = this.props;
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      if (!form.isFieldsTouched()) {
-        return;
+  useEffect(() => {
+    updateParentMenus(values.type, [values.id]);
+    functionList().then(data => {
+      if (data && data.code === 200) {
+        setFunctions(data.data);
       }
-      handleUpdate(fieldsValue);
     });
-  };
+  }, []);
+  // updateFormVals = (formVals: FormValueType) => {
+  //   // form.resetFields();
+  //   this.setState({
+  //     formVals,
+  //   });
+  //   this.updateParentMenus(formVals.type, [formVals.id]);
+  // };
 
-  render() {
-    const { form } = this.props;
-    const { formVals, parentMenus, functions } = this.state;
-    return (
-      <Form onSubmit={this.handleSubmit}>
-        <FormItem>
-          {form.getFieldDecorator('id', {
-            initialValue: formVals.id,
-          })(<Input type="hidden" />)}
+  const handleSubmit = async () => {
+    const { onSubmit: handleUpdate } = props;
+    const fieldsValue = await form.validateFields();
+    handleUpdate(fieldsValue);
+  };
+  return (
+    <Form
+      form={form}
+      initialValues={{
+        ...values,
+        mcode: values.key,
+        txt: values.title,
+        elink: values.elink || false,
+      }}
+      onFinish={handleSubmit}
+      onFinishFailed={e => {
+        form.scrollToField(e.errorFields[0].name);
+      }}
+    >
+      <FormItem name="id">
+        <Input type="hidden" />
+      </FormItem>
+      <FormItem {...formLayout} label="菜单类型" name="type" rules={[{ required: true }]}>
+        <Radio.Group disabled>
+          <Radio value="SYS_MENU">系统菜单</Radio>
+          <Radio value="NAV_MENU">导航菜单</Radio>
+          <Radio value="MENU">菜单</Radio>
+        </Radio.Group>
+      </FormItem>
+      {values.type !== 'SYS_MENU' && parentMenus.length > 0 && (
+        <FormItem
+          {...formLayout}
+          label="父级菜单"
+          name="parentId"
+          rules={[{ required: true, message: '父级菜单不能为空' }]}
+        >
+          <TreeSelect
+            style={{ width: '100%' }}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            placeholder="请选择"
+            allowClear
+            treeDefaultExpandAll
+          >
+            {loopNode(parentMenus)}
+          </TreeSelect>
         </FormItem>
-        <FormItem {...this.formLayout} label="菜单类型">
-          {form.getFieldDecorator('type', {
-            initialValue: formVals.type,
-            rules: [{ required: true }],
-          })(
-            <Radio.Group
-              disabled
-              onChange={e => {
-                this.setState({
-                  formVals: {
-                    ...formVals,
-                    type: e.target.value,
-                  },
-                });
-              }}
+      )}
+      <FormItem
+        {...formLayout}
+        label="菜单名称"
+        name="txt"
+        rules={[{ required: true, message: '菜单名称不能为空' }]}
+      >
+        <Input placeholder="请输入" />
+      </FormItem>
+      <FormItem
+        {...formLayout}
+        label="菜单编码"
+        name="mcode"
+        rules={[{ required: true, message: '菜单编码不能为空' }]}
+      >
+        <Input placeholder="请输入" />
+      </FormItem>
+      <FormItem {...formLayout} label="菜单icon" name="icon">
+        <Input placeholder="请输入" />
+      </FormItem>
+      <FormItem
+        {...formLayout}
+        label="菜单排序"
+        name="sortNumber"
+        rules={[{ required: true, message: '菜单排序不能为空' }]}
+      >
+        <Input type="number" placeholder="请输入" />
+      </FormItem>
+      {values.type === 'MENU' && functions.length > 0 && (
+        <>
+          <FormItem {...formLayout} label="功能关联" name="funcId">
+            <TreeSelect
+              style={{ width: '100%' }}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              placeholder="请选择"
+              allowClear
+              treeDefaultExpandAll
             >
-              <Radio value="SYS_MENU">系统菜单</Radio>
-              <Radio value="NAV_MENU">导航菜单</Radio>
-              <Radio value="MENU">菜单</Radio>
-            </Radio.Group>,
-          )}
-        </FormItem>
-        {form.getFieldValue('type') !== 'SYS_MENU' && (
-          <FormItem {...this.formLayout} label="父级菜单">
-            {form.getFieldDecorator('parentId', {
-              initialValue: formVals.parentId,
-              rules: [{ required: true, message: '父级菜单不能为空' }],
-            })(
-              <TreeSelect
-                style={{ width: '100%' }}
-                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                placeholder="请选择"
-                allowClear
-                treeDefaultExpandAll
-              >
-                {loopNode(parentMenus)}
-              </TreeSelect>,
-            )}
+              {loopNode(functions)}
+            </TreeSelect>
           </FormItem>
-        )}
-        <FormItem {...this.formLayout} label="菜单名称">
-          {form.getFieldDecorator('txt', {
-            initialValue: formVals.title,
-            rules: [{ required: true, message: '菜单名称不能为空' }],
-          })(<Input placeholder="请输入" />)}
-        </FormItem>
-        <FormItem {...this.formLayout} label="菜单编码">
-          {form.getFieldDecorator('mcode', {
-            initialValue: formVals.key,
-            rules: [{ required: true, message: '菜单编码不能为空' }],
-          })(<Input placeholder="请输入" />)}
-        </FormItem>
-        <FormItem {...this.formLayout} label="菜单icon">
-          {form.getFieldDecorator('icon', {
-            initialValue: formVals.icon,
-          })(<Input placeholder="请输入" />)}
-        </FormItem>
-        <FormItem {...this.formLayout} label="菜单排序">
-          {form.getFieldDecorator('sortNumber', {
-            initialValue: formVals.sortNumber,
-            rules: [{ required: true, message: '菜单排序不能为空' }],
-          })(<Input type="number" placeholder="请输入" />)}
-        </FormItem>
-        {formVals.type === 'MENU' && (
-          <>
-            <FormItem {...this.formLayout} label="功能关联">
-              {form.getFieldDecorator('funcId', {
-                initialValue: formVals.funcId,
-              })(
-                <TreeSelect
-                  style={{ width: '100%' }}
-                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                  placeholder="请选择"
-                  allowClear
-                  treeDefaultExpandAll
-                >
-                  {loopNode(functions)}
-                </TreeSelect>,
-              )}
-            </FormItem>
-            <FormItem {...this.formLayout} label="是否外链">
-              {form.getFieldDecorator('elink', {
-                initialValue: formVals.elink,
-              })(<Switch />)}
-            </FormItem>
-            <FormItem {...this.formLayout} label="菜单链接">
-              {form.getFieldDecorator('url', {
-                initialValue: formVals.url,
-              })(<Input placeholder="请输入" />)}
-            </FormItem>
-          </>
-        )}
-        <FormItem wrapperCol={{ span: 10, offset: 3 }}>
-          <Button type="primary" htmlType="submit">
-            提交
-          </Button>
-        </FormItem>
-      </Form>
-    );
-  }
-}
+          <FormItem {...formLayout} label="是否外链" name="elink" valuePropName="checked">
+            <Switch />
+          </FormItem>
+          <FormItem {...formLayout} label="菜单链接" name="url">
+            <Input placeholder="请输入" />
+          </FormItem>
+        </>
+      )}
+      <FormItem wrapperCol={{ span: 10, offset: 3 }}>
+        <Button type="primary" htmlType="submit">
+          提交
+        </Button>
+      </FormItem>
+    </Form>
+  );
+};
 
-export default Form.create<UpdateFormProps>()(UpdateForm);
+export default UpdateForm;
