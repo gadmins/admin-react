@@ -115,24 +115,6 @@ export default {
               component: './system/accout',
             },
             {
-              name: 'usercenter',
-              icon: 'smile',
-              path: '/system/usercenter',
-              component: './system/usercenter',
-            },
-            {
-              name: 'profile',
-              icon: 'smile',
-              path: '/system/profile',
-              component: './system/profile',
-            },
-            {
-              name: 'role',
-              icon: 'smile',
-              path: '/system/role',
-              component: './system/role',
-            },
-            {
               name: 'menu',
               icon: 'smile',
               path: '/system/menu',
