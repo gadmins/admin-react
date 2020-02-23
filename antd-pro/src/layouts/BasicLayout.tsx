@@ -23,6 +23,7 @@ import { ConnectState } from '@/models/connect';
 import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
 
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { WithFalse } from '@ant-design/pro-layout/lib/typings';
 import logo from '../assets/logo.svg';
 
 const noMatch = (
@@ -125,13 +126,39 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     authority: undefined,
   };
 
+  const onOpenChange = (keys: WithFalse<string[]>) => {
+    if (!location.state && keys) {
+      // 查找menu
+      let child: any[] = [];
+      keys.forEach(key => {
+        if (key === '/') {
+          child = menus;
+        } else {
+          const f = child.filter(
+            it => it.children && it.children.some((item: any) => item.key === key),
+          );
+          if (f && f.length > 0) {
+            child = f[0].children;
+          }
+        }
+      });
+      const idx = child.findIndex(it => it.key === keys[keys.length - 1]);
+      if (idx > -1) {
+        // 找到menu,将funcId附在location.state进行传递, 解决页面获取funcId
+        location.state = { funcId: child[idx].funcId };
+      }
+    }
+  };
+
   const CustomMenu = () => {
     let curKey: string[] = [];
     let curIdx = -1;
     const pathkeys = location.pathname ? location.pathname.split('/').filter(it => it !== '') : [];
     if (pathkeys.length > 0) {
       curKey = [pathkeys[0]];
-      curIdx = menus.findIndex(it => it.name === pathkeys[0]);
+      if (menus.length > 0) {
+        curIdx = menus.findIndex(it => it.name === pathkeys[0]);
+      }
     }
 
     const customMenuDataRender = () => {
@@ -143,9 +170,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
 
     let sysMenus: {
       icon: any;
-      name: string | undefined;
+      name?: string;
       defTxt: any;
-      path: string | undefined;
+      path?: string;
+      funcId?: string;
     }[] = [];
 
     const customHeaderRender = () => (
@@ -170,7 +198,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         >
           {sysMenus.map(it => (
             <Menu.Item key={it.name}>
-              <Link to={it.path || '/'}>
+              <Link
+                to={{
+                  pathname: it.path || '/',
+                  state: {
+                    funcId: it.funcId,
+                  },
+                }}
+              >
                 <Icon type={it.icon} />
                 {it.name && defMenuTxt[it.name]}
               </Link>
@@ -186,6 +221,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         name: it.name,
         defTxt: it.defTxt,
         path: it.path,
+        funcId: it.funcId,
       }));
     }
     return {
@@ -205,12 +241,24 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           {titleDom}
         </Link>
       )}
+      onOpenChange={onOpenChange}
       onCollapse={handleMenuCollapse}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl || menuItemProps.children || !menuItemProps.path) {
           return defaultDom;
         }
-        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+        return (
+          <Link
+            to={{
+              pathname: menuItemProps.path,
+              state: {
+                funcId: menuItemProps.funcId,
+              },
+            }}
+          >
+            {defaultDom}
+          </Link>
+        );
       }}
       breadcrumbRender={(routers = []) => [
         {
