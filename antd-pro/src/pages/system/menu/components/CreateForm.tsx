@@ -70,7 +70,10 @@ const CreateForm: React.FC<CreateFormProps> = props => {
       title={formVals ? '复制菜单' : '添加菜单'}
       visible={modalVisible}
       onOk={okHandle}
-      onCancel={() => onCancel()}
+      onCancel={() => {
+        form.resetFields();
+        onCancel();
+      }}
     >
       <Form form={form} initialValues={initVals}>
         <FormItem {...formLayout} label="菜单类型" name="type" rules={[{ required: true }]}>

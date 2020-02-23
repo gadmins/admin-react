@@ -207,7 +207,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
                   },
                 }}
               >
-                {string2Icon(it.icon)}
+                {it.icon}
                 {it.name && defMenuTxt[it.name]}
               </Link>
             </Menu.Item>
@@ -299,10 +299,21 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   );
 };
 
+const parseIcon = (menus: any[]) =>
+  menus.map((it: any) => {
+    if (it.icon) {
+      it.icon = string2Icon(it.icon);
+    }
+    if (it.children) {
+      it.children = parseIcon(it.children);
+    }
+    return it;
+  });
+
 export default connect(({ global, settings, accout }: ConnectState) => ({
   collapsed: global.collapsed,
   hasSysMenu: accout.hasSysMenu,
-  menus: accout.menus,
+  menus: parseIcon(accout.menus),
   defMenuTxt: accout.defMenuTxt,
   settings,
 }))(BasicLayout);
