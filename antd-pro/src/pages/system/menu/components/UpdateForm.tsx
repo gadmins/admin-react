@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Input, Radio, Switch, TreeSelect, Form } from 'antd';
+import { Button, Input, Radio, Switch, TreeSelect, Form, message } from 'antd';
 import { getMenuParentTree, functionList } from '../service';
 
 const FormItem = Form.Item;
@@ -77,6 +77,10 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
 
   const handleSubmit = async () => {
     const { onSubmit: handleUpdate } = props;
+    if (!form.isFieldsTouched()) {
+      message.warn('请修改后提交');
+      return;
+    }
     const fieldsValue = await form.validateFields();
     handleUpdate(fieldsValue);
   };
@@ -141,13 +145,8 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
       <FormItem {...formLayout} label="菜单icon" name="icon">
         <Input placeholder="请输入" />
       </FormItem>
-      <FormItem
-        {...formLayout}
-        label="菜单排序"
-        name="sortNumber"
-        rules={[{ required: true, message: '菜单排序不能为空' }]}
-      >
-        <Input type="number" placeholder="请输入" />
+      <FormItem {...formLayout} label="菜单排序" name="sortNumber">
+        <Input type="number" min={0} placeholder="请输入" />
       </FormItem>
       {values.type === 'MENU' && functions.length > 0 && (
         <>
@@ -158,6 +157,15 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
               placeholder="请选择"
               allowClear
               treeDefaultExpandAll
+              onChange={e => {
+                const func = functions.filter(it => it.id === e);
+                if (func && func.length > 0) {
+                  form.setFieldsValue({
+                    url: func[0].url,
+                    elink: func[0].elink,
+                  });
+                }
+              }}
             >
               {loopNode(functions)}
             </TreeSelect>
@@ -165,7 +173,12 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
           <FormItem {...formLayout} label="是否外链" name="elink" valuePropName="checked">
             <Switch />
           </FormItem>
-          <FormItem {...formLayout} label="菜单链接" name="url">
+          <FormItem
+            {...formLayout}
+            label="菜单链接"
+            name="url"
+            rules={[{ required: true, message: '菜单链接不能为空' }]}
+          >
             <Input placeholder="请输入" />
           </FormItem>
         </>
@@ -173,6 +186,16 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
       <FormItem wrapperCol={{ span: 10, offset: 3 }}>
         <Button type="primary" htmlType="submit">
           提交
+        </Button>
+        <Button
+          style={{ marginLeft: 8 }}
+          type="primary"
+          htmlType="button"
+          onClick={() => {
+            form.resetFields();
+          }}
+        >
+          重置
         </Button>
       </FormItem>
     </Form>

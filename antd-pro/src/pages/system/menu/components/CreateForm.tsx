@@ -35,7 +35,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
   const [form] = Form.useForm();
   const [parentMenus, setParentMenus] = useState([]);
   const [functions, setFunctions] = useState([]);
-  const initVals = formVals
+  const initVals: any = formVals
     ? {
         ...formVals,
         mcode: `${formVals.key}1`,
@@ -45,7 +45,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
       }
     : { type: 'SYS_MENU' };
   const [type, setType] = useState(initVals.type);
-  useEffect(() => {
+  const loadData = () => {
     getMenuParentTree().then(data => {
       if (data && data.code === 200) {
         setParentMenus(data.data);
@@ -56,12 +56,16 @@ const CreateForm: React.FC<CreateFormProps> = props => {
         setFunctions(data.data);
       }
     });
+  };
+  useEffect(() => {
+    loadData();
   }, []);
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
     const rs: boolean = handleAdd(fieldsValue);
     if (rs) {
       form.resetFields();
+      loadData();
     }
   };
   return (
@@ -70,7 +74,11 @@ const CreateForm: React.FC<CreateFormProps> = props => {
       title={formVals ? '复制菜单' : '添加菜单'}
       visible={modalVisible}
       onOk={okHandle}
-      onCancel={() => onCancel()}
+      onCancel={() => {
+        setType('SYS_MENU');
+        form.resetFields();
+        onCancel();
+      }}
     >
       <Form form={form} initialValues={initVals}>
         <FormItem {...formLayout} label="菜单类型" name="type" rules={[{ required: true }]}>
@@ -123,13 +131,8 @@ const CreateForm: React.FC<CreateFormProps> = props => {
         <FormItem {...formLayout} label="菜单icon" name="icon">
           <Input placeholder="请输入" />
         </FormItem>
-        <FormItem
-          {...formLayout}
-          label="菜单排序"
-          name="sortNumber"
-          rules={[{ required: true, message: '排序不能为空' }]}
-        >
-          <Input type="number" placeholder="请输入" />
+        <FormItem {...formLayout} label="菜单排序" name="sortNumber">
+          <Input type="number" min={0} placeholder="请输入" />
         </FormItem>
         {type === 'MENU' && functions.length > 0 && (
           <>
@@ -140,6 +143,15 @@ const CreateForm: React.FC<CreateFormProps> = props => {
                 placeholder="请选择"
                 allowClear
                 treeDefaultExpandAll
+                onChange={e => {
+                  const func = functions.filter(it => it.id === e);
+                  if (func && func.length > 0) {
+                    form.setFieldsValue({
+                      url: func[0].url,
+                      elink: func[0].elink,
+                    });
+                  }
+                }}
               >
                 {loopNode(functions)}
               </TreeSelect>
@@ -147,7 +159,12 @@ const CreateForm: React.FC<CreateFormProps> = props => {
             <FormItem {...formLayout} label="是否外链" name="elink" valuePropName="checked">
               <Switch />
             </FormItem>
-            <FormItem {...formLayout} label="菜单链接" name="url">
+            <FormItem
+              {...formLayout}
+              label="菜单链接"
+              name="url"
+              rules={[{ required: true, message: '菜单链接不能为空' }]}
+            >
               <Input placeholder="请输入" />
             </FormItem>
           </>

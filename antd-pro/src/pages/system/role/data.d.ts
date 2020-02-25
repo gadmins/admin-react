@@ -1,11 +1,11 @@
 export interface TableListItem {
   id: number;
   name: string;
-  roleId: number;
+  rcode: string;
+  rdesc?: string;
   updatedAt: Date;
   createdAt: Date;
-  enable?: boolean;
-  roles: any[];
+  enable: boolean;
 }
 
 export interface TableListPagination {

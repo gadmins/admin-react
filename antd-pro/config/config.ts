@@ -139,6 +139,12 @@ export default {
               component: './system/tablemeta',
             },
             {
+              name: '空白页面',
+              icon: 'smile',
+              path: '/system/role',
+              component: './system/role',
+            },
+            {
               component: './404',
             },
           ],
