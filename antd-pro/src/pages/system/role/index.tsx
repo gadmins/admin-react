@@ -1,10 +1,10 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Divider, message } from 'antd';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data.d';
-import { queryAllRole, queryList, add, remove, update } from './service';
+import { queryList, add, update, remove } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 
@@ -77,20 +77,6 @@ const TableList: React.FC<{}> = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [selectRecord, setSelectRecord] = useState<any | undefined>(undefined);
 
-  const [roleList, setRoleList] = useState({});
-  useEffect(() => {
-    queryAllRole().then(data => {
-      if (data && data.data) {
-        const list = {
-          all: { text: '全部' },
-        };
-        data.data.forEach((item: any) => {
-          list[item.id] = item.name;
-        });
-        setRoleList(list);
-      }
-    });
-  }, []);
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
@@ -100,22 +86,18 @@ const TableList: React.FC<{}> = () => {
       width: 64,
     },
     {
-      title: '用户名',
+      title: '角色名',
       dataIndex: 'name',
     },
     {
-      title: '角色类型',
-      hideInTable: true,
-      dataIndex: 'roleId',
-      initialValue: 'all',
-      valueEnum: roleList,
+      title: '角色编码',
+      dataIndex: 'rcode',
+      hideInSearch: true,
     },
     {
-      title: '角色类型',
-      dataIndex: 'roleNames',
+      title: '角色描述',
+      dataIndex: 'rdesc',
       hideInSearch: true,
-      hideInForm: true,
-      render: (text, record) => record.roles.map(it => it.name).join(','),
     },
     {
       title: '创建时间',
