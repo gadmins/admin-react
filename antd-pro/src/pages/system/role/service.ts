@@ -30,3 +30,11 @@ export async function update(params: TableListParams) {
     },
   });
 }
+
+export async function getAuthMenus(id: number) {
+  return request(`/role/${id}/menucodes`);
+}
+
+export async function getMenuTreeAndFunc() {
+  return request('/menu/tree/func');
+}

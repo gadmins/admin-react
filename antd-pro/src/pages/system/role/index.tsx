@@ -185,49 +185,53 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
         rowSelection={{}}
       />
-      <CreateForm
-        initVals={selectRecord}
-        modalVisible={createModalVisible}
-        onSubmit={async value => {
-          const success = await handleAdd(value);
-          if (success) {
+      {createModalVisible && (
+        <CreateForm
+          initVals={selectRecord}
+          modalVisible={createModalVisible}
+          onSubmit={async value => {
+            const success = await handleAdd(value);
+            if (success) {
+              setSelectRecord(undefined);
+              setTimeout(() => {
+                handleModalVisible(false);
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
+              }, 0);
+            }
+            return success;
+          }}
+          onCancel={() => {
             setSelectRecord(undefined);
             setTimeout(() => {
               handleModalVisible(false);
+            }, 0);
+          }}
+        />
+      )}
+      {updateModalVisible && (
+        <UpdateForm
+          initVals={selectRecord}
+          modalVisible={updateModalVisible}
+          onSubmit={async value => {
+            const success = await handleUpdate(value);
+            if (success) {
+              handleUpdateModalVisible(false);
               if (actionRef.current) {
                 actionRef.current.reload();
               }
-            }, 0);
-          }
-          return success;
-        }}
-        onCancel={() => {
-          setSelectRecord(undefined);
-          setTimeout(() => {
-            handleModalVisible(false);
-          }, 0);
-        }}
-      />
-      <UpdateForm
-        initVals={selectRecord}
-        modalVisible={updateModalVisible}
-        onSubmit={async value => {
-          const success = await handleUpdate(value);
-          if (success) {
-            handleUpdateModalVisible(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
             }
-          }
-          return success;
-        }}
-        onCancel={() => {
-          setSelectRecord(undefined);
-          setTimeout(() => {
-            handleUpdateModalVisible(false);
-          }, 0);
-        }}
-      />
+            return success;
+          }}
+          onCancel={() => {
+            setSelectRecord(undefined);
+            setTimeout(() => {
+              handleUpdateModalVisible(false);
+            }, 0);
+          }}
+        />
+      )}
     </PageHeaderWrapper>
   );
 };

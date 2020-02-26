@@ -1,20 +1,19 @@
 import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
-import { Tree, Button, Input, Modal, message } from 'antd';
+import { Tree, Button, Modal, message } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { PlusOutlined, CopyOutlined, MinusOutlined } from '@ant-design/icons';
+import { PlusOutlined, CopyOutlined, MinusOutlined, ReloadOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { getMenuTree, updateMenu, addMenu, deleteMenus } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 
-const { TreeNode } = Tree;
-const { Search } = Input;
+// const { Search } = Input;
 
 /**
  * 添加节点
  * @param fields
  */
-const handleAdd = async fields => {
+const handleAdd = async (fields: any) => {
   if (fields.errors) {
     return false;
   }
@@ -48,32 +47,32 @@ const loopKeys = (data: any[]) => {
   return exKeys;
 };
 
-const findSearchTxtLength = (data: any[], value: string) => {
-  let len = 0;
-  data.forEach((item: any) => {
-    const index = item.title.indexOf(value);
-    if (index > -1) {
-      len += 1;
-    }
-    if (item.children && item.children.length) {
-      len += findSearchTxtLength(item.children, value);
-    }
-  });
-  return len;
-};
+// const findSearchTxtLength = (data: any[], value: string) => {
+//   let len = 0;
+//   data.forEach((item: any) => {
+//     const index = item.title.indexOf(value);
+//     if (index > -1) {
+//       len += 1;
+//     }
+//     if (item.children && item.children.length) {
+//       len += findSearchTxtLength(item.children, value);
+//     }
+//   });
+//   return len;
+// };
 
 export default () => {
   const [menuTree, setMenuTree] = useState([]);
   const [checkedKeys, setCheckedKeys] = useState<string[]>([]);
   const [expandedKeys, setExpandedKeys] = useState<string[]>([]);
-  const [searchValue, setSearchValue] = useState<string>('');
+  // const [searchValue, setSearchValue] = useState<string>('');
 
   const [menuIds, setMenuIds] = useState<number[]>([]);
 
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [copyModalVisible, handleCopyModalVisible] = useState<boolean>(false);
 
-  const [selectMenu, setSelectMenu] = useState(undefined);
+  const [selectMenu, setSelectMenu] = useState<any | undefined>(undefined);
 
   const [copyMenu, setCopyMenu] = useState(undefined);
 
@@ -110,47 +109,29 @@ export default () => {
     loadMenuTree();
   }, []);
 
-  const loop = (data: any) =>
-    data.map((item: any) => {
-      const index = item.title.indexOf(searchValue);
-      const beforeStr = item.title.substr(0, index);
-      const afterStr = item.title.substr(index + searchValue.length);
-      const title =
-        index > -1 ? (
-          <span>
-            {beforeStr}
-            <span style={{ color: '#f50' }}>{searchValue}</span>
-            {afterStr}
-          </span>
-        ) : (
-          <span>{item.title}</span>
-        );
-      if (item.children && item.children.length) {
-        return (
-          <TreeNode key={item.key} title={title} bind={item}>
-            {loop(item.children)}
-          </TreeNode>
-        );
-      }
-      return <TreeNode key={item.key} title={title} bind={item} />;
-    });
-
-  const onSearchChange = e => {
-    const { value } = e.target;
-    setSearchValue(value);
-    if (value === '') {
-      const keys = loopKeys(menuTree);
-      setExpandedKeys(keys);
-    } else if (findSearchTxtLength(menuTree, value) > 0) {
-      const keys = loopKeys(menuTree);
-      setExpandedKeys(keys);
-    } else {
-      setExpandedKeys([]);
-    }
-  };
+  // const onSearchChange = e => {
+  //   const { value } = e.target;
+  //   setSearchValue(value);
+  //   if (value === '') {
+  //     const keys = loopKeys(menuTree);
+  //     setExpandedKeys(keys);
+  //   } else if (findSearchTxtLength(menuTree, value) > 0) {
+  //     const keys = loopKeys(menuTree);
+  //     setExpandedKeys(keys);
+  //   } else {
+  //     setExpandedKeys([]);
+  //   }
+  // };
 
   const toolbarDom = (props: { checkedKeys: any; selectMenu: any }) => (
     <>
+      <Button
+        shape="circle"
+        icon={<ReloadOutlined />}
+        onClick={() => {
+          loadMenuTree();
+        }}
+      />
       <Button
         icon={<PlusOutlined />}
         onClick={() => {
@@ -194,16 +175,17 @@ export default () => {
 
   const leftGridDom = () => (
     <div className={styles.leftMenu}>
-      <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={onSearchChange} />
+      {/* <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={onSearchChange} /> */}
       <Tree
         showLine
         blockNode
         checkable
         expandedKeys={expandedKeys}
         checkedKeys={checkedKeys}
+        treeData={menuTree}
         onCheck={(keys, { checkedNodes }) => {
           setCheckedKeys(keys);
-          const ids = checkedNodes?.map(it => it.bind.id);
+          const ids = checkedNodes?.map(it => it.id);
           // eslint-disable-next-line no-unused-expressions
           ids && setMenuIds(ids);
         }}
@@ -211,15 +193,13 @@ export default () => {
           if (keys.length > 0) {
             setSelectMenu(undefined);
             setTimeout(() => {
-              setSelectMenu(node.bind);
+              setSelectMenu(node);
             }, 0);
           } else {
             setSelectMenu(undefined);
           }
         }}
-      >
-        {loop(menuTree)}
-      </Tree>
+      />
     </div>
   );
   return (
@@ -254,26 +234,29 @@ export default () => {
           </div>
         </GridContent>
       </div>
-      <CreateForm
-        onSubmit={async value => {
-          const success = await handleAdd(value);
-          if (success) {
-            handleModalVisible(false);
-            loadMenuTree();
-          }
-        }}
-        onCancel={() => handleModalVisible(false)}
-        modalVisible={createModalVisible}
-      />
+      {createModalVisible && (
+        <CreateForm
+          onSubmit={async value => {
+            const success = await handleAdd(value);
+            if (success) {
+              handleModalVisible(false);
+              loadMenuTree();
+            }
+          }}
+          onCancel={() => handleModalVisible(false)}
+          modalVisible={createModalVisible}
+        />
+      )}
       {copyMenu && (
         <CreateForm
           formVals={copyMenu}
-          onSubmit={async value => {
+          onSubmit={async (value: any) => {
             const success = await handleAdd(value);
             if (success) {
               handleCopyModalVisible(false);
               loadMenuTree();
             }
+            return success;
           }}
           onCancel={() => handleCopyModalVisible(false)}
           modalVisible={copyModalVisible}
