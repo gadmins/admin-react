@@ -9,7 +9,7 @@ const { TreeNode } = TreeSelect;
 interface CreateFormProps {
   modalVisible: boolean;
   formVals?: FormValueType;
-  onSubmit: (fieldsValue: { desc: string }) => boolean;
+  onSubmit: (fieldsValue: any) => boolean;
   onCancel: () => void;
 }
 

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Modal, Form, Input, message } from 'antd';
-import MD5 from 'crypto-js/md5';
+import React, { useEffect, useState } from 'react';
+import { Tree, Modal, Form, Input, message } from 'antd';
+import { getMenuTreeAndFunc, getAuthMenus } from '../service';
 
 const FormItem = Form.Item;
 interface FormProps {
@@ -17,6 +17,11 @@ const formLayout = {
 
 export default (props: React.PropsWithChildren<FormProps>) => {
   const { modalVisible, onSubmit, onCancel, initVals } = props;
+  const [menuTree, setMenuTree] = useState<any[]>([]);
+  const [menuIds, setMenuIds] = useState<number[]>([]);
+  const [funcIds, setFuncIds] = useState<number[]>([]);
+  const [authKeys, setKeys] = useState<string[]>([]);
+
   const [form] = Form.useForm();
   const initialValues = initVals
     ? {
@@ -25,17 +30,38 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         rdesc: initVals.rdesc,
       }
     : {};
-  if (form) {
-    form.resetFields();
-  }
+
+  useEffect(() => {
+    if (initVals) {
+      Promise.all([getMenuTreeAndFunc(), getAuthMenus(initVals.id)]).then(
+        ([treeData, authData]) => {
+          if (authData && authData.data) {
+            setMenuIds(authData.data.menuIds);
+            setFuncIds(authData.data.funcIds);
+            setKeys(authData.data.keys);
+          }
+          if (treeData && treeData.data) {
+            setMenuTree(treeData.data);
+          }
+        },
+      );
+    } else {
+      getMenuTreeAndFunc().then(data => {
+        if (data && data.data) {
+          setMenuTree(data.data);
+        }
+      });
+    }
+  }, []);
 
   const okHandle = async () => {
-    if (!form.isFieldsTouched()) {
-      message.warn('请修改后提交');
+    if (menuIds.length === 0 && funcIds.length === 0) {
+      message.error('请分配权限');
       return;
     }
     const fieldsValue = await form.validateFields();
-    fieldsValue.password = MD5(fieldsValue.password).toString();
+    fieldsValue.menuIds = menuIds;
+    fieldsValue.funcIds = funcIds;
     const rs: boolean = await onSubmit(fieldsValue);
     if (rs) {
       form.resetFields();
@@ -78,6 +104,32 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         >
           <Input placeholder="请输入" />
         </FormItem>
+        {menuTree && menuTree.length > 0 && (
+          <FormItem {...formLayout} label="角色权限">
+            <Tree
+              showLine
+              blockNode
+              checkable
+              selectable={false}
+              treeData={menuTree}
+              defaultCheckedKeys={authKeys}
+              defaultExpandAll
+              onCheck={(_, { checkedNodes }) => {
+                const mIds: number[] = [];
+                const fIds: number[] = [];
+                checkedNodes.forEach((it: any) => {
+                  if (it.type === 'FUNC') {
+                    fIds.push(it.id);
+                  } else {
+                    mIds.push(it.id);
+                  }
+                });
+                setMenuIds(mIds);
+                setFuncIds(fIds);
+              }}
+            />
+          </FormItem>
+        )}
       </Form>
     </Modal>
   );

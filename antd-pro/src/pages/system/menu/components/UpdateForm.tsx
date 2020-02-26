@@ -19,9 +19,9 @@ export interface FormValueType {
 }
 
 export interface UpdateFormProps {
-  onCancel: (flag?: boolean, formVals?: FormValueType) => void;
+  // onCancel: (flag?: boolean, formVals?: FormValueType) => void;
   onSubmit: (values: FormValueType) => void;
-  updateModalVisible: boolean;
+  // updateModalVisible: boolean;
   values: FormValueType;
 }
 
@@ -45,7 +45,7 @@ const formLayout = {
 const UpdateForm: React.FC<UpdateFormProps> = props => {
   const { values } = props;
   const [parentMenus, setParentMenus] = useState([]);
-  const [functions, setFunctions] = useState([]);
+  const [functions, setFunctions] = useState<any[]>([]);
   const [form] = Form.useForm();
 
   const updateParentMenus = (type: string, ids?: number[]) => {
@@ -60,6 +60,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
   };
 
   useEffect(() => {
+    console.log(values);
     updateParentMenus(values.type, [values.id]);
     functionList().then(data => {
       if (data && data.code === 200) {
