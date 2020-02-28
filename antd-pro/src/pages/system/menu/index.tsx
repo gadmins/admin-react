@@ -109,19 +109,12 @@ export default () => {
     loadMenuTree();
   }, []);
 
-  // const onSearchChange = e => {
-  //   const { value } = e.target;
-  //   setSearchValue(value);
-  //   if (value === '') {
-  //     const keys = loopKeys(menuTree);
-  //     setExpandedKeys(keys);
-  //   } else if (findSearchTxtLength(menuTree, value) > 0) {
-  //     const keys = loopKeys(menuTree);
-  //     setExpandedKeys(keys);
-  //   } else {
-  //     setExpandedKeys([]);
-  //   }
-  // };
+  const checkHandle = (keys: string[], e: any) => {
+    setCheckedKeys(keys);
+    const { checkedNodes = [] } = e;
+    const ids: number[] = checkedNodes.map((it: any) => it.id as number);
+    setMenuIds(ids);
+  };
 
   const toolbarDom = (props: { checkedKeys: any; selectMenu: any }) => (
     <>
@@ -183,12 +176,7 @@ export default () => {
         expandedKeys={expandedKeys}
         checkedKeys={checkedKeys}
         treeData={menuTree}
-        onCheck={(keys, { checkedNodes }) => {
-          setCheckedKeys(keys);
-          const ids = checkedNodes?.map(it => it.id);
-          // eslint-disable-next-line no-unused-expressions
-          ids && setMenuIds(ids);
-        }}
+        onCheck={checkHandle}
         onSelect={(keys, { node }) => {
           if (keys.length > 0) {
             setSelectMenu(undefined);
@@ -248,6 +236,7 @@ export default () => {
               handleModalVisible(false);
               loadMenuTree();
             }
+            return success;
           }}
           onCancel={() => handleModalVisible(false)}
           modalVisible={createModalVisible}

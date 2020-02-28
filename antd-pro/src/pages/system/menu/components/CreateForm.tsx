@@ -9,7 +9,7 @@ const { TreeNode } = TreeSelect;
 interface CreateFormProps {
   modalVisible: boolean;
   formVals?: FormValueType;
-  onSubmit: (fieldsValue: any) => boolean;
+  onSubmit: (fieldsValue: any) => Promise<boolean>;
   onCancel: () => void;
 }
 
@@ -62,7 +62,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
   }, []);
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
-    const rs: boolean = handleAdd(fieldsValue);
+    const rs: boolean = await handleAdd(fieldsValue);
     if (rs) {
       form.resetFields();
       loadData();
@@ -144,7 +144,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
                 allowClear
                 treeDefaultExpandAll
                 onChange={e => {
-                  const func = functions.filter(it => it.id === e);
+                  const func: any[] = functions.filter((it: any) => it.id === e);
                   if (func && func.length > 0) {
                     form.setFieldsValue({
                       url: func[0].url,
