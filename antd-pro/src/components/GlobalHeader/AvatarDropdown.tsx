@@ -5,12 +5,12 @@ import React from 'react';
 import { connect } from 'dva';
 import { router } from 'umi';
 import { ConnectProps, ConnectState } from '@/models/connect';
-import { CurrentAccout } from '@/models/accout';
+import { CurrentAccount } from '@/models/account';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 
 export interface GlobalHeaderRightProps extends ConnectProps {
-  currentUser?: CurrentAccout;
+  currentUser?: CurrentAccount;
   menu?: boolean;
 }
 
@@ -90,6 +90,6 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
   }
 }
 
-export default connect(({ accout }: ConnectState) => ({
-  currentUser: accout.currentAccout,
+export default connect(({ account }: ConnectState) => ({
+  currentUser: account.currentAccount,
 }))(AvatarDropdown);

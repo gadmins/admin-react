@@ -1,5 +1,5 @@
 import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
-import { Tree, Button, Modal, message } from 'antd';
+import { Tree, Button, Modal, message, Divider } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { PlusOutlined, CopyOutlined, MinusOutlined, ReloadOutlined } from '@ant-design/icons';
 import styles from './index.less';
@@ -211,6 +211,12 @@ export default () => {
             selectMenu,
           })}
         </div>
+        <Divider
+          style={{
+            marginBottom: 0,
+            marginTop: 16,
+          }}
+        />
         <GridContent>
           <div className={styles.grid}>
             {leftGridDom()}

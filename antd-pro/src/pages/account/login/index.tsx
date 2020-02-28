@@ -117,13 +117,13 @@ const Login: React.FC<LoginProps> = props => {
           <Checkbox checked={autoLogin} onChange={e => setAutoLogin(e.target.checked)}>
             自动登录
           </Checkbox>
-          <a
+          {/* <a
             style={{
               float: 'right',
             }}
           >
             忘记密码
-          </a>
+          </a> */}
         </div>
         <Submit loading={submitting}>登录</Submit>
         {/* <div className={styles.other}>

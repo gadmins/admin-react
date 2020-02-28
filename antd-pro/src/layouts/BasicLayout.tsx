@@ -25,16 +25,18 @@ import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { WithFalse } from '@ant-design/pro-layout/lib/typings';
 import { string2Icon } from '@/utils/icon';
+import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
+import defaultSettings from '../../config/defaultSettings';
 import logo from '../assets/logo.svg';
 
 const noMatch = (
   <Result
-    status="403"
+    status={403}
     title="403"
     subTitle="Sorry, you are not authorized to access this page."
     extra={
       <Button type="primary">
-        <Link to="/accout/login">Go Login</Link>
+        <Link to="/account/login">去登陆</Link>
       </Button>
     }
   />
@@ -104,10 +106,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   useEffect(() => {
     if (dispatch) {
       dispatch({
-        type: 'accout/fetchCurrent',
+        type: 'account/fetchCurrent',
       });
       dispatch({
-        type: 'accout/fetchMenu',
+        type: 'account/fetchMenu',
       });
     }
   }, []);
@@ -216,6 +218,16 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         <RightContent />
       </div>
     );
+    const customBreadcrumbRender = (routers: Route[] = []) => [
+      {
+        path: `/${menus[curIdx] ? menus[curIdx].path || '/' : ''}`,
+        breadcrumbName: formatMessage({
+          id: `menu.${curKey[0] || 'home'}`,
+          defaultMessage: curKey[0] || 'Home',
+        }),
+      },
+      ...routers,
+    ];
     if (hasSysMenu) {
       sysMenus = menus.map(it => ({
         icon: it.icon,
@@ -226,6 +238,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       }));
     }
     return {
+      breadcrumbRender: customBreadcrumbRender,
       headerRender: customHeaderRender,
       menuDataRender: customMenuDataRender,
     };
@@ -236,6 +249,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   return (
     <ProLayout
       logo={logo}
+      title={defaultSettings.title}
       menuHeaderRender={(logoDom, titleDom) => (
         <Link to="/">
           {logoDom}
@@ -261,16 +275,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           </Link>
         );
       }}
-      breadcrumbRender={(routers = []) => [
-        {
-          path: '/',
-          breadcrumbName: formatMessage({
-            id: 'menu.home',
-            defaultMessage: 'Home',
-          }),
-        },
-        ...routers,
-      ]}
       itemRender={(route, params, routes, paths) => {
         const first = routes.indexOf(route) === 0;
         return first ? (
@@ -310,10 +314,9 @@ const parseIcon = (menus: any[]) =>
     return it;
   });
 
-export default connect(({ global, settings, accout }: ConnectState) => ({
+export default connect(({ global, account }: ConnectState) => ({
   collapsed: global.collapsed,
-  hasSysMenu: accout.hasSysMenu,
-  menus: parseIcon(accout.menus),
-  defMenuTxt: accout.defMenuTxt,
-  settings,
+  hasSysMenu: account.hasSysMenu,
+  menus: parseIcon(account.menus),
+  defMenuTxt: account.defMenuTxt,
 }))(BasicLayout);

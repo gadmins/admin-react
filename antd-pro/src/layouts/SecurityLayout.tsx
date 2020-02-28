@@ -4,11 +4,10 @@ import { PageLoading } from '@ant-design/pro-layout';
 import { Redirect } from 'umi';
 import { stringify } from 'querystring';
 import { ConnectState, ConnectProps } from '@/models/connect';
-import { CurrentAccout } from '@/models/accout';
+import Cookies from 'js-cookie';
 
 interface SecurityLayoutProps extends ConnectProps {
   loading?: boolean;
-  currentAccout?: CurrentAccout;
 }
 
 interface SecurityLayoutState {
@@ -27,17 +26,18 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
     const { dispatch } = this.props;
     if (dispatch) {
       dispatch({
-        type: 'accout/fetchCurrent',
+        type: 'account/fetchCurrent',
       });
     }
   }
 
   render() {
     const { isReady } = this.state;
-    const { children, loading, currentAccout } = this.props;
+    const { children, loading } = this.props;
     // You can replace it to your authentication rule (such as check token exists)
     // 你可以把它替换成你自己的登录认证规则（比如判断 token 是否存在）
-    const isLogin = currentAccout !== null;
+    const token = Cookies.get('Admin-Token');
+    const isLogin = token !== undefined;
     const queryString = stringify({
       redirect: window.location.href,
     });
@@ -45,14 +45,13 @@ class SecurityLayout extends React.Component<SecurityLayoutProps, SecurityLayout
     if ((!isLogin && loading) || !isReady) {
       return <PageLoading />;
     }
-    if (!isLogin && window.location.pathname !== '/accout/login') {
-      return <Redirect to={`/accout/login?${queryString}`} />;
+    if (!isLogin && window.location.pathname !== '/account/login') {
+      return <Redirect to={`/account/login?${queryString}`} />;
     }
     return children;
   }
 }
 
-export default connect(({ accout, loading }: ConnectState) => ({
-  currentAccout: accout.currentAccout,
-  loading: loading.models.accout,
+export default connect(({ loading }: ConnectState) => ({
+  loading: loading.models.account,
 }))(SecurityLayout);

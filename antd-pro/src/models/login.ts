@@ -3,10 +3,11 @@ import { Effect } from 'dva';
 import { stringify } from 'querystring';
 import { router } from 'umi';
 
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
+import { fakeAccountLogin, fakeAccountLogout, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
+import Cookies from 'js-cookie';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -68,12 +69,14 @@ const Model: LoginModelType = {
       yield call(getFakeCaptcha, payload);
     },
 
-    logout() {
+    *logout(_, { call }) {
+      yield call(fakeAccountLogout);
+      Cookies.remove('Admin-Token');
       const { redirect } = getPageQuery();
       // Note: There may be security issues, please note
-      if (window.location.pathname !== '/accout/login' && !redirect) {
+      if (window.location.pathname !== '/account/login' && !redirect) {
         router.replace({
-          pathname: '/accout/login',
+          pathname: '/account/login',
           search: stringify({
             redirect: window.location.href,
           }),
@@ -84,10 +87,10 @@ const Model: LoginModelType = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      setAuthority(payload.currentAuthority || ['admin']);
       return {
         ...state,
-        status: payload.status,
+        status: payload.status || 'ok',
         type: payload.type,
       };
     },

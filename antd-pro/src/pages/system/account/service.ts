@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { TableListParams } from './data.d';
+import { TableListParams } from './data';
 
 export async function queryRole(params?: TableListParams) {
   return request('/role', {
@@ -12,13 +12,13 @@ export async function queryAllRole() {
 }
 
 export async function queryList(params?: TableListParams) {
-  return request('/accout', {
+  return request('/account', {
     params,
   });
 }
 
 export async function add(params: TableListParams) {
-  return request('/accout', {
+  return request('/account', {
     method: 'POST',
     data: {
       ...params,
@@ -27,13 +27,13 @@ export async function add(params: TableListParams) {
 }
 
 export async function remove(ids: number[]) {
-  return request(`/accout/${ids.join(',')}`, {
+  return request(`/account/${ids.join(',')}`, {
     method: 'DELETE',
   });
 }
 
 export async function update(params: TableListParams) {
-  return request(`/accout/${params.id}`, {
+  return request(`/account/${params.id}`, {
     method: 'PUT',
     data: {
       ...params,

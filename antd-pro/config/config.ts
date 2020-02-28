@@ -79,13 +79,13 @@ export default {
   // umi routes: https://umijs.org/zh/guide/router.html
   routes: [
     {
-      path: '/accout',
+      path: '/account',
       component: '../layouts/UserLayout',
       routes: [
         {
           name: 'login',
-          path: '/accout/login',
-          component: './accout/login',
+          path: '/account/login',
+          component: './account/login',
         },
       ],
     },
@@ -100,19 +100,19 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
+              redirect: '/home/welcome',
             },
             {
-              path: '/welcome',
               name: 'welcome',
               icon: 'smile',
+              path: '/home/welcome',
               component: './Welcome',
             },
             {
-              name: 'accout',
+              name: 'account',
               icon: 'smile',
-              path: '/system/accout',
-              component: './system/accout',
+              path: '/system/account',
+              component: './system/account',
             },
             {
               name: 'menu',

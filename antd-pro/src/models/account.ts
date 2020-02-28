@@ -1,40 +1,42 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
+import Cookies from 'js-cookie';
 
-import { queryCurrent, queryMenu } from '@/services/accout';
+import { queryCurrent, queryMenu } from '@/services/account';
 import { MenuDataItem } from '@ant-design/pro-layout';
+import { message } from 'antd';
 
-export interface CurrentAccout {
+export interface CurrentAccount {
   name?: string;
   avatar?: string;
 }
 
-export interface AccoutModelState {
-  currentAccout?: CurrentAccout;
+export interface AccountModelState {
+  currentAccount?: CurrentAccount;
   hasSysMenu: boolean;
   menus: MenuDataItem[];
   defMenuTxt: Map<string, string>;
 }
 
-export interface AccoutModelType {
-  namespace: 'accout';
-  state: AccoutModelState;
+export interface AccountModelType {
+  namespace: 'account';
+  state: AccountModelState;
   effects: {
     fetchCurrent: Effect;
     fetchMenu: Effect;
   };
   reducers: {
-    saveCurrentAccout: Reducer<AccoutModelState>;
-    saveMenu: Reducer<AccoutModelState>;
-    changeNotifyCount: Reducer<AccoutModelState>;
+    saveCurrentAccout: Reducer<AccountModelState>;
+    saveMenu: Reducer<AccountModelState>;
+    changeNotifyCount: Reducer<AccountModelState>;
   };
 }
 
-const UserModel: AccoutModelType = {
-  namespace: 'accout',
+const UserModel: AccountModelType = {
+  namespace: 'account',
 
   state: {
-    currentAccout: {},
+    currentAccount: {},
     hasSysMenu: true,
     menus: [],
     defMenuTxt: new Map(),
@@ -43,8 +45,12 @@ const UserModel: AccoutModelType = {
   effects: {
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
+      if (response.code === 501) {
+        Cookies.remove('Admin-Token');
+        message.error('Token已过期，请重新登陆');
+      }
       yield put({
-        type: 'saveCurrentAccout',
+        type: 'saveCurrentAccount',
         payload: response.data,
       });
     },
@@ -58,10 +64,10 @@ const UserModel: AccoutModelType = {
   },
 
   reducers: {
-    saveCurrentAccout(state, action) {
+    saveCurrentAccount(state, action) {
       return {
         ...state,
-        currentAccout: action.payload || {},
+        currentAccount: action.payload,
       };
     },
     saveMenu(state, action) {
@@ -73,14 +79,14 @@ const UserModel: AccoutModelType = {
     },
     changeNotifyCount(
       state = {
-        currentAccout: {},
+        currentAccount: {},
       },
       action,
     ) {
       return {
         ...state,
         currentAccout: {
-          ...state.currentAccout,
+          ...state.currentAccount,
           notifyCount: action.payload.totalCount,
           unreadCount: action.payload.unreadCount,
         },
