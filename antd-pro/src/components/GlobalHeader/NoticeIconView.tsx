@@ -4,14 +4,14 @@ import { connect } from 'dva';
 import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 import { NoticeItem } from '@/models/global';
-import { CurrentAccout } from '@/models/accout';
+import { CurrentAccount } from '@/models/account';
 import { ConnectProps, ConnectState } from '@/models/connect';
 import NoticeIcon from '../NoticeIcon';
 import styles from './index.less';
 
 export interface GlobalHeaderRightProps extends ConnectProps {
   notices?: NoticeItem[];
-  currentUser?: CurrentAccout;
+  currentUser?: CurrentAccount;
   fetchingNotices?: boolean;
   onNoticeVisibleChange?: (visible: boolean) => void;
   onNoticeClear?: (tabName?: string) => void;
@@ -162,8 +162,8 @@ class GlobalHeaderRight extends Component<GlobalHeaderRightProps> {
   }
 }
 
-export default connect(({ accout, global, loading }: ConnectState) => ({
-  currentUser: accout.currentAccout,
+export default connect(({ account, global, loading }: ConnectState) => ({
+  currentUser: account.currentAccount,
   collapsed: global.collapsed,
   fetchingMoreNotices: loading.effects['global/fetchMoreNotices'],
   fetchingNotices: loading.effects['global/fetchNotices'],

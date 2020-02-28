@@ -26,9 +26,6 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         roles: initVals.roles.map((it: any) => it.id),
       }
     : {};
-  if (form) {
-    form.resetFields();
-  }
   useEffect(() => {
     queryAllRole().then(data => {
       if (data && data.code === 200) {
@@ -79,7 +76,12 @@ export default (props: React.PropsWithChildren<FormProps>) => {
           rules={[{ required: true, message: '角色不能为空' }]}
         >
           <Select mode="multiple" placeholder="请选择">
-            {roles && roles.map(it => <Select.Option value={it.id}>{it.name}</Select.Option>)}
+            {roles &&
+              roles.map(it => (
+                <Select.Option key={it.id} value={it.id}>
+                  {it.name}
+                </Select.Option>
+              ))}
           </Select>
         </FormItem>
       </Form>

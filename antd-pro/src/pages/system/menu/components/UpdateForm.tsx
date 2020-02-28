@@ -60,7 +60,6 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
   };
 
   useEffect(() => {
-    console.log(values);
     updateParentMenus(values.type, [values.id]);
     functionList().then(data => {
       if (data && data.code === 200) {

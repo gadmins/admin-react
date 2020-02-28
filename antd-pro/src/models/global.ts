@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 import { Subscription, Effect } from 'dva';
 
 import { NoticeIconData } from '@/components/NoticeIcon';
-import { queryNotices } from '@/services/accout';
+import { queryNotices } from '@/services/account';
 import { ConnectState } from './connect.d';
 
 export interface NoticeItem extends NoticeIconData {
@@ -51,7 +51,7 @@ const GlobalModel: GlobalModelType = {
         (state: ConnectState) => state.global.notices.filter(item => !item.read).length,
       );
       yield put({
-        type: 'accout/changeNotifyCount',
+        type: 'account/changeNotifyCount',
         payload: {
           totalCount: data.length,
           unreadCount,
@@ -68,7 +68,7 @@ const GlobalModel: GlobalModelType = {
         (state: ConnectState) => state.global.notices.filter(item => !item.read).length,
       );
       yield put({
-        type: 'accout/changeNotifyCount',
+        type: 'account/changeNotifyCount',
         payload: {
           totalCount: count,
           unreadCount,
@@ -92,7 +92,7 @@ const GlobalModel: GlobalModelType = {
       });
 
       yield put({
-        type: 'accout/changeNotifyCount',
+        type: 'account/changeNotifyCount',
         payload: {
           totalCount: notices.length,
           unreadCount: notices.filter(item => !item.read).length,

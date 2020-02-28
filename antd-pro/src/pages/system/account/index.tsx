@@ -3,7 +3,7 @@ import { Button, Dropdown, Menu, Divider, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import { TableListItem } from './data.d';
+import { TableListItem } from './data';
 import { queryAllRole, queryList, add, remove, update } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -203,49 +203,53 @@ const TableList: React.FC<{}> = () => {
         columns={columns}
         rowSelection={{}}
       />
-      <CreateForm
-        initVals={selectRecord}
-        modalVisible={createModalVisible}
-        onSubmit={async value => {
-          const success = await handleAdd(value);
-          if (success) {
+      {createModalVisible && (
+        <CreateForm
+          initVals={selectRecord}
+          modalVisible={createModalVisible}
+          onSubmit={async value => {
+            const success = await handleAdd(value);
+            if (success) {
+              setSelectRecord(undefined);
+              setTimeout(() => {
+                handleModalVisible(false);
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
+              }, 0);
+            }
+            return success;
+          }}
+          onCancel={() => {
             setSelectRecord(undefined);
             setTimeout(() => {
               handleModalVisible(false);
+            }, 0);
+          }}
+        />
+      )}
+      {updateModalVisible && (
+        <UpdateForm
+          initVals={selectRecord}
+          modalVisible={updateModalVisible}
+          onSubmit={async value => {
+            const success = await handleUpdate(value);
+            if (success) {
+              handleUpdateModalVisible(false);
               if (actionRef.current) {
                 actionRef.current.reload();
               }
-            }, 0);
-          }
-          return success;
-        }}
-        onCancel={() => {
-          setSelectRecord(undefined);
-          setTimeout(() => {
-            handleModalVisible(false);
-          }, 0);
-        }}
-      />
-      <UpdateForm
-        initVals={selectRecord}
-        modalVisible={updateModalVisible}
-        onSubmit={async value => {
-          const success = await handleUpdate(value);
-          if (success) {
-            handleUpdateModalVisible(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
             }
-          }
-          return success;
-        }}
-        onCancel={() => {
-          setSelectRecord(undefined);
-          setTimeout(() => {
-            handleUpdateModalVisible(false);
-          }, 0);
-        }}
-      />
+            return success;
+          }}
+          onCancel={() => {
+            setSelectRecord(undefined);
+            setTimeout(() => {
+              handleUpdateModalVisible(false);
+            }, 0);
+          }}
+        />
+      )}
     </PageHeaderWrapper>
   );
 };
