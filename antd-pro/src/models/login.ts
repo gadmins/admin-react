@@ -1,13 +1,13 @@
 import { Reducer } from 'redux';
-import { Effect } from 'dva';
 import { stringify } from 'querystring';
-import { router } from 'umi';
+import { history } from 'umi';
 
 import { fakeAccountLogin, fakeAccountLogout, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
 import Cookies from 'js-cookie';
+import { Effect } from 'dva';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -16,7 +16,6 @@ export interface StateType {
 }
 
 export interface LoginModelType {
-  namespace: string;
   state: StateType;
   effects: {
     login: Effect;
@@ -29,8 +28,6 @@ export interface LoginModelType {
 }
 
 const Model: LoginModelType = {
-  namespace: 'login',
-
   state: {
     status: undefined,
   },
@@ -59,7 +56,7 @@ const Model: LoginModelType = {
             return;
           }
         }
-        router.replace(redirect || '/');
+        history.replace(redirect || '/');
       } else {
         message.error(response.msg);
       }
@@ -75,7 +72,7 @@ const Model: LoginModelType = {
       const { redirect } = getPageQuery();
       // Note: There may be security issues, please note
       if (window.location.pathname !== '/account/login' && !redirect) {
-        router.replace({
+        history.replace({
           pathname: '/account/login',
           search: stringify({
             redirect: window.location.href,

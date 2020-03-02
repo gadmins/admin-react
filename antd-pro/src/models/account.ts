@@ -19,7 +19,6 @@ export interface AccountModelState {
 }
 
 export interface AccountModelType {
-  namespace: 'account';
   state: AccountModelState;
   effects: {
     fetchCurrent: Effect;
@@ -33,8 +32,6 @@ export interface AccountModelType {
 }
 
 const UserModel: AccountModelType = {
-  namespace: 'account',
-
   state: {
     currentAccount: {},
     hasSysMenu: true,

@@ -6,6 +6,7 @@ export interface TableListItem {
   updatedAt: Date;
   createdAt: Date;
   enable: boolean;
+  [prop: string]: any;
 }
 
 export interface TableListPagination {

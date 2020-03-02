@@ -17,7 +17,6 @@ export interface GlobalModelState {
 }
 
 export interface GlobalModelType {
-  namespace: 'global';
   state: GlobalModelState;
   effects: {
     fetchNotices: Effect;
@@ -33,8 +32,6 @@ export interface GlobalModelType {
 }
 
 const GlobalModel: GlobalModelType = {
-  namespace: 'global',
-
   state: {
     collapsed: false,
     notices: [],

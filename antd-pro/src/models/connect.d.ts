@@ -13,7 +13,7 @@ export interface Loading {
   effects: { [key: string]: boolean | undefined };
   models: {
     global?: boolean;
-    setting?: boolean;
+    settings?: boolean;
     account?: boolean;
     login?: boolean;
   };
@@ -21,6 +21,7 @@ export interface Loading {
 
 export interface ConnectState {
   global: GlobalModelState;
+  settings: SettingModelState;
   loading: Loading;
   account: AccountModelState;
   login: StateType;

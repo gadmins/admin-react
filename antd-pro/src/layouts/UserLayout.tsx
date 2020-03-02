@@ -1,8 +1,7 @@
 import { DefaultFooter, MenuDataItem, getMenuData, getPageTitle } from '@ant-design/pro-layout';
 import { Helmet } from 'react-helmet';
-import { Link } from 'umi';
+import { Link, useIntl } from 'umi';
 import React from 'react';
-import { formatMessage } from 'umi-plugin-react/locale';
 
 import SelectLang from '@/components/SelectLang';
 import { ConnectProps } from '@/models/connect';
@@ -14,6 +13,7 @@ export interface UserLayoutProps extends ConnectProps {
 }
 
 const UserLayout: React.FC<UserLayoutProps> = props => {
+  const intl = useIntl();
   const {
     route = {
       routes: [],
@@ -30,7 +30,7 @@ const UserLayout: React.FC<UserLayoutProps> = props => {
   const title = getPageTitle({
     pathname: location.pathname,
     breadcrumb,
-    formatMessage,
+    formatMessage: intl.formatMessage,
     ...props,
   });
   return (
