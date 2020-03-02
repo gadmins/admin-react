@@ -2,7 +2,7 @@ import request from '@/utils/request';
 import { TableListParams } from '@/pages/data';
 
 export async function queryList(params?: TableListParams) {
-  return request('/dict', {
+  return request(`/dict/list/${params!.pid}`, {
     params,
   });
 }
@@ -29,12 +29,4 @@ export async function update(params: TableListParams) {
       ...params,
     },
   });
-}
-
-export async function getAuthMenus(id: number) {
-  return request(`/role/${id}/menucodes`);
-}
-
-export async function getMenuTreeAndFunc() {
-  return request('/menu/tree/func');
 }

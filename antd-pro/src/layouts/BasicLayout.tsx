@@ -86,7 +86,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
     </>
   );
 };
-
+let lastFuncId: number | undefined;
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const {
     dispatch,
@@ -126,8 +126,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     }
   };
   const onOpenChange = (keys: WithFalse<string[]>) => {
-    setReady(false);
-    setAuthority(undefined);
     if (!location.state && keys) {
       // 查找menu
       let child: any[] = [];
@@ -149,6 +147,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         location.state = { funcId: child[idx].funcId };
       }
     }
+    if (lastFuncId === location.state.funcId) {
+      return;
+    }
+    lastFuncId = location.state.funcId;
+    setReady(false);
+    setAuthority(undefined);
     // TODO: 计算是否有权限
     // if (location.state.funcId === 8) {
     //   setAuthority('none');

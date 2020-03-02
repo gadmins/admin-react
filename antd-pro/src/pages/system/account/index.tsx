@@ -3,7 +3,7 @@ import { Button, Dropdown, Menu, Divider, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import { TableListItem } from './data';
+import { TableListItem } from '@/pages/data';
 import { queryAllRole, queryList, add, remove, update } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -115,7 +115,7 @@ const TableList: React.FC<{}> = () => {
       dataIndex: 'roleNames',
       hideInSearch: true,
       hideInForm: true,
-      render: (text, record) => record.roles.map(it => it.name).join(','),
+      render: (text, record) => record.roles.map((it: any) => it.name).join(','),
     },
     {
       title: '创建时间',

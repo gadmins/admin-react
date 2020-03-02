@@ -3,7 +3,8 @@ import { Button, Dropdown, Menu, Divider, message } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import { TableListItem } from './data.d';
+import { history } from 'umi';
+import { TableListItem } from '@/pages/data';
 import { queryList, add, update, remove } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -122,19 +123,25 @@ const TableList: React.FC<{}> = () => {
           <Divider type="vertical" />
           <a
             onClick={() => {
-              console.log(record.id);
-            }}
-          >
-            列表
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={() => {
               setSelectRecord(record);
               handleModalVisible(true);
             }}
           >
             复制
+          </a>
+          <Divider type="vertical" />
+          <a
+            onClick={() => {
+              history.push({
+                pathname: `/system/dict/list`,
+                state: {
+                  funcId: record.funcId,
+                  pid: record.id,
+                },
+              });
+            }}
+          >
+            列表
           </a>
         </>
       ),
