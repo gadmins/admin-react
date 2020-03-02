@@ -10,17 +10,16 @@ import ProLayout, {
   Settings,
   DefaultFooter,
 } from '@ant-design/pro-layout';
-import React, { useEffect } from 'react';
-import { Link } from 'umi';
+import React, { useEffect, useState } from 'react';
+import { Link, useIntl } from 'umi';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { Result, Button, Menu } from 'antd';
-import { formatMessage } from 'umi-plugin-react/locale';
 
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
-import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
+import { isAntDesignPro } from '@/utils/utils';
 
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { WithFalse } from '@ant-design/pro-layout/lib/typings';
@@ -31,9 +30,9 @@ import logo from '../assets/logo.svg';
 
 const noMatch = (
   <Result
-    status={403}
+    status="403"
     title="403"
-    subTitle="Sorry, you are not authorized to access this page."
+    subTitle="对不起，您无权访问此页面"
     extra={
       <Button type="primary">
         <Link to="/account/login">去登陆</Link>
@@ -99,9 +98,11 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     collapsed,
     location = { pathname: '/' },
   } = props;
-  /**
-   * constructor
-   */
+  const intl = useIntl();
+  // 权限准备完毕
+  const [ready, setReady] = useState<boolean>(false);
+  // 默认有权限,authority = 'none' 无权限
+  const [authority, setAuthority] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (dispatch) {
@@ -124,12 +125,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       });
     }
   };
-  // get children authority
-  const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
-    authority: undefined,
-  };
-
   const onOpenChange = (keys: WithFalse<string[]>) => {
+    setReady(false);
+    setAuthority(undefined);
     if (!location.state && keys) {
       // 查找menu
       let child: any[] = [];
@@ -151,8 +149,15 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         location.state = { funcId: child[idx].funcId };
       }
     }
+    // TODO: 计算是否有权限
+    // if (location.state.funcId === 8) {
+    //   setAuthority('none');
+    // }
+    // 显示界面
+    setTimeout(() => {
+      setReady(true);
+    }, 1);
   };
-
   const CustomMenu = () => {
     let curKey: string[] = [];
     let curIdx = -1;
@@ -221,7 +226,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     const customBreadcrumbRender = (routers: Route[] = []) => [
       {
         path: `/${menus[curIdx] ? menus[curIdx].path || '/' : ''}`,
-        breadcrumbName: formatMessage({
+        breadcrumbName: intl.formatMessage({
           id: `menu.${curKey[0] || 'home'}`,
           defaultMessage: curKey[0] || 'Home',
         }),
@@ -245,7 +250,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   };
 
   const customProps = CustomMenu();
-
   return (
     <ProLayout
       logo={logo}
@@ -289,16 +293,18 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         if (defTxt) {
           e.defaultMessage = defTxt;
         }
-        return formatMessage(e);
+        return intl.formatMessage(e);
       }}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
       {...customProps}
     >
-      <Authorized authority={authorized!.authority} noMatch={noMatch}>
-        {children}
-      </Authorized>
+      {ready && (
+        <Authorized authority={authority} noMatch={noMatch}>
+          {children}
+        </Authorized>
+      )}
     </ProLayout>
   );
 };

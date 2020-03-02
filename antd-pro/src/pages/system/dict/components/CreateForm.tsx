@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from 'antd';
-import SchemaForm, { useForm, createFormActions, SchemaMarkupField } from '@formily/antd';
+import SchemaForm, { useForm, createFormActions, ISchema } from '@formily/antd';
 import { setup } from '@formily/antd-components';
 
 // const FormItem = Form.Item;
@@ -31,6 +31,21 @@ export default (props: React.PropsWithChildren<FormProps>) => {
     value: initialValues,
     actions,
   });
+  const schema: ISchema = {
+    type: 'object',
+    properties: {
+      title: {
+        type: 'string',
+        title: '字典名',
+        required: true,
+      },
+      dcode: {
+        type: 'string',
+        title: '字典编码',
+        required: true,
+      },
+    },
+  };
   const okHandle = async () => {
     try {
       await form.validate();
@@ -55,10 +70,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         onCancel();
       }}
     >
-      <SchemaForm form={form} {...formLayout}>
-        <SchemaMarkupField type="string" title="字典名" name="title" required />
-        <SchemaMarkupField type="string" title="字典编码" required name="dcode" />
-      </SchemaForm>
+      <SchemaForm schema={schema} form={form} {...formLayout} />
     </Modal>
   );
 };
