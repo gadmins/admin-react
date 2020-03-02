@@ -1,11 +1,9 @@
 export interface TableListItem {
   id: number;
-  name: string;
-  roleId: number;
   updatedAt: Date;
   createdAt: Date;
-  enable?: boolean;
-  roles: any[];
+  enable: boolean;
+  [prop: string]: any;
 }
 
 export interface TableListPagination {
@@ -20,10 +18,7 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  sorter?: string;
-  name?: string;
-  roleId?: number;
-  id?: number;
   pageSize?: number;
   currentPage?: number;
+  [prop: string]: any;
 }
