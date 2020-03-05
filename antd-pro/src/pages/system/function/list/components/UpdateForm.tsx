@@ -12,7 +12,7 @@ interface FormProps {
 
 const formLayout = {
   labelCol: { span: 5 },
-  wrapperCol: { span: 15 },
+  wrapperCol: { span: 23 },
 };
 setup();
 const actions = createFormActions();
@@ -60,6 +60,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
   };
   return (
     <Modal
+      width={1200}
       maskClosable={false}
       destroyOnClose
       visible={modalVisible}

@@ -12,7 +12,7 @@ interface FormProps {
 
 const formLayout = {
   labelCol: { span: 5 },
-  wrapperCol: { span: 15 },
+  wrapperCol: { span: 18 },
 };
 
 export default (props: React.PropsWithChildren<FormProps>) => {
