@@ -87,12 +87,12 @@ const TableList: React.FC<{}> = () => {
       width: 64,
     },
     {
-      title: '字典名',
-      dataIndex: 'title',
-    },
-    {
       title: '字典编码',
       dataIndex: 'dcode',
+    },
+    {
+      title: '字典名',
+      dataIndex: 'title',
     },
     {
       title: '创建时间',

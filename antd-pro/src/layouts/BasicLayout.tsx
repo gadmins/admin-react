@@ -88,16 +88,8 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 };
 let lastFuncId: number | undefined;
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const {
-    dispatch,
-    children,
-    settings,
-    hasSysMenu,
-    menus,
-    defMenuTxt,
-    collapsed,
-    location = { pathname: '/' },
-  } = props;
+  const { dispatch, children, settings, hasSysMenu, menus, defMenuTxt, collapsed } = props;
+  const location = props.location as any;
   const intl = useIntl();
   // 权限准备完毕
   const [ready, setReady] = useState<boolean>(false);
@@ -147,10 +139,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         location.state = { funcId: child[idx].funcId };
       }
     }
-    if (lastFuncId === location.state.funcId) {
+    if (location.state && lastFuncId === location.state.funcId) {
       return;
     }
-    lastFuncId = location.state.funcId;
+    if (location.state) {
+      lastFuncId = location.state.funcId;
+    }
     setReady(false);
     setAuthority(undefined);
     // TODO: 计算是否有权限
@@ -165,7 +159,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const CustomMenu = () => {
     let curKey: string[] = [];
     let curIdx = -1;
-    const pathkeys = location.pathname ? location.pathname.split('/').filter(it => it !== '') : [];
+    const pathkeys = location.pathname
+      ? location.pathname.split('/').filter((it: any) => it !== '')
+      : [];
     if (pathkeys.length > 0) {
       curKey = [pathkeys[0]];
       if (menus.length > 0) {

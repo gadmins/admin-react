@@ -22,12 +22,12 @@ const loopNode = (data: any) =>
   data.map((item: any) => {
     if (item.children && item.children.length) {
       return (
-        <TreeNode key={item.id} value={item.id} title={item.title} bind={item}>
+        <TreeNode key={item.id} value={item.id} title={`${item.title}-${item.key}`}>
           {loopNode(item.children)}
         </TreeNode>
       );
     }
-    return <TreeNode key={item.id} value={item.id} title={item.title} bind={item} />;
+    return <TreeNode key={item.id} value={item.id} title={`${item.title}-${item.key}`} />;
   });
 
 const CreateForm: React.FC<CreateFormProps> = props => {
@@ -136,7 +136,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
         </FormItem>
         {type === 'MENU' && functions.length > 0 && (
           <>
-            <FormItem {...formLayout} label="功能关联" name="funcId">
+            <FormItem {...formLayout} label="功能组关联" name="funcId">
               <TreeSelect
                 style={{ width: '100%' }}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}

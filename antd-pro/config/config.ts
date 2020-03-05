@@ -52,7 +52,6 @@ export default defineConfig({
         {
           path: '/',
           component: '../layouts/BasicLayout',
-          authority: ['admin', 'user'],
           routes: [
             {
               path: '/',
@@ -83,16 +82,22 @@ export default defineConfig({
               component: './system/function',
             },
             {
-              name: '字典数据',
+              name: 'functionbtns',
               icon: 'smile',
-              path: '/system/dict/list',
-              component: './system/dict/list',
+              path: '/system/function/list',
+              component: './system/function/list',
             },
             {
               name: 'dict',
               icon: 'smile',
               path: '/system/dict',
               component: './system/dict',
+            },
+            {
+              name: 'dictdata',
+              icon: 'smile',
+              path: '/system/dict/list',
+              component: './system/dict/list',
             },
             {
               name: 'tablemeta',
