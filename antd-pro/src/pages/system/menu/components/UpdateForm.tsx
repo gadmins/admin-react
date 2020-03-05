@@ -61,11 +61,13 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
 
   useEffect(() => {
     updateParentMenus(values.type, [values.id]);
-    functionList().then(data => {
-      if (data && data.code === 200) {
-        setFunctions(data.data);
-      }
-    });
+    if (values.type === 'MENU') {
+      functionList().then(data => {
+        if (data && data.code === 200) {
+          setFunctions(data.data);
+        }
+      });
+    }
   }, []);
   // updateFormVals = (formVals: FormValueType) => {
   //   // form.resetFields();
@@ -150,7 +152,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
       </FormItem>
       {values.type === 'MENU' && functions.length > 0 && (
         <>
-          <FormItem {...formLayout} label="功能关联" name="funcId">
+          <FormItem {...formLayout} label="功能组关联" name="funcId">
             <TreeSelect
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}

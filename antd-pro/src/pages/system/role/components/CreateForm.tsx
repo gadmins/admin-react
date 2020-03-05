@@ -110,10 +110,11 @@ export default (props: React.PropsWithChildren<FormProps>) => {
               showLine
               blockNode
               checkable
+              height={500}
               selectable={false}
-              treeData={menuTree}
               defaultCheckedKeys={authKeys}
               defaultExpandAll
+              treeData={menuTree}
               onCheck={(_, { checkedNodes }) => {
                 const mIds: number[] = [];
                 const fIds: number[] = [];
