@@ -15,6 +15,7 @@ export interface AccountModelState {
   currentAccount?: CurrentAccount;
   hasSysMenu: boolean;
   menus: MenuDataItem[];
+  authFuncs: any[];
   defMenuTxt: Map<string, string>;
 }
 
@@ -36,6 +37,7 @@ const UserModel: AccountModelType = {
     currentAccount: {},
     hasSysMenu: true,
     menus: [],
+    authFuncs: [],
     defMenuTxt: new Map(),
   },
 
@@ -71,6 +73,7 @@ const UserModel: AccountModelType = {
       return {
         ...state,
         menus: action.payload.menus || [],
+        authFuncs: action.payload.authFuncs || [],
         defMenuTxt: action.payload.defTex || new Map(),
       };
     },

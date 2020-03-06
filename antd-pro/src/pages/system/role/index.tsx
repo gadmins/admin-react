@@ -1,5 +1,5 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu, Divider, message } from 'antd';
+import { Button, Dropdown, Menu, Divider, message, Modal } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -162,8 +162,15 @@ const TableList: React.FC<{}> = () => {
                 <Menu
                   onClick={async e => {
                     if (e.key === 'remove') {
-                      await handleRemove(selectedRows);
-                      action.reload();
+                      Modal.confirm({
+                        title: '确定要删除这些角色?',
+                        content: '删除提示',
+                        onOk() {
+                          handleRemove(selectedRows).then(() => {
+                            action.reload();
+                          });
+                        },
+                      });
                     }
                   }}
                   selectedKeys={[]}

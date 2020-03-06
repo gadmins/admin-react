@@ -35,7 +35,7 @@ const noMatch = (
     subTitle="对不起，您无权访问此页面"
     extra={
       <Button type="primary">
-        <Link to="/account/login">去登陆</Link>
+        <Link to="/">去主页</Link>
       </Button>
     }
   />
@@ -52,6 +52,7 @@ export interface BasicLayoutProps extends ProLayoutProps {
   dispatch: Dispatch;
   hasSysMenu: boolean;
   menus: MenuDataItem[];
+  authFuncs: any[];
   defMenuTxt: Map<string, string>;
 }
 export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
@@ -88,7 +89,16 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 };
 let lastFuncId: number | undefined;
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const { dispatch, children, settings, hasSysMenu, menus, defMenuTxt, collapsed } = props;
+  const {
+    dispatch,
+    children,
+    settings,
+    hasSysMenu,
+    menus,
+    authFuncs,
+    defMenuTxt,
+    collapsed,
+  } = props;
   const location = props.location as any;
   const intl = useIntl();
   // 权限准备完毕
@@ -117,8 +127,20 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       });
     }
   };
+  const showPage = () => {
+    setReady(false);
+    // 显示界面
+    setTimeout(() => {
+      setReady(true);
+    }, 1);
+  };
   const onOpenChange = (keys: WithFalse<string[]>) => {
-    if (!location.state && keys) {
+    if (!keys || keys.length === 0) {
+      setAuthority('none');
+      showPage();
+      return;
+    }
+    if (keys) {
       // 查找menu
       let child: any[] = [];
       keys.forEach(key => {
@@ -139,22 +161,24 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         location.state = { funcId: child[idx].funcId };
       }
     }
+    // 计算是否有权限
+    if (location.state && location.state.funcId) {
+      if (authFuncs.findIndex((i: any) => i.id === location.state.funcId) === -1) {
+        setAuthority('none');
+      } else {
+        setAuthority(undefined);
+      }
+    } else {
+      setAuthority(undefined);
+    }
     if (location.state && lastFuncId === location.state.funcId) {
+      showPage();
       return;
     }
     if (location.state) {
       lastFuncId = location.state.funcId;
     }
-    setReady(false);
-    setAuthority(undefined);
-    // TODO: 计算是否有权限
-    // if (location.state.funcId === 8) {
-    //   setAuthority('none');
-    // }
-    // 显示界面
-    setTimeout(() => {
-      setReady(true);
-    }, 1);
+    showPage();
   };
   const CustomMenu = () => {
     let curKey: string[] = [];
@@ -324,5 +348,6 @@ export default connect(({ global, account }: ConnectState) => ({
   collapsed: global.collapsed,
   hasSysMenu: account.hasSysMenu,
   menus: parseIcon(account.menus),
+  authFuncs: account.authFuncs,
   defMenuTxt: account.defMenuTxt,
 }))(BasicLayout);

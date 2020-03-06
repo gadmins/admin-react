@@ -56,6 +56,9 @@ const Model: LoginModelType = {
             return;
           }
         }
+        // if (redirect ) {
+        //   redirect = `${redirect}?_t=${new Date().getTime()}`
+        // }
         history.replace(redirect || '/');
       } else {
         message.error(response.msg);
