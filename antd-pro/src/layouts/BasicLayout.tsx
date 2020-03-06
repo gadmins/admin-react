@@ -11,7 +11,7 @@ import ProLayout, {
   DefaultFooter,
 } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
-import { Link, useIntl } from 'umi';
+import { Link, useIntl, history } from 'umi';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { Result, Button, Menu } from 'antd';
@@ -113,6 +113,11 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       });
       dispatch({
         type: 'account/fetchMenu',
+        callback: (data: any) => {
+          if (location.pathname === '/') {
+            history.push(data.menus[0].path);
+          }
+        },
       });
     }
   }, []);
@@ -136,6 +141,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   };
   const onOpenChange = (keys: WithFalse<string[]>) => {
     if (!keys || keys.length === 0) {
+      // FIXME： 需优化
       setAuthority('none');
       showPage();
       return;
