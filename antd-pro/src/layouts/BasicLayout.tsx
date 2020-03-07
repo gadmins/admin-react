@@ -30,7 +30,7 @@ import logo from '../assets/logo.svg';
 
 const noMatch = (
   <Result
-    status="403"
+    status={403}
     title="403"
     subTitle="对不起，您无权访问此页面"
     extra={
@@ -164,7 +164,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       const idx = child.findIndex(it => it.key === keys[keys.length - 1]);
       if (idx > -1) {
         // 找到menu,将funcId附在location.state进行传递, 解决页面获取funcId
-        location.state = { funcId: child[idx].funcId };
+        if (!location.state) {
+          location.state = {};
+        }
+        location.state.funcId = child[idx].funcId;
       }
     }
     // 计算是否有权限

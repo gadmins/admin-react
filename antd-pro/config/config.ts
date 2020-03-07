@@ -11,7 +11,9 @@ const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION, REACT_APP_ENV } = pro
 const { winPath } = utils;
 
 export default defineConfig({
-  antd: {},
+  antd: {
+    // dark: true,
+  },
   dva: {
     hmr: true,
   },
