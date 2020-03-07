@@ -43,12 +43,16 @@ const TableList: React.FC<{}> = (props: any) => {
       width: 85,
     },
     {
-      title: '按钮文字',
-      dataIndex: 'txt',
+      title: '功能点编码',
+      dataIndex: 'code',
     },
     {
       title: '功能点描述',
       dataIndex: 'desc',
+    },
+    {
+      title: '标题(前端按钮)',
+      dataIndex: 'txt',
     },
     {
       title: '接口地址',
@@ -66,14 +70,16 @@ const TableList: React.FC<{}> = (props: any) => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setSelectRecord(record);
-            }}
-          >
-            配置
-          </a>
+          {record.apiMethod.toUpperCase() !== 'DELETE' && (
+            <a
+              onClick={() => {
+                handleUpdateModalVisible(true);
+                setSelectRecord(record);
+              }}
+            >
+              配置
+            </a>
+          )}
         </>
       ),
     },
@@ -93,20 +99,26 @@ const TableList: React.FC<{}> = (props: any) => {
         </Button>
       }
     >
-      <ProTable<TableListItem>
-        headerTitle="查询表格"
-        actionRef={actionRef}
-        rowKey="id"
-        search={false}
-        request={async params => {
-          const data = await queryList({
-            ...params,
-            pid: location.state.pid,
-          });
-          return data.data;
-        }}
-        columns={columns}
-      />
+      {location.state.funcId && (
+        <ProTable<TableListItem>
+          headerTitle="查询表格"
+          actionRef={actionRef}
+          rowKey="id"
+          search={false}
+          request={async params => {
+            if (!location.state || !location.state.pid) {
+              message.warn('缺少参数，请正确打开');
+              return [];
+            }
+            const data = await queryList({
+              ...params,
+              pid: location.state.pid,
+            });
+            return data.data;
+          }}
+          columns={columns}
+        />
+      )}
 
       {updateModalVisible && (
         <UpdateForm
@@ -123,10 +135,8 @@ const TableList: React.FC<{}> = (props: any) => {
             return success;
           }}
           onCancel={() => {
+            handleUpdateModalVisible(false);
             setSelectRecord(undefined);
-            setTimeout(() => {
-              handleUpdateModalVisible(false);
-            }, 0);
           }}
         />
       )}
