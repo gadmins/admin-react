@@ -4,10 +4,9 @@ import AceEditor, { IAnnotation } from 'react-ace';
 // import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
-// import SchemaForm, { useForm, createFormActions, ISchema } from '@formily/antd';
-// import { setup } from '@formily/antd-components';
 import { querySchema } from '@/services/schema';
 import ListTable from './ListTable';
+import FormTable from './FormTable';
 
 const { TabPane } = Tabs;
 
@@ -37,32 +36,55 @@ export default (props: React.PropsWithChildren<FormProps>) => {
 
   if (initVals && initVals.id) {
     useEffect(() => {
-      setDataSrouce([
-        {
-          key: '1',
-          title: 'John',
-          dataIndex: 'title',
-          valueType: 'text',
-          hideInTable: true,
-          hideInSearch: true,
-        },
-        {
-          key: '2',
-          title: 'Brown',
-          dataIndex: 'title',
-          valueType: 'text',
-          hideInTable: true,
-          hideInSearch: true,
-        },
-        {
-          key: '3',
-          title: 'st',
-          dataIndex: 'title',
-          valueType: 'text',
-          hideInTable: true,
-          hideInSearch: true,
-        },
-      ]);
+      if (METHOD === 'GET') {
+        setDataSrouce([
+          {
+            key: '1',
+            title: 'John',
+            dataIndex: 'title',
+            valueType: 'text',
+            hideInTable: true,
+            hideInSearch: true,
+          },
+          {
+            key: '2',
+            title: 'Brown',
+            dataIndex: 'title',
+            valueType: 'text',
+            hideInTable: true,
+            hideInSearch: true,
+          },
+          {
+            key: '3',
+            title: 'st',
+            dataIndex: 'title',
+            valueType: 'text',
+            hideInTable: true,
+            hideInSearch: true,
+          },
+        ]);
+      } else {
+        setDataSrouce([
+          {
+            key: '1',
+            title: 'John',
+            name: 'title',
+            type: 'string',
+          },
+          {
+            key: '2',
+            title: 'John',
+            name: 'title',
+            type: 'string',
+          },
+          {
+            key: '3',
+            title: 'John',
+            name: 'title',
+            type: 'string',
+          },
+        ]);
+      }
       querySchema(initVals.id).then(data => {
         if (data && data.data && data.data.commonSchema) {
           setJsonSchema(data.data.commonSchema);
@@ -110,12 +132,22 @@ export default (props: React.PropsWithChildren<FormProps>) => {
     >
       <Tabs type="card">
         <TabPane tab="Schema配置" key="1">
-          <ListTable
-            dataSrouce={dataSrouce}
-            onDataChange={(data: any[]) => {
-              setDataSrouce(data);
-            }}
-          />
+          {METHOD === 'GET' && (
+            <ListTable
+              dataSrouce={dataSrouce}
+              onDataChange={(data: any[]) => {
+                setDataSrouce(data);
+              }}
+            />
+          )}
+          {METHOD !== 'GET' && (
+            <FormTable
+              dataSrouce={dataSrouce}
+              onDataChange={(data: any[]) => {
+                setDataSrouce(data);
+              }}
+            />
+          )}
         </TabPane>
         <TabPane tab="JSON手写" key="2">
           <AceEditor
