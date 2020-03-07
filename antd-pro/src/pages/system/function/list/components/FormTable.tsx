@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useRef, useContext, useEffect, MutableRefObject } from 'react';
+import { Table, Select, Form, Input, Button } from 'antd';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import '../index.less';
-
-import { Table, Select, Checkbox, Form, Input } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -143,7 +143,8 @@ const TableSelect = (props: any) => {
 };
 
 export default (props: any) => {
-  const { dataSrouce, onDataChange } = props;
+  const { dataSrouce, onDataChange, onAddRow, onDeleteRow } = props;
+  console.log('form', dataSrouce);
   const handleSave = (row: any) => {
     const newData = [...dataSrouce];
     const index = newData.findIndex(item => row.key === item.key);
@@ -187,6 +188,20 @@ export default (props: any) => {
         <TableSelect record={record} fieldName="type" type={text} onChange={onCheckChange} />
       ),
     },
+    {
+      title: '操作',
+      dataIndex: '',
+      key: 'x',
+      render: (_: any, record: any) => (
+        <a
+          onClick={() => {
+            onDeleteRow(record);
+          }}
+        >
+          删除
+        </a>
+      ),
+    },
   ].map(col => {
     if (!col.editable) {
       return col;
@@ -214,6 +229,9 @@ export default (props: any) => {
   };
   return (
     <DndProvider backend={HTML5Backend}>
+      <Button style={{ margin: 5, marginBottom: 10 }} icon={<PlusOutlined />} onClick={onAddRow}>
+        添加
+      </Button>
       <Table
         pagination={false}
         columns={columns}

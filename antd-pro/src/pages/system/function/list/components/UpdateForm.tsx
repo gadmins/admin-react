@@ -36,58 +36,30 @@ export default (props: React.PropsWithChildren<FormProps>) => {
 
   if (initVals && initVals.id) {
     useEffect(() => {
-      if (METHOD === 'GET') {
-        setDataSrouce([
-          {
-            key: '1',
-            title: 'John',
-            dataIndex: 'title',
-            valueType: 'text',
-            hideInTable: true,
-            hideInSearch: true,
-          },
-          {
-            key: '2',
-            title: 'Brown',
-            dataIndex: 'title',
-            valueType: 'text',
-            hideInTable: true,
-            hideInSearch: true,
-          },
-          {
-            key: '3',
-            title: 'st',
-            dataIndex: 'title',
-            valueType: 'text',
-            hideInTable: true,
-            hideInSearch: true,
-          },
-        ]);
-      } else {
-        setDataSrouce([
-          {
-            key: '1',
-            title: 'John',
-            name: 'title',
-            type: 'string',
-          },
-          {
-            key: '2',
-            title: 'John',
-            name: 'title',
-            type: 'string',
-          },
-          {
-            key: '3',
-            title: 'John',
-            name: 'title',
-            type: 'string',
-          },
-        ]);
-      }
       querySchema(initVals.id).then(data => {
-        if (data && data.data && data.data.commonSchema) {
-          setJsonSchema(data.data.commonSchema);
+        if (data && data.data && data.data.dataSchema) {
+          const schema = data.data.dataSchema;
+          setJsonSchema(JSON.stringify(schema, null, 4));
+          if (METHOD === 'GET') {
+            setDataSrouce(
+              schema.columns.map((s: any) => ({
+                ...s,
+                key: s.dataIndex,
+              })),
+            );
+          } else if (schema.schema && schema.schema.properties) {
+            const obj = schema.schema.properties;
+            const pdata: any[] = [];
+            Object.entries(obj).forEach(p => {
+              const o = p[1] as any;
+              pdata.push({
+                key: p[0],
+                type: 'string',
+                ...o,
+              });
+            });
+            setDataSrouce(pdata);
+          }
         }
         // TODO: parse form
       });
@@ -117,6 +89,37 @@ export default (props: React.PropsWithChildren<FormProps>) => {
     setJsonSchema(newVal);
   };
 
+  const onAddRow = () => {
+    const data = [...dataSrouce];
+    if (METHOD === 'GET') {
+      data.push({
+        key: `${data.length + 1}`,
+        title: '标题',
+        dataIndex: 'title',
+        valueType: 'text',
+        hideInTable: false,
+        hideInSearch: true,
+      });
+    } else {
+      data.push({
+        key: `${data.length + 1}`,
+        title: '标题',
+        name: 'name',
+        type: 'string',
+      });
+    }
+    setDataSrouce(data);
+  };
+
+  const onDeleteRow = (record: any) => {
+    const index = dataSrouce.findIndex(item => record.key === item.key);
+    if (index > -1) {
+      const data = [...dataSrouce];
+      data.splice(index, 1);
+      setDataSrouce(data);
+    }
+  };
+
   return (
     <Modal
       width={900}
@@ -138,6 +141,8 @@ export default (props: React.PropsWithChildren<FormProps>) => {
               onDataChange={(data: any[]) => {
                 setDataSrouce(data);
               }}
+              onAddRow={onAddRow}
+              onDeleteRow={onDeleteRow}
             />
           )}
           {METHOD !== 'GET' && (
@@ -146,6 +151,8 @@ export default (props: React.PropsWithChildren<FormProps>) => {
               onDataChange={(data: any[]) => {
                 setDataSrouce(data);
               }}
+              onAddRow={onAddRow}
+              onDeleteRow={onDeleteRow}
             />
           )}
         </TabPane>
