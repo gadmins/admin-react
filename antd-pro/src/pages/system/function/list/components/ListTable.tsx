@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useRef, useContext, useEffect, MutableRefObject } from 'react';
-import { Table, Select, Checkbox, Form, Input, Button } from 'antd';
+import { Table, Select, Checkbox, Form, Input, Button, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -12,13 +11,7 @@ const { Option } = Select;
 const EditableContext = React.createContext<any>({});
 const type = 'DragbleBodyRow';
 
-const DragableBodyRow = ({
-  index = 0,
-  moveRow = (_i: number, _idx: number) => {},
-  className = '',
-  style = {},
-  ...restProps
-}) => {
+const DragableBodyRow = ({ index = 0, moveRow, className = '', style = {}, ...restProps }) => {
   const [form] = Form.useForm();
   const ref = React.useRef();
   const [{ isOver, dropClassName }, drop] = useDrop({
@@ -224,13 +217,17 @@ export default (props: any) => {
       dataIndex: '',
       key: 'x',
       render: (_: any, record: any) => (
-        <a
-          onClick={() => {
+        <Popconfirm
+          placement="bottomRight"
+          title="确定要删除"
+          onConfirm={() => {
             onDeleteRow(record);
           }}
+          okText="是"
+          cancelText="否"
         >
-          删除
-        </a>
+          <a>删除</a>
+        </Popconfirm>
       ),
     },
   ].map(col => {

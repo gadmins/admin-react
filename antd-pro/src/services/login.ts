@@ -8,16 +8,16 @@ export interface LoginParamsType {
 }
 
 export async function fakeAccountLogin(params: LoginParamsType) {
-  return request('/account/login', {
+  return request('/adminapi/account/login', {
     method: 'POST',
     data: params,
   });
 }
 
 export async function fakeAccountLogout() {
-  return request('/account/logout', { method: 'POST' });
+  return request('/adminapi/account/logout', { method: 'POST' });
 }
 
 export async function getFakeCaptcha(mobile: string) {
-  return request(`/account/login/captcha?mobile=${mobile}`);
+  return request(`/adminapi/account/login/captcha?mobile=${mobile}`);
 }

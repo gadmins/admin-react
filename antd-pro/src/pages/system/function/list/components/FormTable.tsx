@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useRef, useContext, useEffect, MutableRefObject } from 'react';
-import { Table, Select, Form, Input, Button } from 'antd';
+import { Table, Select, Form, Input, Button, Popconfirm } from 'antd';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
@@ -144,7 +144,6 @@ const TableSelect = (props: any) => {
 
 export default (props: any) => {
   const { dataSrouce, onDataChange, onAddRow, onDeleteRow } = props;
-  console.log('form', dataSrouce);
   const handleSave = (row: any) => {
     const newData = [...dataSrouce];
     const index = newData.findIndex(item => row.key === item.key);
@@ -193,13 +192,17 @@ export default (props: any) => {
       dataIndex: '',
       key: 'x',
       render: (_: any, record: any) => (
-        <a
-          onClick={() => {
+        <Popconfirm
+          placement="bottomRight"
+          title="确定要删除"
+          onConfirm={() => {
             onDeleteRow(record);
           }}
+          okText="是"
+          cancelText="否"
         >
-          删除
-        </a>
+          <a>删除</a>
+        </Popconfirm>
       ),
     },
   ].map(col => {
