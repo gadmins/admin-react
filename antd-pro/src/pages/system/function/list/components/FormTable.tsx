@@ -238,6 +238,7 @@ export default (props: any) => {
       <Table
         pagination={false}
         columns={columns}
+        scroll={{ y: 400 }}
         rowClassName={() => 'editable-row'}
         dataSource={dataSrouce}
         components={{

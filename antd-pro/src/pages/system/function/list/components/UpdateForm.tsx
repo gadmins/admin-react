@@ -120,7 +120,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
 
   return (
     <Modal
-      width={900}
+      width={1050}
       maskClosable={false}
       destroyOnClose
       visible={modalVisible}
