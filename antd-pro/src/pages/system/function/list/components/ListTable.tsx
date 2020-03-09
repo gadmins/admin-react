@@ -189,7 +189,7 @@ export default (props: any) => {
       ),
     },
     {
-      title: '列表展示',
+      title: '列表隐藏',
       dataIndex: 'hideInTable',
       render: (val: any, record: any) => (
         <TableCheckBox
@@ -201,7 +201,7 @@ export default (props: any) => {
       ),
     },
     {
-      title: '搜索栏展示',
+      title: '搜索栏隐藏',
       dataIndex: 'hideInSearch',
       render: (val: any, record: any) => (
         <TableCheckBox
@@ -262,6 +262,7 @@ export default (props: any) => {
       </Button>
       <Table
         pagination={false}
+        scroll={{ y: 400 }}
         columns={columns}
         rowClassName={() => 'editable-row'}
         dataSource={dataSrouce}

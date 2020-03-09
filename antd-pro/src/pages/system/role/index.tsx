@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
+import AuthorizedBtn from '@/components/Authorized/AuthorizedBtn';
 import { queryList, add, update, remove } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -117,23 +118,27 @@ const TableList: React.FC<{}> = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setSelectRecord(record);
-            }}
-          >
-            编辑
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={() => {
-              setSelectRecord(record);
-              handleModalVisible(true);
-            }}
-          >
-            复制
-          </a>
+          <AuthorizedBtn code="sys:role:edit">
+            <a
+              onClick={() => {
+                handleUpdateModalVisible(true);
+                setSelectRecord(record);
+              }}
+            >
+              编辑
+            </a>
+            <Divider type="vertical" />
+          </AuthorizedBtn>
+          <AuthorizedBtn code="sys:role:copy">
+            <a
+              onClick={() => {
+                setSelectRecord(record);
+                handleModalVisible(true);
+              }}
+            >
+              复制
+            </a>
+          </AuthorizedBtn>
         </>
       ),
     },
@@ -146,16 +151,18 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="id"
         toolBarRender={(action, { selectedRows }) => [
-          <Button
-            icon={<PlusOutlined />}
-            type="primary"
-            onClick={() => {
-              setSelectRecord(undefined);
-              handleModalVisible(true);
-            }}
-          >
-            新建
-          </Button>,
+          <AuthorizedBtn code="sys:role:add">
+            <Button
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => {
+                setSelectRecord(undefined);
+                handleModalVisible(true);
+              }}
+            >
+              新建
+            </Button>
+          </AuthorizedBtn>,
           selectedRows && selectedRows.length > 0 && (
             <Dropdown
               overlay={
@@ -175,7 +182,9 @@ const TableList: React.FC<{}> = () => {
                   }}
                   selectedKeys={[]}
                 >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
+                  <AuthorizedBtn code="sys:role:del">
+                    <Menu.Item key="remove">批量删除</Menu.Item>
+                  </AuthorizedBtn>
                 </Menu>
               }
             >
