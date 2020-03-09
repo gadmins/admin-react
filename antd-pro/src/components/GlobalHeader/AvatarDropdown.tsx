@@ -26,11 +26,9 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
           type: 'login/logout',
         });
       }
-
-      return;
+    } else if (key === 'settings') {
+      history.push(`/system/accountsettings`);
     }
-
-    history.push(`/account/${key}`);
   };
 
   render(): React.ReactNode {
@@ -49,14 +47,11 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
             个人中心
           </Menu.Item>
         )}
-        {menu && (
-          <Menu.Item key="settings">
-            <SettingOutlined />
-            个人设置
-          </Menu.Item>
-        )}
-        {menu && <Menu.Divider />}
-
+        <Menu.Item key="settings">
+          <SettingOutlined />
+          账户设置
+        </Menu.Item>
+        <Menu.Divider />
         <Menu.Item key="logout">
           <LogoutOutlined />
           退出登录
