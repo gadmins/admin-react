@@ -3,7 +3,6 @@ import { Modal } from 'antd';
 import SchemaForm, { useForm, createFormActions, ISchema } from '@formily/antd';
 import { setup } from '@formily/antd-components';
 
-// const FormItem = Form.Item;
 interface FormProps {
   modalVisible: boolean;
   initVals?: any;

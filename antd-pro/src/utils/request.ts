@@ -6,14 +6,10 @@ import { extend } from 'umi-request';
 import { notification } from 'antd';
 
 const codeMessage = {
-  200: '服务器成功返回请求的数据。',
-  201: '新建或修改数据成功。',
-  202: '一个请求已经进入后台排队（异步任务）。',
-  204: '删除数据成功。',
-  400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
-  401: '用户没有权限（令牌、用户名、密码错误）。',
+  400: '参数错误。',
+  401: '未登录。',
   403: '用户得到授权，但是访问是被禁止的。',
-  404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
+  404: '未发现',
   406: '请求的格式不可得。',
   410: '请求的资源被永久删除，且不会再得到的。',
   422: '当创建一个对象时，发生一个验证错误。',
@@ -49,24 +45,8 @@ const errorHandler = (error: { response: Response }): Response => {
  * 配置request请求时的默认参数
  */
 const request = extend({
-  prefix: '/adminapi',
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });
-
-// request.interceptors.response.use(async (response: Response) => {
-//   const data = await response.clone().json();
-//   if (data && data.code !== 200) {
-//     if (data.code === 401) {
-//       // TODO: to login
-//     } else {
-//       notification.error({
-//         description: '参数错误',
-//         message: data.msg || '服务器异常',
-//       });
-//     }
-//   }
-//   return response;
-// });
 
 export default request;

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Select, message } from 'antd';
+import { Modal } from 'antd';
+import SchemaForm, { useForm, createFormActions, ISchema } from '@formily/antd';
+import { setup } from '@formily/antd-components';
 import MD5 from 'crypto-js/md5';
 import { queryAllRole } from '../service';
 
-const FormItem = Form.Item;
 interface FormProps {
   modalVisible: boolean;
   initVals?: any;
@@ -15,11 +16,12 @@ const formLayout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 15 },
 };
+setup();
+const actions = createFormActions();
 
 export default (props: React.PropsWithChildren<FormProps>) => {
   const { modalVisible, onSubmit, onCancel, initVals } = props;
   const [roles, setRoles] = useState<any[]>([]);
-  const [form] = Form.useForm();
   const initialValues = initVals
     ? {
         name: initVals.name,
@@ -29,6 +31,63 @@ export default (props: React.PropsWithChildren<FormProps>) => {
     : {
         password: '123456',
       };
+
+  const form = useForm({
+    value: initialValues,
+    actions,
+  });
+
+  const schema: ISchema = {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        title: '账号',
+        'x-props': {
+          placeholder: '请输入账号',
+        },
+        'x-rules': [
+          {
+            required: true,
+            message: '账号不能为空',
+          },
+        ],
+      },
+      password: {
+        type: 'password',
+        'x-props': {
+          checkStrength: true,
+        },
+        title: '登录密码',
+        'x-rules': [
+          {
+            required: true,
+            message: '登录密码不能为空',
+          },
+        ],
+      },
+      roles: {
+        type: 'string',
+        title: '角色类型',
+        required: true,
+        'x-props': {
+          placeholder: '请选择',
+          mode: 'multiple',
+        },
+        'x-rules': [
+          {
+            required: true,
+            message: '角色不能为空',
+          },
+        ],
+        enum: roles.map(it => ({
+          value: it.id,
+          label: it.name,
+        })),
+      },
+    },
+  };
+
   useEffect(() => {
     queryAllRole().then(data => {
       if (data && data.code === 200) {
@@ -38,16 +97,18 @@ export default (props: React.PropsWithChildren<FormProps>) => {
   }, []);
 
   const okHandle = async () => {
-    if (!form.isFieldsTouched()) {
-      message.warn('请修改后提交');
-      return;
-    }
-    const fieldsValue = await form.validateFields();
-    fieldsValue.password = MD5(fieldsValue.password).toString();
-    const rs: boolean = await onSubmit(fieldsValue);
-    if (rs) {
-      form.resetFields();
-    }
+    try {
+      await form.validate();
+      await form.submit(async (values: any) => {
+        const params = { ...values };
+        params.password = MD5(params.password).toString();
+        const rs: boolean = await onSubmit(params);
+        if (rs) {
+          form.reset();
+        }
+      });
+      // eslint-disable-next-line no-empty
+    } catch (error) {}
   };
   return (
     <Modal
@@ -57,44 +118,11 @@ export default (props: React.PropsWithChildren<FormProps>) => {
       title={initVals ? '复制账户' : '创建账户'}
       onOk={okHandle}
       onCancel={() => {
-        form.resetFields();
+        form.reset();
         onCancel();
       }}
     >
-      <Form form={form} initialValues={initialValues}>
-        <input type="text" style={{ display: 'none' }} />
-        <FormItem
-          {...formLayout}
-          label="账号"
-          name="name"
-          rules={[{ required: true, message: '账号不能为空' }]}
-        >
-          <Input placeholder="请输入" />
-        </FormItem>
-        <FormItem
-          {...formLayout}
-          label="登录密码"
-          name="password"
-          rules={[{ required: true, message: '账号不能为空' }]}
-        >
-          <Input placeholder="请输入密码" />
-        </FormItem>
-        <FormItem
-          {...formLayout}
-          label="角色类型"
-          name="roles"
-          rules={[{ required: true, message: '角色不能为空' }]}
-        >
-          <Select mode="multiple" placeholder="请选择">
-            {roles &&
-              roles.map(it => (
-                <Select.Option key={it.id} value={it.id}>
-                  {it.name}
-                </Select.Option>
-              ))}
-          </Select>
-        </FormItem>
-      </Form>
+      <SchemaForm schema={schema} form={form} {...formLayout} />
     </Modal>
   );
 };

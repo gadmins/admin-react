@@ -70,7 +70,7 @@ const TableList: React.FC<{}> = (props: any) => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          {record.apiMethod.toUpperCase() !== 'DELETE' && (
+          {record && record.apiMethod && record.apiMethod.toUpperCase() !== 'DELETE' && (
             <a
               onClick={() => {
                 handleUpdateModalVisible(true);

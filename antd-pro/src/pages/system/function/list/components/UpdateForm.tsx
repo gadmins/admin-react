@@ -97,8 +97,6 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         title: '标题',
         dataIndex: 'title',
         valueType: 'text',
-        hideInTable: false,
-        hideInSearch: true,
       });
     } else {
       data.push({
@@ -129,7 +127,6 @@ export default (props: React.PropsWithChildren<FormProps>) => {
       title="配置Schema"
       onOk={okHandle}
       onCancel={() => {
-        // form.reset();
         onCancel();
       }}
     >

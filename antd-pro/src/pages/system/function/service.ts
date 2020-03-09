@@ -2,11 +2,11 @@ import request from '@/utils/request';
 import { TableListParams } from '@/pages/data';
 
 export async function queryList(params?: TableListParams) {
-  return request('/function/menu', {
+  return request('/adminapi/function/menu', {
     params,
   });
 }
 
 export async function refresh() {
-  return request('/menu/refresh');
+  return request('/adminapi/menu/refresh');
 }

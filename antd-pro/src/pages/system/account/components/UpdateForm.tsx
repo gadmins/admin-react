@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Select, message } from 'antd';
+import { Modal, Form, Select, message } from 'antd';
 import { queryAllRole } from '../service';
 
 const FormItem = Form.Item;
@@ -58,17 +58,14 @@ export default (props: React.PropsWithChildren<FormProps>) => {
       }}
     >
       <Form form={form} initialValues={initialValues}>
-        <FormItem name="id">
-          <Input type="hidden" />
-        </FormItem>
-        <FormItem
+        {/* <FormItem
           {...formLayout}
           label="账号"
           name="name"
           rules={[{ required: true, message: '账号不能为空' }]}
         >
           <Input placeholder="请输入" />
-        </FormItem>
+        </FormItem> */}
         <FormItem
           {...formLayout}
           label="角色类型"
