@@ -5,7 +5,6 @@ import { history } from 'umi';
 import { fakeAccountLogin, fakeAccountLogout, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
-import { message } from 'antd';
 import Cookies from 'js-cookie';
 import { Effect } from 'dva';
 
@@ -60,8 +59,6 @@ const Model: LoginModelType = {
         //   redirect = `${redirect}?_t=${new Date().getTime()}`
         // }
         history.replace(redirect || '/');
-      } else {
-        message.error(response.msg);
       }
     },
 
