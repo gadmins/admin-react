@@ -3,7 +3,7 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 
 const codeMessage = {
   400: '参数错误。',
@@ -27,17 +27,32 @@ const errorHandler = (error: { response: Response }): Response => {
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
-
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errorText,
-    });
+    response
+      .clone()
+      .json()
+      .then(data => {
+        if (data && data.msg) {
+          message.error(data.msg);
+        } else {
+          notification.error({
+            message: `请求错误 ${status}: ${url}`,
+            description: errorText,
+          });
+        }
+      })
+      .catch(() => {
+        notification.error({
+          message: `请求错误 ${status}: ${url}`,
+          description: errorText,
+        });
+      });
   } else if (!response) {
     notification.error({
       description: '您的网络发生异常，无法连接服务器',
       message: '网络异常',
     });
   }
+
   return response;
 };
 
