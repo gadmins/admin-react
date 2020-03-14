@@ -4,6 +4,8 @@
  */
 import { extend } from 'umi-request';
 import { notification, message } from 'antd';
+import { stringify } from 'qs';
+import { history } from 'umi';
 
 const codeMessage = {
   400: '参数错误。',
@@ -32,7 +34,17 @@ const errorHandler = (error: { response: Response }): Response => {
       .json()
       .then(data => {
         if (data && data.msg) {
-          message.error(data.msg);
+          if (data.code === 501) {
+            if (window.location.pathname !== '/account/login') {
+              message.error(data.msg);
+              const queryString = stringify({
+                redirect: window.location.href,
+              });
+              history.replace(`/account/login?${queryString}`);
+            }
+          } else {
+            message.error(data.msg);
+          }
         } else {
           notification.error({
             message: `请求错误 ${status}: ${url}`,
