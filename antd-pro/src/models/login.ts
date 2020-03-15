@@ -7,6 +7,7 @@ import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import Cookies from 'js-cookie';
 import { Effect } from 'dva';
+import { message } from 'antd';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -39,7 +40,8 @@ const Model: LoginModelType = {
         payload: response,
       });
       // Login successfully
-      if (response.code === 200) {
+      if (response.code === 0) {
+        message.success('登录成功');
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -55,9 +57,6 @@ const Model: LoginModelType = {
             return;
           }
         }
-        // if (redirect ) {
-        //   redirect = `${redirect}?_t=${new Date().getTime()}`
-        // }
         history.replace(redirect || '/');
       }
     },
