@@ -88,6 +88,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
   );
 };
 let lastFuncId: number | undefined;
+let lastMenuKey: string | undefined;
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const {
     dispatch,
@@ -146,27 +147,27 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       showPage();
       return;
     }
-    if (keys) {
-      // 查找menu
-      let child: any[] = [];
-      keys.forEach(key => {
-        if (key === '/') {
-          child = menus;
-        } else {
-          const f = child.filter(
-            it => it.children && it.children.some((item: any) => item.key === key),
-          );
-          if (f && f.length > 0) {
-            child = f[0].children;
-          }
+    // 查找menu
+    let child: any[] = [];
+    keys.forEach(key => {
+      if (key === '/') {
+        child = menus;
+      } else {
+        const f = child.filter(
+          it => it.children && it.children.some((item: any) => item.key === key),
+        );
+        if (f && f.length > 0) {
+          child = f[0].children;
         }
-      });
-      const idx = child.findIndex(it => it.key === keys[keys.length - 1]);
-      if (idx > -1) {
-        // 找到menu,将funcId附在location.state进行传递, 解决页面获取funcId
-        if (!location.state) {
-          location.state = {};
-        }
+      }
+    });
+    const idx = child.findIndex(it => it.key === keys[keys.length - 1]);
+    if (idx > -1) {
+      // 找到menu,将funcId附在location.state进行传递, 解决页面获取funcId
+      if (!location.state) {
+        location.state = {};
+      }
+      if (child[idx].funcId) {
         location.state.funcId = child[idx].funcId;
       }
     }
@@ -181,11 +182,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       setAuthority(undefined);
     }
     if (location.state && lastFuncId === location.state.funcId) {
-      showPage();
+      // showPage();
       return;
     }
-    if (location.state) {
+    if (location.state && location.state.funcId) {
       lastFuncId = location.state.funcId;
+      lastMenuKey = keys[keys.length - 1];
     }
     showPage();
   };
@@ -295,6 +297,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       )}
       onOpenChange={onOpenChange}
       onCollapse={handleMenuCollapse}
+      menuProps={{
+        onClick: item => {
+          if (item.key === lastMenuKey) {
+            return;
+          }
+          setReady(false);
+        },
+      }}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl || menuItemProps.children || !menuItemProps.path) {
           return defaultDom;
