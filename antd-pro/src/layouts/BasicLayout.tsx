@@ -205,6 +205,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     }
 
     const customMenuDataRender = () => {
+      if (!hasSysMenu) {
+        return menus;
+      }
       if (curIdx === -1) {
         return [];
       }
