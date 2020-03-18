@@ -6,6 +6,7 @@ import { extend } from 'umi-request';
 import { notification, message } from 'antd';
 import { stringify } from 'qs';
 import { history } from 'umi';
+import Cookies from 'js-cookie';
 
 const codeMessage = {
   400: '参数错误。',
@@ -35,7 +36,8 @@ const errorHandler = (error: { response: Response }): Response => {
       .then(data => {
         if (data && data.msg) {
           if (data.code === 501) {
-            if (window.location.pathname !== '/account/login') {
+            if (history.location.pathname !== '/account/login') {
+              Cookies.remove('Admin-Token');
               message.error(data.msg);
               const queryString = stringify({
                 redirect: window.location.href,
