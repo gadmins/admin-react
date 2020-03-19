@@ -5,6 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
 import { history } from 'umi';
+import { Resp } from '@/utils/request';
 import { queryList, update } from './service';
 import UpdateForm from './components/UpdateForm';
 
@@ -17,7 +18,7 @@ const handleUpdate = async (fields: any) => {
   try {
     const data = await update(fields);
     hide();
-    if (data && data.code === 200) {
+    if (Resp.isOk(data)) {
       message.success('更新成功');
       return true;
     }

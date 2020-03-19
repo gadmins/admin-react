@@ -53,7 +53,10 @@ export default (props: React.PropsWithChildren<FormProps>) => {
     const fieldsValue = await form.validateFields();
     fieldsValue.menuIds = menuIds;
     fieldsValue.funcIds = funcIds;
-    const rs: boolean = await onSubmit(fieldsValue);
+    const rs: boolean = await onSubmit({
+      ...fieldsValue,
+      id: initVals.id,
+    });
     if (rs) {
       form.resetFields();
     }
@@ -71,9 +74,6 @@ export default (props: React.PropsWithChildren<FormProps>) => {
       }}
     >
       <Form form={form} initialValues={initialValues}>
-        <FormItem name="id">
-          <Input type="hidden" />
-        </FormItem>
         <FormItem
           {...formLayout}
           label="角色名"
@@ -104,6 +104,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
               showLine
               blockNode
               checkable
+              height={500}
               selectable={false}
               treeData={menuTree}
               defaultCheckedKeys={authKeys}

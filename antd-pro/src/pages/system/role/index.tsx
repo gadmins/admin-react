@@ -5,6 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
 import AuthorizedBtn from '@/components/Authorized/AuthorizedBtn';
+import { Resp } from '@/utils/request';
 import { queryList, add, update, remove } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -18,7 +19,7 @@ const handleAdd = async (fields: any) => {
   try {
     const data = await add(fields);
     hide();
-    if (data && data.code === 200) {
+    if (Resp.isOk(data)) {
       message.success('添加成功');
       return true;
     }
@@ -39,7 +40,7 @@ const handleUpdate = async (fields: any) => {
   try {
     const data = await update(fields);
     hide();
-    if (data && data.code === 200) {
+    if (Resp.isOk(data)) {
       message.success('更新成功');
       return true;
     }
@@ -61,7 +62,7 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   try {
     const data = await remove(selectedRows.map(row => row.id));
     hide();
-    if (data && data.code === 200) {
+    if (Resp.isOk(data)) {
       message.success('删除成功，即将刷新');
       return true;
     }

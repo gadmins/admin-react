@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Radio, Modal, Switch, TreeSelect, Form } from 'antd';
+import { Resp } from '@/utils/request';
 import { FormValueType } from './UpdateForm';
 import { getMenuParentTree, functionList } from '../service';
 
@@ -47,12 +48,12 @@ const CreateForm: React.FC<CreateFormProps> = props => {
   const [type, setType] = useState(initVals.type);
   const loadData = () => {
     getMenuParentTree().then(data => {
-      if (data && data.code === 200) {
+      if (Resp.isOk(data)) {
         setParentMenus(data.data);
       }
     });
     functionList().then(data => {
-      if (data && data.code === 200) {
+      if (Resp.isOk(data)) {
         setFunctions(data.data);
       }
     });

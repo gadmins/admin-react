@@ -5,6 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { history } from 'umi';
 import { TableListItem } from '@/pages/data';
+import { Resp } from '@/utils/request';
 import { queryList, refresh } from './service';
 
 const TableList: React.FC<{}> = () => {
@@ -78,7 +79,7 @@ const TableList: React.FC<{}> = () => {
             type="primary"
             onClick={() => {
               refresh().then(data => {
-                if (data && data.code === 200) {
+                if (Resp.isOk(data)) {
                   message.success('刷新成功');
                   if (actionRef.current) {
                     actionRef.current.reload();
