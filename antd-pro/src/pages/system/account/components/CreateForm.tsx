@@ -3,6 +3,7 @@ import { Modal } from 'antd';
 import SchemaForm, { useForm, createFormActions, ISchema } from '@formily/antd';
 import { setup } from '@formily/antd-components';
 import MD5 from 'crypto-js/md5';
+import { Resp } from '@/utils/request';
 import { queryAllRole } from '../service';
 
 interface FormProps {
@@ -90,7 +91,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
 
   useEffect(() => {
     queryAllRole().then(data => {
-      if (data && data.code === 200) {
+      if (Resp.isOk(data)) {
         setRoles(data.data);
       }
     });

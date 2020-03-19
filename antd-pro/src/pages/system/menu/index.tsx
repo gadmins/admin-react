@@ -2,6 +2,7 @@ import { PageHeaderWrapper, GridContent } from '@ant-design/pro-layout';
 import { Tree, Button, Modal, message, Divider } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { PlusOutlined, CopyOutlined, MinusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Resp } from '@/utils/request';
 import styles from './index.less';
 import { getMenuTree, updateMenu, addMenu, deleteMenus } from './service';
 import CreateForm from './components/CreateForm';
@@ -21,7 +22,7 @@ const handleAdd = async (fields: any) => {
   try {
     const data = await addMenu(fields);
     hide();
-    if (data && data.code === 200) {
+    if (Resp.isOk(data)) {
       message.success('添加成功');
       return true;
     }
@@ -213,7 +214,7 @@ export default () => {
                 <UpdateForm
                   onSubmit={(formVals: FormValueType) => {
                     updateMenu(formVals).then(data => {
-                      if (data && data.code === 200) {
+                      if (Resp.isOk(data)) {
                         message.success('修改成功');
                         loadMenuTree();
                       } else {

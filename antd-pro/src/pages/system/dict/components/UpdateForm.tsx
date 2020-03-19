@@ -62,7 +62,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
       maskClosable={false}
       destroyOnClose
       visible={modalVisible}
-      title={initVals ? '复制字典' : '创建字典'}
+      title="编辑字典"
       onOk={okHandle}
       onCancel={() => {
         form.reset();

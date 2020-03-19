@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import SchemaForm, { useForm, createFormActions, ISchema, IForm } from '@formily/antd';
 import { setup } from '@formily/antd-components';
+import { Resp } from '@/utils/request';
 import { queryAllRole } from '../service';
 
 interface FormProps {
@@ -58,7 +59,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
   };
   useEffect(() => {
     queryAllRole().then(data => {
-      if (data && data.code === 200) {
+      if (Resp.isOk(data)) {
         setRoles(data.data);
       }
     });

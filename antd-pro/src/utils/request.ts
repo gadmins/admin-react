@@ -79,3 +79,13 @@ const request = extend({
 });
 
 export default request;
+
+const CODE = {
+  OK: 0,
+};
+
+export const Resp = {
+  isOk(data: any) {
+    return data && data.code === CODE.OK;
+  },
+};

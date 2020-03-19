@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Input, Radio, Switch, TreeSelect, Form, message } from 'antd';
+import { Resp } from '@/utils/request';
 import { getMenuParentTree, functionList } from '../service';
 
 const FormItem = Form.Item;
 const { TreeNode } = TreeSelect;
 
 export interface FormValueType {
-  id: number;
-  type: string;
-  icon: string;
-  title: string;
-  key: string;
-  sortNumber: number;
-  elink: boolean;
-  url: string;
-  parentId?: number;
-  funcId?: number;
+  [prop: string]: any;
 }
 
 export interface UpdateFormProps {
@@ -53,7 +45,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
       return;
     }
     getMenuParentTree(ids).then(data => {
-      if (data && data.code === 200) {
+      if (Resp.isOk(data)) {
         setParentMenus(data.data);
       }
     });
@@ -63,7 +55,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
     updateParentMenus(values.type, [values.id]);
     if (values.type === 'MENU') {
       functionList().then(data => {
-        if (data && data.code === 200) {
+        if (Resp.isOk(data)) {
           setFunctions(data.data);
         }
       });
@@ -84,7 +76,10 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
       return;
     }
     const fieldsValue = await form.validateFields();
-    handleUpdate(fieldsValue);
+    handleUpdate({
+      ...fieldsValue,
+      id: values.id,
+    });
   };
   return (
     <Form
@@ -100,9 +95,6 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
         form.scrollToField(e.errorFields[0].name);
       }}
     >
-      <FormItem name="id">
-        <Input type="hidden" />
-      </FormItem>
       <FormItem {...formLayout} label="菜单类型" name="type" rules={[{ required: true }]}>
         <Radio.Group disabled>
           <Radio value="SYS_MENU">系统菜单</Radio>
