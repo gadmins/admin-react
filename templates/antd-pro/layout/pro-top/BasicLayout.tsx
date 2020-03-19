@@ -29,6 +29,12 @@ import defaultSettings from '../../config/defaultSettings';
 import logo from '../assets/logo.svg';
 import './layout.less';
 
+const UmiRoutes = require('@@/core/routes');
+
+const allRoutes: string[] = UmiRoutes.routes[1].routes[0].routes
+  .map((it: any) => it.path)
+  .filter((it: string) => it !== undefined);
+
 const noMatch = (
   <Result
     status={403}
@@ -143,8 +149,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   };
   const onOpenChange = (keys: WithFalse<string[]>) => {
     if (!keys || keys.length === 0) {
-      // FIXME： 需优化
-      setAuthority('none');
+      // FIXME：需优化,判断路由是否存在(path带参数不支持),存在则403，不存在404
+      setAuthority(allRoutes.includes(history.location.pathname) ? 'none' : undefined);
       showPage();
       return;
     }
@@ -183,7 +189,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       setAuthority(undefined);
     }
     if (location.state && lastFuncId === location.state.funcId) {
-      // showPage();
+      if (ready === false) {
+        showPage();
+      }
       return;
     }
     if (location.state && location.state.funcId) {
