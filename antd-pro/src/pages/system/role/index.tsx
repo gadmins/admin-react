@@ -165,34 +165,34 @@ const TableList: React.FC<{}> = () => {
             </Button>
           </AuthorizedBtn>,
           selectedRows && selectedRows.length > 0 && (
-            <Dropdown
-              overlay={
-                <Menu
-                  onClick={async e => {
-                    if (e.key === 'remove') {
-                      Modal.confirm({
-                        title: '确定要删除这些角色?',
-                        content: '删除提示',
-                        onOk() {
-                          handleRemove(selectedRows).then(() => {
-                            action.reload();
-                          });
-                        },
-                      });
-                    }
-                  }}
-                  selectedKeys={[]}
-                >
-                  <AuthorizedBtn code="sys:role:del">
+            <AuthorizedBtn code="sys:role:del">
+              <Dropdown
+                overlay={
+                  <Menu
+                    onClick={async e => {
+                      if (e.key === 'remove') {
+                        Modal.confirm({
+                          title: '确定要删除这些角色?',
+                          content: '删除提示',
+                          onOk() {
+                            handleRemove(selectedRows).then(() => {
+                              action.reload();
+                            });
+                          },
+                        });
+                      }
+                    }}
+                    selectedKeys={[]}
+                  >
                     <Menu.Item key="remove">批量删除</Menu.Item>
-                  </AuthorizedBtn>
-                </Menu>
-              }
-            >
-              <Button>
-                批量操作 <DownOutlined />
-              </Button>
-            </Dropdown>
+                  </Menu>
+                }
+              >
+                <Button>
+                  批量操作 <DownOutlined />
+                </Button>
+              </Dropdown>
+            </AuthorizedBtn>
           ),
         ]}
         request={async params => {
