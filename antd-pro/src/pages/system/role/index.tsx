@@ -6,6 +6,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
 import AuthorizedBtn from '@/components/Authorized/AuthorizedBtn';
 import { Resp } from '@/utils/request';
+import { useAuthorizedBtn } from '@/hooks/custom';
 import { queryList, add, update, remove } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -145,6 +146,8 @@ const TableList: React.FC<{}> = () => {
     },
   ];
 
+  const hasAdd = useAuthorizedBtn('sys:role:add');
+  const hasDel = useAuthorizedBtn('sys:role:del');
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
@@ -152,7 +155,7 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="id"
         toolBarRender={(action, { selectedRows }) => [
-          <AuthorizedBtn code="sys:role:add">
+          hasAdd && (
             <Button
               icon={<PlusOutlined />}
               type="primary"
@@ -163,36 +166,34 @@ const TableList: React.FC<{}> = () => {
             >
               新建
             </Button>
-          </AuthorizedBtn>,
-          selectedRows && selectedRows.length > 0 && (
-            <AuthorizedBtn code="sys:role:del">
-              <Dropdown
-                overlay={
-                  <Menu
-                    onClick={async e => {
-                      if (e.key === 'remove') {
-                        Modal.confirm({
-                          title: '确定要删除这些角色?',
-                          content: '删除提示',
-                          onOk() {
-                            handleRemove(selectedRows).then(() => {
-                              action.reload();
-                            });
-                          },
-                        });
-                      }
-                    }}
-                    selectedKeys={[]}
-                  >
-                    <Menu.Item key="remove">批量删除</Menu.Item>
-                  </Menu>
-                }
-              >
-                <Button>
-                  批量操作 <DownOutlined />
-                </Button>
-              </Dropdown>
-            </AuthorizedBtn>
+          ),
+          selectedRows && selectedRows.length > 0 && hasDel && (
+            <Dropdown
+              overlay={
+                <Menu
+                  onClick={async e => {
+                    if (e.key === 'remove') {
+                      Modal.confirm({
+                        title: '确定要删除这些角色?',
+                        content: '删除提示',
+                        onOk() {
+                          handleRemove(selectedRows).then(() => {
+                            action.reload();
+                          });
+                        },
+                      });
+                    }
+                  }}
+                  selectedKeys={[]}
+                >
+                  <Menu.Item key="remove">批量删除</Menu.Item>
+                </Menu>
+              }
+            >
+              <Button>
+                批量操作 <DownOutlined />
+              </Button>
+            </Dropdown>
           ),
         ]}
         request={async params => {
