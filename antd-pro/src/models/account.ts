@@ -54,6 +54,10 @@ const UserModel: AccountModelType = {
       });
     },
     *fetchMenu({ callback }, { call, put }) {
+      yield put({
+        type: 'saveMenu',
+        payload: {},
+      });
       const response = yield call(queryMenu);
       if (callback) callback(response.data);
       yield put({
