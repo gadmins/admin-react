@@ -96,6 +96,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 };
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;
+let lastPatname: string | undefined;
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const {
     dispatch,
@@ -140,64 +141,56 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       });
     }
   };
+  history.listen(({ pathname }) => {
+    if (pathname === '/account/login') {
+      lastPatname = '/account/login';
+      lastFuncId = undefined;
+      lastMenuKey = undefined;
+    }
+  });
   const showPage = () => {
     setReady(false);
     // 显示界面
     setTimeout(() => {
       setReady(true);
-    }, 1);
+      lastPatname = history.location.pathname;
+    }, 10);
   };
   const onOpenChange = (keys: WithFalse<string[]>) => {
+    if (lastPatname && history.location.pathname === lastPatname) {
+      return;
+    }
+    const idx = authFuncs.findIndex(it => history.location.pathname === it.url);
     if (!keys || keys.length === 0) {
-      // FIXME：需优化,判断路由是否存在(path带参数不支持),存在则403，不存在404
-      setAuthority(allRoutes.includes(history.location.pathname) ? 'none' : undefined);
+      if (allRoutes.includes(history.location.pathname)) {
+        const auth = idx === -1 ? 'none' : undefined;
+        setAuthority(auth);
+        showPage();
+        return;
+      }
       showPage();
       return;
     }
-    // 查找menu
-    let child: any[] = [];
-    keys.forEach(key => {
-      if (key === '/') {
-        child = menus;
-      } else {
-        const f = child.filter(
-          it => it.children && it.children.some((item: any) => item.key === key),
-        );
-        if (f && f.length > 0) {
-          child = f[0].children;
-        }
-      }
-    });
-    const idx = child.findIndex(it => it.key === keys[keys.length - 1]);
+    lastMenuKey = keys[keys.length - 1];
     if (idx > -1) {
-      // 找到menu,将funcId附在location.state进行传递, 解决页面获取funcId
       if (!location.state) {
         location.state = {};
       }
-      if (child[idx].funcId) {
-        location.state.funcId = child[idx].funcId;
+      if (authFuncs[idx].id) {
+        location.state.funcId = authFuncs[idx].id;
       }
     }
-    // 计算是否有权限
-    if (location.state && location.state.funcId) {
-      if (authFuncs.findIndex((i: any) => i.id === location.state.funcId) === -1) {
-        setAuthority('none');
-      } else {
+    if (location.state && lastFuncId && lastFuncId === location.state.funcId) {
+      if (ready === false || history.location.pathname !== lastPatname) {
         setAuthority(undefined);
-      }
-    } else {
-      setAuthority(undefined);
-    }
-    if (location.state && lastFuncId === location.state.funcId) {
-      if (ready === false) {
         showPage();
       }
       return;
     }
     if (location.state && location.state.funcId) {
       lastFuncId = location.state.funcId;
-      lastMenuKey = keys[keys.length - 1];
     }
+    setAuthority(undefined);
     showPage();
   };
   const CustomMenu = () => {
