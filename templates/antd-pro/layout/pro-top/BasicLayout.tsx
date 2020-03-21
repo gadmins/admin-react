@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useIntl, history } from 'umi';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { Result, Button, Menu } from 'antd';
+import { Result, Button, Menu, Breadcrumb } from 'antd';
 
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
@@ -115,6 +115,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   // 默认有权限,authority = 'none' 无权限
   const [authority, setAuthority] = useState<string | undefined>(undefined);
 
+  const [breadcrumbs, setBreadcrumbs] = useState<any[]>([]);
+
   useEffect(() => {
     if (dispatch) {
       dispatch({
@@ -130,6 +132,17 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       });
     }
   }, []);
+  const formatMsg = (id: String, key: string) => {
+    const e: any = { id };
+    if (!e.defaultMessage) {
+      e.defaultMessage = key;
+    }
+    const defTxt = e.defaultMessage && defMenuTxt[e.defaultMessage];
+    if (defTxt) {
+      e.defaultMessage = defTxt;
+    }
+    return intl.formatMessage(e);
+  };
   /**
    * init variables
    */
@@ -171,6 +184,27 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       showPage();
       return;
     }
+    let childs: any[] = menus;
+    const bcs: any[] = [];
+    let menuKey = '';
+    keys.forEach(k => {
+      if (k === '/') {
+        bcs.push({
+          path: `/#${menus[0].path}`,
+          name: formatMsg(`menu.${menus[0].key}`, 'home'),
+        });
+      } else {
+        menuKey += `.%{k}`;
+        const midx = childs.findIndex(it => it.key === k);
+        if (midx > -1) {
+          bcs.push({
+            name: formatMsg(`menu.${menuKey}.${childs[midx].key}`, childs[midx].key),
+          });
+          childs = childs[midx].children;
+        }
+      }
+    });
+    setBreadcrumbs(bcs);
     lastMenuKey = keys[keys.length - 1];
     if (idx > -1) {
       if (!location.state) {
@@ -234,32 +268,41 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         >
           {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </span>
-        <Menu
-          mode="horizontal"
-          selectedKeys={curKey}
-          style={{
-            border: 'none',
-          }}
-          onClick={({ key }) => {
-            curIdx = menus.findIndex(it => it.name === key);
-          }}
-        >
-          {sysMenus.map(it => (
-            <Menu.Item key={it.name}>
-              <Link
-                to={{
-                  pathname: it.path || '/',
-                  state: {
-                    funcId: it.funcId,
-                  },
-                }}
-              >
-                {it.icon}
-                {it.name && defMenuTxt[it.name]}
-              </Link>
-            </Menu.Item>
-          ))}
-        </Menu>
+        {hasSysMenu && (
+          <Menu
+            mode="horizontal"
+            selectedKeys={curKey}
+            style={{
+              border: 'none',
+            }}
+            onClick={({ key }) => {
+              curIdx = menus.findIndex(it => it.name === key);
+            }}
+          >
+            {sysMenus.map(it => (
+              <Menu.Item key={it.name}>
+                <Link
+                  to={{
+                    pathname: it.path || '/',
+                    state: {
+                      funcId: it.funcId,
+                    },
+                  }}
+                >
+                  {it.icon}
+                  {it.name && defMenuTxt[it.name]}
+                </Link>
+              </Menu.Item>
+            ))}
+          </Menu>
+        )}
+        {!hasSysMenu && (
+          <Breadcrumb>
+            {breadcrumbs.map(b => (
+              <Breadcrumb.Item>{b.path ? <a href={b.path}>{b.name}</a> : b.name}</Breadcrumb.Item>
+            ))}
+          </Breadcrumb>
+        )}
         {/* <RightContent /> */}
       </div>
     );
@@ -283,7 +326,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       }));
     }
     return {
-      breadcrumbRender: customBreadcrumbRender,
+      breadcrumbRender: hasSysMenu ? customBreadcrumbRender : undefined,
       headerRender: customHeaderRender,
       menuDataRender: customMenuDataRender,
     };
