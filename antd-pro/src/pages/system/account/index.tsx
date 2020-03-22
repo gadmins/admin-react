@@ -204,8 +204,12 @@ const TableList: React.FC<{}> = () => {
             </Dropdown>
           ),
         ]}
-        request={async params => {
-          const data = await queryList(params);
+        request={async (params: any) => {
+          const query = { ...params };
+          if (query.createdAt) {
+            query.createdAt = params.createdAt.map((it: string) => it.split(' ')[0]);
+          }
+          const data = await queryList(query);
           return data.data;
         }}
         columns={columns}
