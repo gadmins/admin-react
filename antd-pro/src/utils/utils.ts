@@ -1,5 +1,5 @@
 import { parse } from 'querystring';
-import pathRegexp from 'path-to-regexp';
+import * as pathRegexp from 'path-to-regexp';
 import { Route } from '@/models/connect';
 
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
@@ -45,7 +45,7 @@ export const getAuthorityFromRouter = <T extends Route>(
 
 export const getRouteAuthority = (path: string, routeData: Route[]) => {
   let authorities: string[] | string | undefined;
-  routeData.forEach(route => {
+  routeData.forEach((route) => {
     // match prefix
     if (pathRegexp(`${route.path}/(.*)`).test(`${path}/`)) {
       if (route.authority) {
