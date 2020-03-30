@@ -30,9 +30,9 @@ import logo from '../assets/logo.svg';
 
 const UmiRoutes = require('@@/core/routes');
 
-const allRoutes: string[] = UmiRoutes.routes[1].routes[0].routes
-  .map((it: any) => it.path)
-  .filter((it: string) => it !== undefined);
+const allRoutes: any[] = UmiRoutes.routes[1].routes[0].routes.filter(
+  (it: any) => it.path !== undefined,
+);
 
 const noMatch = (
   <Result
@@ -96,7 +96,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;
 let lastPatname: string | undefined;
-const BasicLayout: React.FC<BasicLayoutProps> = props => {
+const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
     dispatch,
     children,
@@ -174,29 +174,32 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     if (lastPatname && history.location.pathname === lastPatname) {
       return;
     }
-    const idx = authFuncs.findIndex(it => history.location.pathname === it.url);
+    const idx = authFuncs.findIndex((it) => history.location.pathname === it.url);
     if (!keys || keys.length === 0) {
-      if (allRoutes.includes(history.location.pathname)) {
-        const auth = idx === -1 ? 'none' : undefined;
-        setAuthority(auth);
-        showPage();
-        return;
+      let auth;
+      if (idx === -1) {
+        // 存在且需要认证
+        const routeIdx = allRoutes.findIndex((it: any) => it.path === history.location.pathname);
+        if (routeIdx > -1 && allRoutes[routeIdx].authority !== false) {
+          auth = 'none';
+        }
       }
+      setAuthority(auth);
       showPage();
       return;
     }
     let childs: any[] = menus;
     const bcs: any[] = [];
     let menuKey = '';
-    keys.forEach(k => {
+    keys.forEach((k) => {
       if (k === '/') {
         bcs.push({
           path: `/#${menus[0].path}`,
           name: formatMsg(`menu.${menus[0].key}`, 'home'),
         });
       } else {
-        menuKey += `.%{k}`;
-        const midx = childs.findIndex(it => it.key === k);
+        menuKey += `.${k}`;
+        const midx = childs.findIndex((it) => it.key === k);
         if (midx > -1) {
           bcs.push({
             name: formatMsg(`menu.${menuKey}.${childs[midx].key}`, childs[midx].key),
@@ -238,10 +241,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     if (pathkeys.length > 0) {
       curKey = [pathkeys[0]];
       if (menus.length > 0) {
-        curIdx = menus.findIndex(it => it.name === pathkeys[0]);
+        curIdx = menus.findIndex((it) => it.name === pathkeys[0]);
       }
     }
-
     const customMenuDataRender = () => {
       if (!hasSysMenu) {
         return menus;
@@ -278,10 +280,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
               border: 'none',
             }}
             onClick={({ key }) => {
-              curIdx = menus.findIndex(it => it.name === key);
+              curIdx = menus.findIndex((it) => it.name === key);
             }}
           >
-            {sysMenus.map(it => (
+            {sysMenus.map((it) => (
               <Menu.Item key={it.name}>
                 <Link
                   to={{
@@ -300,7 +302,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         )}
         {!hasSysMenu && (
           <Breadcrumb>
-            {breadcrumbs.map(b => (
+            {breadcrumbs.map((b) => (
               <Breadcrumb.Item>{b.path ? <a href={b.path}>{b.name}</a> : b.name}</Breadcrumb.Item>
             ))}
           </Breadcrumb>
@@ -319,7 +321,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       ...routers,
     ];
     if (hasSysMenu) {
-      sysMenus = menus.map(it => ({
+      sysMenus = menus.map((it) => ({
         icon: it.icon,
         name: it.name,
         defTxt: it.defTxt,
@@ -348,7 +350,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       onOpenChange={onOpenChange}
       onCollapse={handleMenuCollapse}
       menuProps={{
-        onClick: item => {
+        onClick: (item) => {
           if (item.key === lastMenuKey) {
             return;
           }
@@ -381,7 +383,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         );
       }}
       footerRender={footerRender}
-      formatMessage={e => {
+      formatMessage={(e) => {
         const defTxt = e.defaultMessage && defMenuTxt[e.defaultMessage];
         if (defTxt) {
           e.defaultMessage = defTxt;
@@ -404,13 +406,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
 
 const parseIcon = (menus: any[]) =>
   menus.map((it: any) => {
+    const item = { ...it };
     if (it.icon) {
-      it.icon = string2Icon(it.icon);
+      item.icon = string2Icon(it.icon);
     }
     if (it.children) {
-      it.children = parseIcon(it.children);
+      item.children = parseIcon(it.children);
     }
-    return it;
+    return item;
   });
 
 export default connect(({ global, account }: ConnectState) => ({

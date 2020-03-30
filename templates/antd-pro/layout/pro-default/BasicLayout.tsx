@@ -30,9 +30,9 @@ import logo from '../assets/logo.svg';
 
 const UmiRoutes = require('@@/core/routes');
 
-const allRoutes: string[] = UmiRoutes.routes[1].routes[0].routes
-  .map((it: any) => it.path)
-  .filter((it: string) => it !== undefined);
+const allRoutes: any[] = UmiRoutes.routes[1].routes[0].routes.filter(
+  (it: any) => it.path !== undefined,
+);
 
 const noMatch = (
   <Result
@@ -176,12 +176,15 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     }
     const idx = authFuncs.findIndex(it => history.location.pathname === it.url);
     if (!keys || keys.length === 0) {
-      if (allRoutes.includes(history.location.pathname)) {
-        const auth = idx === -1 ? 'none' : undefined;
-        setAuthority(auth);
-        showPage();
-        return;
+      let auth;
+      if (idx === -1) {
+        // 存在且需要认证
+        const routeIdx = allRoutes.findIndex((it: any) => it.path === history.location.pathname);
+        if (routeIdx > -1 && allRoutes[routeIdx].authority !== false) {
+          auth = 'none';
+        }
       }
+      setAuthority(auth);
       showPage();
       return;
     }
@@ -404,13 +407,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
 
 const parseIcon = (menus: any[]) =>
   menus.map((it: any) => {
+    const item = { ...it };
     if (it.icon) {
-      it.icon = string2Icon(it.icon);
+      item.icon = string2Icon(it.icon);
     }
     if (it.children) {
-      it.children = parseIcon(it.children);
+      item.children = parseIcon(it.children);
     }
-    return it;
+    return item;
   });
 
 export default connect(({ global, account }: ConnectState) => ({
