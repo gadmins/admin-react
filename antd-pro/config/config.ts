@@ -7,6 +7,7 @@ const { winPath } = utils;
 export default defineConfig({
   antd: {
     // dark: true,
+    // compact: true,
   },
   dva: {
     hmr: true,

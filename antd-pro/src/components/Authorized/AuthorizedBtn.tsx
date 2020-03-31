@@ -8,9 +8,9 @@ interface AuthorizedBtnProps {
   children?: ReactNode;
 }
 
-const AuthorizedBtn: React.FC<AuthorizedBtnProps> = props => {
+const AuthorizedBtn: React.FC<AuthorizedBtnProps> = (props) => {
   const { children, code, authFuncs } = props;
-  return authFuncs.findIndex((i: any) => i.code === code) > 0 ? <>{children}</> : <></>;
+  return authFuncs.some((i: any) => i.code === code) ? <>{children}</> : <></>;
 };
 
 export default connect(({ account }: ConnectState) => ({

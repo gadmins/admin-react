@@ -7,5 +7,5 @@ import { useStore } from 'dva';
 export function useAuthorizedBtn(code: string) {
   const store = useStore();
   const { account } = store.getState();
-  return account.authFuncs.findIndex((i: any) => i.code === code) > 0;
+  return account.authFuncs.some((i: any) => i.code === code);
 }
