@@ -20,7 +20,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
   const [menuTree, setMenuTree] = useState<any[]>([]);
   const [menuIds, setMenuIds] = useState<number[]>([]);
   const [funcIds, setFuncIds] = useState<number[]>([]);
-  const [authKeys, setKeys] = useState<string[]>(['home', 'welcome']);
+  const [authKeys, setKeys] = useState<string[]>(['home', 'welcome', 'accountsettings']);
 
   const [form] = Form.useForm();
   const initialValues = initVals
@@ -46,7 +46,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         },
       );
     } else {
-      getMenuTreeAndFunc().then(data => {
+      getMenuTreeAndFunc().then((data) => {
         if (data && data.data) {
           setMenuTree(data.data);
         }
