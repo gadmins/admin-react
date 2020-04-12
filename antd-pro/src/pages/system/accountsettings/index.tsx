@@ -9,6 +9,7 @@ import BaseView from './components/base';
 import { CurrentUser } from './data.d';
 import SecurityView from './components/security';
 import styles from './style.less';
+import UpdatePwdModal from './components/modal/UpdatePwdModal';
 
 const { Item } = Menu;
 
@@ -24,6 +25,7 @@ interface AccountSettingsState {
     [key: string]: React.ReactNode;
   };
   selectKey: AccountSettingsStateKeys;
+  pwdVisible: boolean;
 }
 
 class AccountSettings extends Component<AccountSettingsProps, AccountSettingsState> {
@@ -53,6 +55,7 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
       mode: 'inline',
       menuMap,
       selectKey: 'base',
+      pwdVisible: false,
     };
   }
 
@@ -71,7 +74,7 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
 
   getMenu = () => {
     const { menuMap } = this.state;
-    return Object.keys(menuMap).map(item => <Item key={item}>{menuMap[item]}</Item>);
+    return Object.keys(menuMap).map((item) => <Item key={item}>{menuMap[item]}</Item>);
   };
 
   getRightTitle = () => {
@@ -113,7 +116,17 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
       case 'base':
         return <BaseView />;
       case 'security':
-        return <SecurityView />;
+        return (
+          <SecurityView
+            handle={(type) => {
+              if (type === 'pwd') {
+                this.setState({
+                  pwdVisible: true,
+                });
+              }
+            }}
+          />
+        );
       // case 'binding':
       //   return <BindingView />;
       // case 'notification':
@@ -126,12 +139,12 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
   };
 
   render() {
-    const { mode, selectKey } = this.state;
+    const { mode, selectKey, pwdVisible } = this.state;
     return (
       <GridContent>
         <div
           className={styles.main}
-          ref={ref => {
+          ref={(ref) => {
             if (ref) {
               this.main = ref;
             }
@@ -151,6 +164,14 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
             {this.renderChildren()}
           </div>
         </div>
+        <UpdatePwdModal
+          modalVisible={pwdVisible}
+          onCancel={() => {
+            this.setState({
+              pwdVisible: false,
+            });
+          }}
+        />
       </GridContent>
     );
   }

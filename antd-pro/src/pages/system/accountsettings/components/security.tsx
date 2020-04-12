@@ -24,7 +24,10 @@ const passwordStrength = {
   ),
 };
 
-class SecurityView extends Component {
+interface Props {
+  handle?: (type: string) => void;
+}
+class SecurityView extends Component<Props> {
   getData = () => [
     {
       title: formatMessage({ id: 'accountsettings.security.password' }, {}),
@@ -38,7 +41,9 @@ class SecurityView extends Component {
         <a
           key="Modify"
           onClick={() => {
-            console.log('modify pwd');
+            if (this.props.handle) {
+              this.props.handle('pwd');
+            }
           }}
         >
           <FormattedMessage id="accountsettings.security.modify" defaultMessage="Modify" />
@@ -96,7 +101,7 @@ class SecurityView extends Component {
         <List<Unpacked<typeof data>>
           itemLayout="horizontal"
           dataSource={data}
-          renderItem={item => (
+          renderItem={(item) => (
             <List.Item actions={item.actions}>
               <List.Item.Meta title={item.title} description={item.description} />
             </List.Item>
