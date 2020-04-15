@@ -228,6 +228,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     }
     if (location.state && location.state.funcId) {
       lastFuncId = location.state.funcId;
+      dispatch({
+        type: 'schema/querySchema',
+        payload: lastFuncId,
+      });
     }
     setAuthority(undefined);
     showPage();
@@ -374,7 +378,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
           </Link>
         );
       }}
-      itemRender={(route, params, routes, paths) => {
+      itemRender={(route, _, routes, paths) => {
         const first = routes.indexOf(route) === 0;
         return first ? (
           <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
