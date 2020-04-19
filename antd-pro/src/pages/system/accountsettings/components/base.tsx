@@ -9,6 +9,8 @@ import { CurrentUser } from '../data.d';
 // import PhoneView from './PhoneView';
 import styles from './BaseView.less';
 
+const FormItem = Form.Item;
+
 // 头像组件 方便以后独立，增加裁剪之类的功能
 const AvatarView = ({ avatar }: { avatar: string }) => (
   <Fragment>
@@ -103,7 +105,7 @@ class BaseView extends Component<BaseViewProps> {
             initialValues={currentUser}
             hideRequiredMark
           >
-            <Form.Item
+            <FormItem
               name="email"
               label={formatMessage({ id: 'accountsettings.basic.email' })}
               rules={[
@@ -114,8 +116,8 @@ class BaseView extends Component<BaseViewProps> {
               ]}
             >
               <Input />
-            </Form.Item>
-            <Form.Item
+            </FormItem>
+            <FormItem
               name="name"
               label={formatMessage({ id: 'accountsettings.basic.nickname' })}
               rules={[
@@ -126,15 +128,15 @@ class BaseView extends Component<BaseViewProps> {
               ]}
             >
               <Input />
-            </Form.Item>
-            <Form.Item>
+            </FormItem>
+            <FormItem>
               <Button htmlType="submit" type="primary">
                 <FormattedMessage
                   id="accountsettings.basic.update"
                   defaultMessage="Update Information"
                 />
               </Button>
-            </Form.Item>
+            </FormItem>
           </Form>
         </div>
         <div className={styles.right}>
