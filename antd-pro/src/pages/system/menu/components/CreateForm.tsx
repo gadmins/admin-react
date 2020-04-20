@@ -31,7 +31,7 @@ const loopNode = (data: any) =>
     return <TreeNode key={item.id} value={item.id} title={`${item.title}-${item.key}`} />;
   });
 
-const CreateForm: React.FC<CreateFormProps> = props => {
+const CreateForm: React.FC<CreateFormProps> = (props) => {
   const { modalVisible, formVals, onSubmit: handleAdd, onCancel } = props;
   const [form] = Form.useForm();
   const [parentMenus, setParentMenus] = useState([]);
@@ -47,12 +47,12 @@ const CreateForm: React.FC<CreateFormProps> = props => {
     : { type: 'SYS_MENU' };
   const [type, setType] = useState(initVals.type);
   const loadData = () => {
-    getMenuParentTree().then(data => {
+    getMenuParentTree().then((data) => {
       if (Resp.isOk(data)) {
         setParentMenus(data.data);
       }
     });
-    functionList().then(data => {
+    functionList().then((data) => {
       if (Resp.isOk(data)) {
         setFunctions(data.data);
       }
@@ -71,6 +71,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
   };
   return (
     <Modal
+      maskClosable={false}
       destroyOnClose
       title={formVals ? '复制菜单' : '添加菜单'}
       visible={modalVisible}
@@ -99,7 +100,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
             {...formLayout}
             label="父级菜单"
             name="parentId"
-            rules={[{ required: true, message: '父级菜单不能为空' }]}
+            // rules={[{ required: true, message: '父级菜单不能为空' }]}
           >
             <TreeSelect
               value={formVals ? formVals.parentId : undefined}
@@ -144,7 +145,7 @@ const CreateForm: React.FC<CreateFormProps> = props => {
                 placeholder="请选择"
                 allowClear
                 treeDefaultExpandAll
-                onChange={e => {
+                onChange={(e) => {
                   const func: any[] = functions.filter((it: any) => it.id === e);
                   if (func && func.length > 0) {
                     form.setFieldsValue({
