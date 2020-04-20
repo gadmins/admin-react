@@ -109,6 +109,9 @@ const TableList: React.FC<{}> = () => {
       hideInTable: true,
       dataIndex: 'roleId',
       initialValue: 'all',
+      formItemProps: {
+        allowClear: true,
+      },
       valueEnum: roleList,
     },
     {
