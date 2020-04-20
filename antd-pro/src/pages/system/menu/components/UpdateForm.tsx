@@ -21,12 +21,12 @@ const loopNode = (data: any) =>
   data.map((item: any) => {
     if (item.children && item.children.length) {
       return (
-        <TreeNode key={item.id} value={item.id} title={item.title} bind={item}>
+        <TreeNode key={item.id} value={item.id} title={`${item.title}-${item.key}`}>
           {loopNode(item.children)}
         </TreeNode>
       );
     }
-    return <TreeNode key={item.id} value={item.id} title={item.title} bind={item} />;
+    return <TreeNode key={item.id} value={item.id} title={`${item.title}-${item.key}`} />;
   });
 
 const formLayout = {
@@ -34,7 +34,7 @@ const formLayout = {
   wrapperCol: { span: 10 },
 };
 
-const UpdateForm: React.FC<UpdateFormProps> = props => {
+const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const { values } = props;
   const [parentMenus, setParentMenus] = useState([]);
   const [functions, setFunctions] = useState<any[]>([]);
@@ -44,7 +44,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
     if (type === 'SYS_MENU') {
       return;
     }
-    getMenuParentTree(ids).then(data => {
+    getMenuParentTree(ids).then((data) => {
       if (Resp.isOk(data)) {
         setParentMenus(data.data);
       }
@@ -54,7 +54,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
   useEffect(() => {
     updateParentMenus(values.type, [values.id]);
     if (values.type === 'MENU') {
-      functionList().then(data => {
+      functionList().then((data) => {
         if (Resp.isOk(data)) {
           setFunctions(data.data);
         }
@@ -91,7 +91,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
         elink: values.elink || false,
       }}
       onFinish={handleSubmit}
-      onFinishFailed={e => {
+      onFinishFailed={(e) => {
         form.scrollToField(e.errorFields[0].name);
       }}
     >
@@ -107,7 +107,7 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
           {...formLayout}
           label="父级菜单"
           name="parentId"
-          rules={[{ required: true, message: '父级菜单不能为空' }]}
+          // rules={[{ required: true, message: '父级菜单不能为空' }]}
         >
           <TreeSelect
             style={{ width: '100%' }}
@@ -151,8 +151,8 @@ const UpdateForm: React.FC<UpdateFormProps> = props => {
               placeholder="请选择"
               allowClear
               treeDefaultExpandAll
-              onChange={e => {
-                const func = functions.filter(it => it.id === e);
+              onChange={(e) => {
+                const func = functions.filter((it) => it.id === e);
                 if (func && func.length > 0) {
                   form.setFieldsValue({
                     url: func[0].url,
