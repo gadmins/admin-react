@@ -4,9 +4,8 @@ import React, { useState } from 'react';
 import { Dispatch, AnyAction } from 'redux';
 // import { Link } from 'umi';
 import { connect } from 'dva';
-import { StateType } from '@/models/login';
 import { LoginParamsType } from '@/services/login';
-import { ConnectState } from '@/models/connect';
+import { ConnectState, LoginModelState } from '@/models/connect';
 import MD5 from 'crypto-js/md5';
 import LoginFrom from './components/Login';
 
@@ -21,7 +20,7 @@ const {
 } = LoginFrom;
 interface LoginProps {
   dispatch: Dispatch<AnyAction>;
-  userLogin: StateType;
+  userLogin: LoginModelState;
   submitting?: boolean;
 }
 
@@ -38,7 +37,7 @@ const LoginMessage: React.FC<{
   />
 );
 
-const Login: React.FC<LoginProps> = props => {
+const Login: React.FC<LoginProps> = (props) => {
   const { userLogin = {}, submitting } = props;
   const { status, type: loginType } = userLogin;
   const [autoLogin, setAutoLogin] = useState(true);
@@ -46,10 +45,11 @@ const Login: React.FC<LoginProps> = props => {
 
   const handleSubmit = (values: LoginParamsType) => {
     const { dispatch } = props;
-    values.password = MD5(values.password).toString();
+    const params = { ...values };
+    params.password = MD5(values.password).toString();
     dispatch({
       type: 'login/login',
-      payload: { ...values, type },
+      payload: { ...params, type },
     });
   };
   return (
@@ -114,7 +114,7 @@ const Login: React.FC<LoginProps> = props => {
           />
         </Tab> */}
         <div>
-          <Checkbox checked={autoLogin} onChange={e => setAutoLogin(e.target.checked)}>
+          <Checkbox checked={autoLogin} onChange={(e) => setAutoLogin(e.target.checked)}>
             自动登录
           </Checkbox>
           {/* <a

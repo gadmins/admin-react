@@ -59,7 +59,7 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    const data = await remove(selectedRows.map(row => row.id));
+    const data = await remove(selectedRows.map((row) => row.id));
     hide();
     if (Resp.isOk(data)) {
       message.success('删除成功，即将刷新');
@@ -80,7 +80,7 @@ const TableList: React.FC<{}> = () => {
 
   const [roleList, setRoleList] = useState({});
   useEffect(() => {
-    queryAllRole().then(data => {
+    queryAllRole().then((data) => {
       if (data && data.data) {
         const list = {
           all: { text: '全部' },
@@ -109,6 +109,9 @@ const TableList: React.FC<{}> = () => {
       hideInTable: true,
       dataIndex: 'roleId',
       initialValue: 'all',
+      formItemProps: {
+        allowClear: true,
+      },
       valueEnum: roleList,
     },
     {
@@ -179,7 +182,7 @@ const TableList: React.FC<{}> = () => {
             <Dropdown
               overlay={
                 <Menu
-                  onClick={async e => {
+                  onClick={async (e) => {
                     if (e.key === 'remove') {
                       Modal.confirm({
                         title: '确定要删除这些用户?',
@@ -208,6 +211,8 @@ const TableList: React.FC<{}> = () => {
           const query = { ...params };
           if (query.createdAt) {
             query.createdAt = params.createdAt.map((it: string) => it.split(' ')[0]);
+            query.createdAt[0] += ' 00:00:00';
+            query.createdAt[1] += ' 23:59:59';
           }
           const data = await queryList(query);
           return data.data;
@@ -219,7 +224,7 @@ const TableList: React.FC<{}> = () => {
         <CreateForm
           initVals={selectRecord}
           modalVisible={createModalVisible}
-          onSubmit={async value => {
+          onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {
               setSelectRecord(undefined);
@@ -244,7 +249,7 @@ const TableList: React.FC<{}> = () => {
         <UpdateForm
           initVals={selectRecord}
           modalVisible={updateModalVisible}
-          onSubmit={async value => {
+          onSubmit={async (value) => {
             const success = await handleUpdate(value);
             if (success) {
               handleUpdateModalVisible(false);

@@ -3,27 +3,27 @@ import { stringify } from 'querystring';
 import { history } from 'umi';
 
 import { fakeAccountLogin, fakeAccountLogout, getFakeCaptcha } from '@/services/login';
-import { setAuthority } from '@/utils/authority';
+// import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import Cookies from 'js-cookie';
 import { Effect } from 'dva';
 import { message } from 'antd';
 
-export interface StateType {
+export interface LoginModelState {
   status?: 'ok' | 'error';
   type?: string;
   currentAuthority?: 'user' | 'guest' | 'admin';
 }
 
 export interface LoginModelType {
-  state: StateType;
+  state: LoginModelState;
   effects: {
     login: Effect;
     getCaptcha: Effect;
     logout: Effect;
   };
   reducers: {
-    changeLoginStatus: Reducer<StateType>;
+    changeLoginStatus: Reducer<LoginModelState>;
   };
 }
 
@@ -83,7 +83,7 @@ const Model: LoginModelType = {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority || ['admin']);
+      // setAuthority(payload.currentAuthority || ['admin']);
       return {
         ...state,
         status: payload.status || 'ok',

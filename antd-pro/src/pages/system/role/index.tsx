@@ -200,6 +200,8 @@ const TableList: React.FC<{}> = () => {
           const query = { ...params };
           if (query.createdAt) {
             query.createdAt = params.createdAt.map((it: string) => it.split(' ')[0]);
+            query.createdAt[0] += ' 00:00:00';
+            query.createdAt[1] += ' 23:59:59';
           }
           const data = await queryList(query);
           return data.data;

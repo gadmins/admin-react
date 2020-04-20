@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
-import { history } from 'umi';
+import { history, useParams } from 'umi';
 import { Resp } from '@/utils/request';
 import { queryList, add, update, remove } from './service';
 import CreateForm from './components/CreateForm';
@@ -60,7 +60,7 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    const data = await remove(selectedRows.map(row => row.id));
+    const data = await remove(selectedRows.map((row) => row.id));
     hide();
     if (Resp.isOk(data)) {
       message.success('删除成功，即将刷新');
@@ -74,8 +74,8 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   }
 };
 
-const TableList: React.FC<{}> = (props: any) => {
-  const { location } = props;
+const TableList: React.FC<{}> = () => {
+  const { id } = useParams() as any;
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [selectRecord, setSelectRecord] = useState<any | undefined>(undefined);
@@ -164,7 +164,7 @@ const TableList: React.FC<{}> = (props: any) => {
             type="primary"
             onClick={() => {
               setSelectRecord({
-                pid: location.state.pid,
+                pid: id,
               });
               handleModalVisible(true);
             }}
@@ -175,7 +175,7 @@ const TableList: React.FC<{}> = (props: any) => {
             <Dropdown
               overlay={
                 <Menu
-                  onClick={async e => {
+                  onClick={async (e) => {
                     if (e.key === 'remove') {
                       Modal.confirm({
                         title: '确定要删除这些字典数据?',
@@ -200,10 +200,10 @@ const TableList: React.FC<{}> = (props: any) => {
             </Dropdown>
           ),
         ]}
-        request={async params => {
+        request={async (params) => {
           const data = await queryList({
             ...params,
-            pid: location.state.pid,
+            pid: id,
           });
           return data.data;
         }}
@@ -214,7 +214,7 @@ const TableList: React.FC<{}> = (props: any) => {
         <CreateForm
           initVals={selectRecord}
           modalVisible={createModalVisible}
-          onSubmit={async value => {
+          onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {
               setSelectRecord(undefined);
@@ -239,7 +239,7 @@ const TableList: React.FC<{}> = (props: any) => {
         <UpdateForm
           initVals={selectRecord}
           modalVisible={updateModalVisible}
-          onSubmit={async value => {
+          onSubmit={async (value) => {
             const success = await handleUpdate(value);
             if (success) {
               handleUpdateModalVisible(false);

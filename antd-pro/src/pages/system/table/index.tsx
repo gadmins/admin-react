@@ -1,11 +1,11 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu, Divider, message, Modal } from 'antd';
-import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
-import { history } from 'umi';
+import React, { useState, useRef } from 'react';
+import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
+import { Divider, message, Button, Dropdown, Menu, Modal } from 'antd';
+import { history } from 'umi';
 import { Resp } from '@/utils/request';
+import { PlusOutlined, DownOutlined } from '@ant-design/icons';
 import { queryList, add, update, remove } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -23,6 +23,7 @@ const handleAdd = async (fields: any) => {
       message.success('添加成功');
       return true;
     }
+    message.error(data.msg);
     return false;
   } catch (error) {
     hide();
@@ -44,6 +45,7 @@ const handleUpdate = async (fields: any) => {
       message.success('更新成功');
       return true;
     }
+    message.error(data.msg);
     return false;
   } catch (error) {
     hide();
@@ -60,9 +62,9 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    const data = await remove(selectedRows.map((row) => row.id));
+    const data = await remove(selectedRows.map((row) => row.TABLE_NAME));
     hide();
-    if (data && data.code === 0) {
+    if (Resp.isOk(data)) {
       message.success('删除成功，即将刷新');
       return true;
     }
@@ -74,12 +76,12 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   }
 };
 
-const TableList: React.FC<{}> = () => {
+export default () => {
+  const actionRef = useRef<ActionType>();
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [selectRecord, setSelectRecord] = useState<any | undefined>(undefined);
 
-  const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
       title: '序号',
@@ -88,35 +90,48 @@ const TableList: React.FC<{}> = () => {
       width: 64,
     },
     {
-      title: '字典编码',
-      dataIndex: 'dcode',
+      title: '表名',
+      dataIndex: 'TABLE_NAME',
+      key: 'name',
+      order: 2,
+      formItemProps: {
+        allowClear: true,
+      },
     },
     {
-      title: '字典名',
-      dataIndex: 'title',
+      title: '行',
+      dataIndex: 'TABLE_ROWS',
+      hideInSearch: true,
     },
     {
       title: '创建时间',
-      dataIndex: 'createdAt',
+      dataIndex: 'CREATE_TIME',
       valueType: 'dateRange',
-      hideInForm: true,
+      key: 'createdAt',
     },
     {
-      title: '更新时间',
-      dataIndex: 'updatedAt',
-      hideInSearch: true,
-      hideInForm: true,
+      title: '注释',
+      dataIndex: 'TABLE_COMMENT',
+      key: 'comment',
+      order: 1,
+      formItemProps: {
+        allowClear: true,
+      },
     },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
       render: (_, record) => (
         <>
           <a
             onClick={() => {
               handleUpdateModalVisible(true);
-              setSelectRecord(record);
+              setSelectRecord({
+                name: record.TABLE_NAME,
+                comment: record.TABLE_COMMENT,
+              });
             }}
           >
             编辑
@@ -124,31 +139,30 @@ const TableList: React.FC<{}> = () => {
           <Divider type="vertical" />
           <a
             onClick={() => {
-              setSelectRecord(record);
-              handleModalVisible(true);
+              history.push(`/system/table/struct/${record.TABLE_NAME}`);
             }}
           >
-            复制
+            结构
           </a>
           <Divider type="vertical" />
           <a
             onClick={() => {
-              history.push(`/system/dict/list/${record.id}`);
+              history.push(`/system/table/data/${record.TABLE_NAME}`);
             }}
           >
-            列表
+            数据
           </a>
         </>
       ),
     },
   ];
-
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
         headerTitle="查询表格"
         actionRef={actionRef}
-        rowKey="id"
+        rowKey="TABLE_NAME"
+        rowSelection={{}}
         toolBarRender={(action, { selectedRows }) => [
           <Button
             icon={<PlusOutlined />}
@@ -167,7 +181,7 @@ const TableList: React.FC<{}> = () => {
                   onClick={async (e) => {
                     if (e.key === 'remove') {
                       Modal.confirm({
-                        title: '确定要删除这些字典?',
+                        title: '确定要删除这些表?',
                         content: '删除提示',
                         onOk() {
                           handleRemove(selectedRows).then(() => {
@@ -200,7 +214,6 @@ const TableList: React.FC<{}> = () => {
           return data.data;
         }}
         columns={columns}
-        rowSelection={{}}
       />
       {createModalVisible && (
         <CreateForm
@@ -252,5 +265,3 @@ const TableList: React.FC<{}> = () => {
     </PageHeaderWrapper>
   );
 };
-
-export default TableList;

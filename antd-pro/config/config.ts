@@ -94,14 +94,8 @@ export default defineConfig({
             {
               name: 'dictdata',
               icon: 'smile',
-              path: '/system/dict/list',
+              path: '/system/dict/list/:id',
               component: './system/dict/list',
-            },
-            {
-              name: 'tablemeta',
-              icon: 'smile',
-              path: '/system/tablemeta',
-              component: './system/tablemeta',
             },
             {
               name: 'role',
@@ -114,6 +108,24 @@ export default defineConfig({
               icon: 'smile',
               path: '/system/accountsettings',
               component: './system/accountsettings',
+            },
+            {
+              name: 'table',
+              icon: 'db',
+              path: '/system/table',
+              component: './system/table',
+            },
+            {
+              name: 'table',
+              icon: 'db',
+              path: '/system/table/struct/:name',
+              component: './system/table/struct',
+            },
+            {
+              name: 'table',
+              icon: 'db',
+              path: '/system/table/data/:name',
+              component: './system/table/data',
             },
             {
               component: './404',

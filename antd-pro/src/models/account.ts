@@ -68,7 +68,7 @@ const UserModel: AccountModelType = {
   },
 
   reducers: {
-    saveCurrentAccount(state, action) {
+    saveCurrentAccount(state: any, action: { payload: any }) {
       return {
         ...state,
         currentAccount: action.payload,
@@ -82,12 +82,7 @@ const UserModel: AccountModelType = {
         defMenuTxt: action.payload.defTex || new Map(),
       };
     },
-    changeNotifyCount(
-      state = {
-        currentAccount: {},
-      },
-      action,
-    ) {
+    changeNotifyCount(state: any, action) {
       return {
         ...state,
         currentAccout: {
