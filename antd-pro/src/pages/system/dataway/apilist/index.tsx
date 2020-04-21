@@ -41,6 +41,34 @@ export default () => {
       valueType: 'indexBorder',
       width: 64,
     },
+    {
+      title: '接口path',
+      dataIndex: 'apiPath',
+    },
+    {
+      title: '接口请求方法',
+      dataIndex: 'apiMethod',
+    },
+    {
+      title: '接口描述',
+      dataIndex: 'apiComment',
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (_, record) => (
+        <>
+          <a
+            onClick={() => {
+              history.push(`/system/dataway/editapi/${record.id}`);
+            }}
+          >
+            编辑
+          </a>
+        </>
+      ),
+    },
   ];
 
   return (
@@ -60,7 +88,6 @@ export default () => {
       <ProTable<TableListItem>
         actionRef={actionRef}
         rowKey="id"
-        scroll={{ x: 1600 }}
         rowSelection={{}}
         toolBarRender={(action, { selectedRows }) => [
           <Button

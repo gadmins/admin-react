@@ -11,6 +11,10 @@ export async function queryList(params?: TableListParams) {
   });
 }
 
+export async function getById(id: any) {
+  return request(`/adminapi/dataway/group/${id}`);
+}
+
 export async function add(params: TableListParams) {
   return request('/adminapi/dataway/group', {
     method: 'POST',

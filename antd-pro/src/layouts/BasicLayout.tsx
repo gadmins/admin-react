@@ -25,8 +25,8 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { WithFalse } from '@ant-design/pro-layout/lib/typings';
 import { string2Icon } from '@/utils/icon';
 import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
+import logo from '@/assets/logo.svg';
 import defaultSettings from '../../config/defaultSettings';
-import logo from '../assets/logo.svg';
 
 const UmiRoutes = require('@@/core/routes');
 
