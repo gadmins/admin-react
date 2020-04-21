@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Tabs } from 'antd';
 import AceEditor, { IAnnotation } from 'react-ace';
-// import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 import { querySchema } from '@/services/schema';
@@ -36,7 +35,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
 
   if (initVals && initVals.id) {
     useEffect(() => {
-      querySchema(initVals.id).then(data => {
+      querySchema(initVals.id).then((data) => {
         if (data && data.data && data.data.dataSchema) {
           const schema = data.data.dataSchema;
           setJsonSchema(JSON.stringify(schema, null, 4));
@@ -50,7 +49,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
           } else if (schema.schema && schema.schema.properties) {
             const obj = schema.schema.properties;
             const pdata: any[] = [];
-            Object.entries(obj).forEach(p => {
+            Object.entries(obj).forEach((p) => {
               const o = p[1] as any;
               pdata.push({
                 key: p[0],
@@ -110,7 +109,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
   };
 
   const onDeleteRow = (record: any) => {
-    const index = dataSrouce.findIndex(item => record.key === item.key);
+    const index = dataSrouce.findIndex((item) => record.key === item.key);
     if (index > -1) {
       const data = [...dataSrouce];
       data.splice(index, 1);

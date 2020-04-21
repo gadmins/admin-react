@@ -128,6 +128,32 @@ export default defineConfig({
               component: './system/table/data',
             },
             {
+              name: 'dataway',
+              path: '/system/dataway',
+              component: './system/dataway',
+            },
+            {
+              name: 'apilist',
+              path: '/system/dataway/:groupId/apilist',
+              component: './system/dataway/apilist',
+            },
+            {
+              name: 'addapi',
+              path: '/system/dataway/addapi/:groupId',
+              component: './system/dataway/apilist/edit',
+            },
+            {
+              name: 'editapi',
+              path: '/system/dataway/editapi/:id',
+              component: './system/dataway/apilist/edit',
+            },
+            {
+              name: 'tool',
+              icon: 'cloud',
+              path: '/system/tool',
+              component: './system/tool',
+            },
+            {
               component: './404',
             },
           ],
