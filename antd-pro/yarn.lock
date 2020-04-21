@@ -119,10 +119,10 @@
     use-merge-value "^1.0.1"
     warning "^4.0.3"
 
-"@ant-design/pro-table@2.2.2":
-  version "2.2.2"
-  resolved "https://registry.npm.taobao.org/@ant-design/pro-table/download/@ant-design/pro-table-2.2.2.tgz#38b042ce3c1d838e0f1f25f4ec7e0a1174218971"
-  integrity sha1-OLBCzjwdg44PHyX07H4KEXQhiXE=
+"@ant-design/pro-table@2.2.3":
+  version "2.2.3"
+  resolved "https://registry.npm.taobao.org/@ant-design/pro-table/download/@ant-design/pro-table-2.2.3.tgz#781a063adea7cd5d7fc2dcbba290af56b1add6b7"
+  integrity sha1-eBoGOt6nzV1/wty7opCvVrGt1rc=
   dependencies:
     "@ant-design/icons" "^4.0.0"
     antd "^4.0.0"
@@ -3372,15 +3372,15 @@
     dva-immer "^0.4.19"
     dva-loading "^3.0.20"
 
-"@umijs/plugin-initial-state@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.npm.taobao.org/@umijs/plugin-initial-state/download/@umijs/plugin-initial-state-2.2.0.tgz#fbd21df6d9f1ad9ed9d351871aa9ebe74f29c4a8"
-  integrity sha1-+9Id9tnxrZ7Z01GHGqnr508pxKg=
+"@umijs/plugin-initial-state@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.npm.taobao.org/@umijs/plugin-initial-state/download/@umijs/plugin-initial-state-2.2.1.tgz?cache=0&sync_timestamp=1587457443626&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fplugin-initial-state%2Fdownload%2F%40umijs%2Fplugin-initial-state-2.2.1.tgz#cd7592aa90b6b369bd0df297254320088397ff67"
+  integrity sha1-zXWSqpC2s2m9DfKXJUMgCIOX/2c=
 
-"@umijs/plugin-layout@0.9.1":
-  version "0.9.1"
-  resolved "https://registry.npm.taobao.org/@umijs/plugin-layout/download/@umijs/plugin-layout-0.9.1.tgz#dca55858896b3de120cc4ea45888c4f97680bedc"
-  integrity sha1-3KVYWIlrPeEgzE6kWIjE+XaAvtw=
+"@umijs/plugin-layout@0.9.2":
+  version "0.9.2"
+  resolved "https://registry.npm.taobao.org/@umijs/plugin-layout/download/@umijs/plugin-layout-0.9.2.tgz?cache=0&sync_timestamp=1587457443205&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fplugin-layout%2Fdownload%2F%40umijs%2Fplugin-layout-0.9.2.tgz#0680d201430611ab633ab3026259bdb9e5527153"
+  integrity sha1-BoDSAUMGEatjOrMCYlm9ueVScVM=
   dependencies:
     "@ant-design/icons" "^4.0.0"
     "@ant-design/pro-layout" "^5.0.0"
@@ -3478,18 +3478,18 @@
     umi-webpack-bundle-analyzer "3.5.0"
     zlib "1.0.5"
 
-"@umijs/preset-react@^1.4.16":
-  version "1.4.16"
-  resolved "https://registry.npm.taobao.org/@umijs/preset-react/download/@umijs/preset-react-1.4.16.tgz#99f73b5e693bc2ec58b55bd29c725d1dbf93b9c4"
-  integrity sha1-mfc7Xmk7wuxYtVvSnHJdHb+TucQ=
+"@umijs/preset-react@^1.4.17":
+  version "1.4.17"
+  resolved "https://registry.npm.taobao.org/@umijs/preset-react/download/@umijs/preset-react-1.4.17.tgz?cache=0&sync_timestamp=1587457443635&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fpreset-react%2Fdownload%2F%40umijs%2Fpreset-react-1.4.17.tgz#9d0cee4549f193f3614810444034af8e9ba4adb5"
+  integrity sha1-nQzuRUnxk/NhSBBEQDSvjpukrbU=
   dependencies:
     "@umijs/plugin-access" "2.3.1"
     "@umijs/plugin-analytics" "0.2.2"
     "@umijs/plugin-antd" "0.5.0"
     "@umijs/plugin-crossorigin" "1.1.0"
     "@umijs/plugin-dva" "0.6.5"
-    "@umijs/plugin-initial-state" "2.2.0"
-    "@umijs/plugin-layout" "0.9.1"
+    "@umijs/plugin-initial-state" "2.2.1"
+    "@umijs/plugin-layout" "0.9.2"
     "@umijs/plugin-locale" "0.4.4"
     "@umijs/plugin-model" "2.2.0"
     "@umijs/plugin-request" "2.3.2"
@@ -5604,7 +5604,7 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@*:
+commander@*, commander@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npm.taobao.org/commander/download/commander-5.0.0.tgz?cache=0&sync_timestamp=1584148356834&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-5.0.0.tgz#dbf1909b49e5044f8fdaf0adc809f0c0722bdfd0"
   integrity sha1-2/GQm0nlBE+P2vCtyAnwwHIr39A=
@@ -5618,11 +5618,6 @@ commander@^3.0.2:
   version "3.0.2"
   resolved "https://registry.npm.taobao.org/commander/download/commander-3.0.2.tgz?cache=0&sync_timestamp=1584148356834&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-3.0.2.tgz#6837c3fb677ad9933d1cfba42dd14d5117d6b39e"
   integrity sha1-aDfD+2d62ZM9HPukLdFNURfWs54=
-
-commander@^4.0.1:
-  version "4.1.1"
-  resolved "https://registry.npm.taobao.org/commander/download/commander-4.1.1.tgz?cache=0&sync_timestamp=1584148356834&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
-  integrity sha1-n9YCvZNilOnp70aj9NaWQESxgGg=
 
 commondir@^1.0.1:
   version "1.0.1"
@@ -5776,7 +5771,7 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.npm.taobao.org/copy-descriptor/download/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
-copy-to-clipboard@^3, copy-to-clipboard@^3.2.0:
+copy-to-clipboard@^3, copy-to-clipboard@^3.2.0, copy-to-clipboard@^3.3.1:
   version "3.3.1"
   resolved "https://registry.npm.taobao.org/copy-to-clipboard/download/copy-to-clipboard-3.3.1.tgz?cache=0&sync_timestamp=1582384594874&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcopy-to-clipboard%2Fdownload%2Fcopy-to-clipboard-3.3.1.tgz#115aa1a9998ffab6196f93076ad6da3b913662ae"
   integrity sha1-EVqhqZmP+rYZb5MHatbaO5E2Yq4=
@@ -7574,7 +7569,7 @@ execa@4.0.0, execa@^4.0.0:
     signal-exit "^3.0.2"
     strip-final-newline "^2.0.0"
 
-execa@^3.2.0, execa@^3.4.0:
+execa@^3.2.0:
   version "3.4.0"
   resolved "https://registry.npm.taobao.org/execa/download/execa-3.4.0.tgz?cache=0&sync_timestamp=1576749101742&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fexeca%2Fdownload%2Fexeca-3.4.0.tgz#c08ed4550ef65d858fac269ffc8572446f37eb89"
   integrity sha1-wI7UVQ72XYWPrCaf/IVyRG8364k=
@@ -10793,17 +10788,17 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.npm.taobao.org/lines-and-columns/download/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-staged@^10.1.5:
-  version "10.1.5"
-  resolved "https://registry.npm.taobao.org/lint-staged/download/lint-staged-10.1.5.tgz?cache=0&sync_timestamp=1587197857472&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flint-staged%2Fdownload%2Flint-staged-10.1.5.tgz#de21ee7c4a91d75e5135b100b963f65e61645230"
-  integrity sha1-3iHufEqR115RNbEAuWP2XmFkUjA=
+lint-staged@^10.1.6:
+  version "10.1.6"
+  resolved "https://registry.npm.taobao.org/lint-staged/download/lint-staged-10.1.6.tgz?cache=0&sync_timestamp=1587288161031&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flint-staged%2Fdownload%2Flint-staged-10.1.6.tgz#086db5e4f5906642ccf648e9b54375d794a9be81"
+  integrity sha1-CG215PWQZkLM9kjptUN115SpvoE=
   dependencies:
-    chalk "^3.0.0"
-    commander "^4.0.1"
+    chalk "^4.0.0"
+    commander "^5.0.0"
     cosmiconfig "^6.0.0"
     debug "^4.1.1"
     dedent "^0.7.0"
-    execa "^3.4.0"
+    execa "^4.0.0"
     listr "^0.14.3"
     log-symbols "^3.0.0"
     micromatch "^4.0.2"
@@ -16763,10 +16758,10 @@ stylelint@^13.2.1:
     v8-compile-cache "^2.1.0"
     write-file-atomic "^3.0.3"
 
-stylelint@^13.3.2:
-  version "13.3.2"
-  resolved "https://registry.npm.taobao.org/stylelint/download/stylelint-13.3.2.tgz?cache=0&sync_timestamp=1586618701390&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fstylelint%2Fdownload%2Fstylelint-13.3.2.tgz#fbcb69a2452bc35de3eedd95b443449f92ab4107"
-  integrity sha1-+8tpokUrw13j7t2VtENEn5KrQQc=
+stylelint@^13.3.3:
+  version "13.3.3"
+  resolved "https://registry.npm.taobao.org/stylelint/download/stylelint-13.3.3.tgz?cache=0&sync_timestamp=1587471047992&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fstylelint%2Fdownload%2Fstylelint-13.3.3.tgz#e267a628ebfc1adad6f5a1fe818724c34171402b"
+  integrity sha1-4memKOv8GtrW9aH+gYckw0FxQCs=
   dependencies:
     "@stylelint/postcss-css-in-js" "^0.37.1"
     "@stylelint/postcss-markdown" "^0.36.1"

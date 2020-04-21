@@ -8,9 +8,10 @@ import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-sql';
 import 'ace-builds/src-noconflict/theme-monokai';
 import { LeftOutlined } from '@ant-design/icons';
-import { Button, message, Form, Input, Card, Radio, Tabs, Divider } from 'antd';
+import { Button, message, Form, Input, Card, Radio, Tabs, Divider, Popconfirm } from 'antd';
+import copy from 'copy-to-clipboard';
 import { Resp } from '@/utils/request';
-import { add, update, getById, testScript } from '../service';
+import { add, update, getById, publish, testScript, offline } from '../service';
 import { getById as getGroupById } from '../../service';
 import styles from './index.less';
 
@@ -26,6 +27,8 @@ export default () => {
   const { id, groupId } = useParams() as any;
 
   const [form] = Form.useForm();
+
+  const [reload, setReload] = useState(true);
 
   const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined);
   const [testData, setTestData] = useState<any | undefined>(undefined);
@@ -71,7 +74,7 @@ export default () => {
             });
           }
         });
-    }, []);
+    }, [reload]);
   }
   if (groupId) {
     useEffect(() => {
@@ -109,7 +112,6 @@ export default () => {
       hide();
       if (Resp.isOk(data)) {
         message.success('添加成功');
-        history.goBack();
       }
     } catch (error) {
       hide();
@@ -144,11 +146,52 @@ export default () => {
       hide();
       if (Resp.isOk(data)) {
         message.success('更新成功');
-        history.goBack();
       }
     } catch (error) {
       hide();
       message.error('更新失败请重试！');
+    }
+  };
+
+  /**
+   * 发布
+   */
+  const handlePublish = async () => {
+    if (!id) {
+      return;
+    }
+    const hide = message.loading('正在发布');
+    try {
+      const data = await publish(id);
+      hide();
+      if (Resp.isOk(data)) {
+        message.success('发布成功');
+        setReload(!reload);
+      }
+    } catch (error) {
+      hide();
+      message.error('发布失败请重试！');
+    }
+  };
+
+  /**
+   * 下线
+   */
+  const handleOffline = async () => {
+    if (!id) {
+      return;
+    }
+    const hide = message.loading('正在下线');
+    try {
+      const data = await offline(id);
+      hide();
+      if (Resp.isOk(data)) {
+        message.success('下线成功');
+        setReload(!reload);
+      }
+    } catch (error) {
+      hide();
+      message.error('发布失败请重试！');
     }
   };
 
@@ -195,10 +238,10 @@ export default () => {
         <div className={styles.form}>
           <div className={styles.toolbar}>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" disabled={formInit.status === 1}>
                 保存
               </Button>
-              {id && (
+              {id && formInit.status === 0 && (
                 <Button
                   style={{ marginLeft: 10 }}
                   onClick={() => {
@@ -208,8 +251,27 @@ export default () => {
                   重置
                 </Button>
               )}
-              <Button style={{ marginLeft: 10 }}>发布</Button>
-              <Button style={{ marginLeft: 10 }}>下线</Button>
+              <Divider type="vertical" />
+              {id && formInit.status === 0 && (
+                <Popconfirm
+                  title="确定要上线?"
+                  onConfirm={handlePublish}
+                  okText="确定"
+                  cancelText="取消"
+                >
+                  <Button>发布</Button>
+                </Popconfirm>
+              )}
+              {id && formInit.status === 1 && (
+                <Popconfirm
+                  title="确定要下线?"
+                  onConfirm={handleOffline}
+                  okText="确定"
+                  cancelText="取消"
+                >
+                  <Button>下线</Button>
+                </Popconfirm>
+              )}
             </Form.Item>
           </div>
           <Card title="基本信息">
@@ -232,6 +294,20 @@ export default () => {
               rules={[{ required: true, message: '请输入接口地址' }]}
             >
               <Input addonBefore={urlPrefix} />
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 4 }}>
+              <Button
+                type="link"
+                onClick={() => {
+                  const errors = form.getFieldError('apiPath');
+                  if (!errors || errors.length === 0) {
+                    copy(urlPrefix + form.getFieldValue('apiPath'));
+                    message.success('复制成功');
+                  }
+                }}
+              >
+                复制
+              </Button>
             </Form.Item>
             <Form.Item
               label="接口描述"
@@ -310,7 +386,7 @@ export default () => {
           <Card title="请求响应" style={{ marginTop: 10 }}>
             {testData ? (
               <div>
-                执行时间：{testData.executionTime}
+                执行时间：{testData.executionTime}ms
                 <Divider dashed />
                 <ReactJson name={false} src={testData.data} />
               </div>
