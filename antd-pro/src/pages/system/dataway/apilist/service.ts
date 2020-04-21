@@ -35,6 +35,18 @@ export async function update(params: TableListParams) {
   });
 }
 
+export async function publish(id: any) {
+  return request(`/adminapi/dataway/api/${id}/publish`, {
+    method: 'PUT',
+  });
+}
+
+export async function offline(id: any) {
+  return request(`/adminapi/dataway/api/${id}/offline`, {
+    method: 'PUT',
+  });
+}
+
 export async function testScript(params: any) {
   return request('/adminapi/dataway/test', {
     method: 'GET',

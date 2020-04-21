@@ -52,7 +52,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.0.6",
     "@ant-design/pro-layout": "^5.0.9",
-    "@ant-design/pro-table": "2.2.2",
+    "@ant-design/pro-table": "2.2.3",
     "@antv/data-set": "^0.11.4",
     "@ckeditor/ckeditor5-build-classic": "^18.0.0",
     "@ckeditor/ckeditor5-react": "^2.1.0",
@@ -61,6 +61,7 @@
     "ace-builds": "^1.4.11",
     "antd": "^4.1.4",
     "classnames": "^2.2.6",
+    "copy-to-clipboard": "^3.3.1",
     "crypto-js": "^4.0.0",
     "dva": "^2.6.0-beta.20",
     "immutability-helper": "^3.0.2",
@@ -97,7 +98,7 @@
     "@types/react-dom": "^16.9.6",
     "@types/react-helmet": "^5.0.15",
     "@umijs/fabric": "^2.0.8",
-    "@umijs/preset-react": "^1.4.16",
+    "@umijs/preset-react": "^1.4.17",
     "@umijs/preset-ui": "^2.1.12",
     "chalk": "^4.0.0",
     "check-prettier": "^1.0.3",
@@ -113,12 +114,12 @@
     "import-sort-style-module": "^6.0.0",
     "jest-puppeteer": "^4.4.0",
     "jsdom-global": "^3.0.2",
-    "lint-staged": "^10.1.5",
+    "lint-staged": "^10.1.6",
     "mockjs": "^1.1.0",
     "node-fetch": "^2.6.0",
     "prettier": "^2.0.4",
     "pro-download": "1.0.1",
-    "stylelint": "^13.3.2"
+    "stylelint": "^13.3.3"
   },
   "optionalDependencies": {
     "puppeteer": "^2.1.1"

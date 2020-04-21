@@ -54,6 +54,20 @@ export default () => {
       dataIndex: 'apiComment',
     },
     {
+      title: '状态',
+      dataIndex: 'status',
+      valueEnum: {
+        0: {
+          text: '草稿',
+          status: 'Processing',
+        },
+        1: {
+          text: '已发布',
+          status: 'Success',
+        },
+      },
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
