@@ -82,7 +82,7 @@ export default defineConfig({
             {
               name: 'functionbtns',
               icon: 'smile',
-              path: '/system/function/list',
+              path: '/system/function/list/:pid',
               component: './system/function/list',
             },
             {

@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
-import { history } from 'umi';
+import { history, useParams } from 'umi';
 import { Resp } from '@/utils/request';
 import { queryList, update } from './service';
 import UpdateForm from './components/UpdateForm';
@@ -30,8 +30,8 @@ const handleUpdate = async (fields: any) => {
   }
 };
 
-const TableList: React.FC<{}> = (props: any) => {
-  const { location } = props;
+const TableList: React.FC<{}> = () => {
+  const { pid } = useParams() as any;
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [selectRecord, setSelectRecord] = useState<any | undefined>(undefined);
 
@@ -100,32 +100,25 @@ const TableList: React.FC<{}> = (props: any) => {
         </Button>
       }
     >
-      {location.state.funcId && (
-        <ProTable<TableListItem>
-          headerTitle="查询表格"
-          actionRef={actionRef}
-          rowKey="id"
-          search={false}
-          request={async params => {
-            if (!location.state || !location.state.pid) {
-              message.warn('缺少参数，请正确打开');
-              return [];
-            }
-            const data = await queryList({
-              ...params,
-              pid: location.state.pid,
-            });
-            return data.data;
-          }}
-          columns={columns}
-        />
-      )}
-
+      <ProTable<TableListItem>
+        headerTitle="查询表格"
+        actionRef={actionRef}
+        rowKey="id"
+        search={false}
+        request={async (params) => {
+          const data = await queryList({
+            ...params,
+            pid,
+          });
+          return data.data;
+        }}
+        columns={columns}
+      />
       {updateModalVisible && (
         <UpdateForm
           initVals={selectRecord}
           modalVisible={updateModalVisible}
-          onSubmit={async value => {
+          onSubmit={async (value) => {
             const success = await handleUpdate(value);
             if (success) {
               handleUpdateModalVisible(false);

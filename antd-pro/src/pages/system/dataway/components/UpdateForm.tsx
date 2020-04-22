@@ -99,8 +99,12 @@ export default (props: React.PropsWithChildren<FormProps>) => {
   const okHandle = async () => {
     try {
       await form.validate();
-      await form.submit(async (values) => {
-        const rs: boolean = await onSubmit(values);
+      await form.submit(async (values: any) => {
+        const rs: boolean = await onSubmit({
+          ...values,
+          urlPrefix: currentPrefix + values.urlPrefix,
+          id: initVals.id,
+        });
         if (rs) {
           form.reset();
         }
