@@ -112,6 +112,7 @@ export default () => {
       hide();
       if (Resp.isOk(data)) {
         message.success('添加成功');
+        setReload(!reload);
       }
     } catch (error) {
       hide();
@@ -146,6 +147,7 @@ export default () => {
       hide();
       if (Resp.isOk(data)) {
         message.success('更新成功');
+        setReload(!reload);
       }
     } catch (error) {
       hide();

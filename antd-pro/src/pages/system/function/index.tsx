@@ -50,13 +50,7 @@ const TableList: React.FC<{}> = () => {
         <>
           <a
             onClick={() => {
-              history.push({
-                pathname: `/system/function/list`,
-                state: {
-                  funcId: record.funcId,
-                  pid: record.id,
-                },
-              });
+              history.push(`/system/function/list/${record.id}`);
             }}
           >
             查看功能点
@@ -78,7 +72,7 @@ const TableList: React.FC<{}> = () => {
             icon={<SyncOutlined />}
             type="primary"
             onClick={() => {
-              refresh().then(data => {
+              refresh().then((data) => {
                 if (Resp.isOk(data)) {
                   message.success('刷新成功');
                   if (actionRef.current) {
@@ -91,7 +85,7 @@ const TableList: React.FC<{}> = () => {
             同步
           </Button>,
         ]}
-        request={async params => {
+        request={async (params) => {
           const data = await queryList(params);
           return data.data;
         }}

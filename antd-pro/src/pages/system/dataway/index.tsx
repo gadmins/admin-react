@@ -90,7 +90,7 @@ const TableList: React.FC<{}> = () => {
       width: 64,
     },
     {
-      title: '类型',
+      title: '分组类型',
       dataIndex: 'groupType',
       valueEnum: groupTypes,
       formItemProps: {
@@ -98,13 +98,13 @@ const TableList: React.FC<{}> = () => {
       },
     },
     {
-      title: 'URL前缀',
-      dataIndex: 'urlPrefix',
+      title: '分组描述',
+      dataIndex: 'desc',
       hideInSearch: true,
     },
     {
-      title: '描述',
-      dataIndex: 'desc',
+      title: 'URL前缀',
+      dataIndex: 'urlPrefix',
       hideInSearch: true,
     },
     {
@@ -172,7 +172,7 @@ const TableList: React.FC<{}> = () => {
   return (
     <PageHeaderWrapper title="分组管理">
       <ProTable<TableListItem>
-        headerTitle="查询表格"
+        headerTitle="分组列表"
         actionRef={actionRef}
         rowKey="id"
         toolBarRender={(action, { selectedRows }) => [
