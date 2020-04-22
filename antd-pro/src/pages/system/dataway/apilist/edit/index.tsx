@@ -11,6 +11,7 @@ import { LeftOutlined } from '@ant-design/icons';
 import { Button, message, Form, Input, Card, Radio, Tabs, Divider, Popconfirm } from 'antd';
 import copy from 'copy-to-clipboard';
 import { Resp } from '@/utils/request';
+import ParamTable from './components/ParamTable';
 import { add, update, getById, publish, testScript, offline } from '../service';
 import { getById as getGroupById } from '../../service';
 import styles from './index.less';
@@ -23,6 +24,30 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
+const matchPathVars = (path: string) => {
+  const split_start = '{';
+  const split_end = '}';
+  const keys = [];
+  let find_start = false;
+  let temp_key = '';
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < path.length; i++) {
+    const c = path[i];
+    if (c === split_end) {
+      keys.push(temp_key);
+      temp_key = '';
+      find_start = false;
+    }
+    if (find_start) {
+      temp_key += c;
+    }
+    if (c === split_start) {
+      find_start = true;
+    }
+  }
+  return keys.filter((it) => it !== '');
+};
+
 export default () => {
   const { id, groupId } = useParams() as any;
 
@@ -30,8 +55,12 @@ export default () => {
 
   const [reload, setReload] = useState(true);
 
+  const [method, setMethod] = useState<string>('GET');
   const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined);
   const [testData, setTestData] = useState<any | undefined>(undefined);
+  const [pathVars, setPathVars] = useState<any[]>([]);
+  const [queryData, setQueryData] = useState<any[]>([]);
+  const [bodyData, setBodyData] = useState<any[]>([]);
 
   const [urlPrefix, setUrlPrefix] = useState('');
   const [aceType, setAceType] = useState('javascript');
@@ -39,8 +68,30 @@ export default () => {
   const [formInit, setFormInit] = useState<any>({
     apiMethod: 'GET',
     scriptType: 'DataQL',
-    apiScript: 'var t;',
+    apiScript: '',
   });
+
+  const changePathVars = (apiPath: string) => {
+    const keys = matchPathVars(apiPath);
+    if (keys.length > 0) {
+      setPathVars([]);
+      setTimeout(() => {
+        setPathVars(
+          keys.map((it, idx) => {
+            return {
+              key: `${idx}`,
+              name: it,
+              type: 'string',
+              desc: it,
+              def: '0',
+            };
+          }),
+        );
+      }, 1);
+    } else {
+      setPathVars([]);
+    }
+  };
 
   if (id) {
     useEffect(() => {
@@ -70,6 +121,7 @@ export default () => {
                 };
                 form.setFieldsValue(formVals);
                 setFormInit(formVals);
+                changePathVars(apiPath);
               }
             });
           }
@@ -112,7 +164,7 @@ export default () => {
       hide();
       if (Resp.isOk(data)) {
         message.success('添加成功');
-        setReload(!reload);
+        history.goBack();
       }
     } catch (error) {
       hide();
@@ -199,11 +251,28 @@ export default () => {
 
   const handleTest = async () => {
     try {
+      const params = {};
+      if (queryData.length > 0) {
+        queryData.forEach((it) => {
+          params[it.name] = it.def;
+        });
+      }
+      if (bodyData.length > 0) {
+        bodyData.forEach((it) => {
+          params[it.name] = it.def;
+        });
+      }
+      if (pathVars.length > 0) {
+        pathVars.forEach((it) => {
+          params[it.name] = it.def;
+        });
+      }
       const type = form.getFieldValue('scriptType');
       const script = form.getFieldValue('apiScript');
       const data = await testScript({
         type,
         script,
+        params,
       });
       if (Resp.isOk(data)) {
         setTestData(data.data);
@@ -235,6 +304,11 @@ export default () => {
         {...layout}
         form={form}
         initialValues={formInit}
+        onValuesChange={({ apiPath }) => {
+          if (apiPath) {
+            changePathVars(apiPath);
+          }
+        }}
         onFinish={groupId ? handleAdd : handleUpdate}
       >
         <div className={styles.form}>
@@ -282,7 +356,11 @@ export default () => {
               name="apiMethod"
               rules={[{ required: true, message: '请选择' }]}
             >
-              <Radio.Group>
+              <Radio.Group
+                onChange={(e) => {
+                  setMethod(e.target.value);
+                }}
+              >
                 <Radio.Button value="GET">GET</Radio.Button>
                 <Radio.Button value="POST">POST</Radio.Button>
                 <Radio.Button value="PUT">PUT</Radio.Button>
@@ -376,9 +454,50 @@ export default () => {
             )}
             <Form.Item label="测试参数">
               <Tabs onChange={() => {}} type="card">
-                <TabPane tab="参数" key="1">
-                  参数
+                <TabPane tab="path" key="1">
+                  {pathVars.length > 0 && (
+                    <ParamTable
+                      dataSource={pathVars}
+                      onDataChange={(data) => {
+                        setPathVars(data);
+                      }}
+                      addable={false}
+                      deleteable={false}
+                    />
+                  )}
                 </TabPane>
+                {method === 'GET' && (
+                  <TabPane tab="query" key="2">
+                    <ParamTable
+                      editable={{
+                        name: true,
+                        type: true,
+                        desc: true,
+                        def: true,
+                      }}
+                      dataSource={[]}
+                      onDataChange={(data) => {
+                        setQueryData(data);
+                      }}
+                    />
+                  </TabPane>
+                )}
+                {(method === 'POST' || method === 'PUT') && (
+                  <TabPane tab="body" key="3">
+                    <ParamTable
+                      editable={{
+                        name: true,
+                        type: true,
+                        desc: true,
+                        def: true,
+                      }}
+                      dataSource={[]}
+                      onDataChange={(data) => {
+                        setBodyData(data);
+                      }}
+                    />
+                  </TabPane>
+                )}
               </Tabs>
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 4 }}>
@@ -390,7 +509,14 @@ export default () => {
               <div>
                 执行时间：{testData.executionTime}ms
                 <Divider dashed />
-                <ReactJson name={false} src={testData.data} />
+                {typeof testData.data === 'object' && (
+                  <>
+                    <div>执行结果：</div>
+                    <Divider dashed />
+                    <ReactJson name={false} src={testData.data} />
+                  </>
+                )}
+                {typeof testData.data !== 'object' && <div>执行结果：{testData.data}</div>}
               </div>
             ) : (
               <div>无</div>

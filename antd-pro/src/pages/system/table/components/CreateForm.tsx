@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Form, Input } from 'antd';
+import { Modal, Form, Input, Switch } from 'antd';
 
 const FormItem = Form.Item;
 interface FormProps {
@@ -21,8 +21,11 @@ export default (props: React.PropsWithChildren<FormProps>) => {
     ? {
         name: initVals.name,
         comment: initVals.comment,
+        hasDelete: false,
       }
-    : {};
+    : {
+        hasDelete: false,
+      };
 
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
@@ -59,6 +62,9 @@ export default (props: React.PropsWithChildren<FormProps>) => {
           rules={[{ required: true, message: '表注释不能为空' }]}
         >
           <Input placeholder="请输入" />
+        </FormItem>
+        <FormItem {...formLayout} label="逻辑删除" name="hasDelete">
+          <Switch />
         </FormItem>
       </Form>
     </Modal>
