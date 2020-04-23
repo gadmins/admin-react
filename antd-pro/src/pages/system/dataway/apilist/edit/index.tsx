@@ -7,8 +7,20 @@ import ReactJson from 'react-json-view';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-sql';
 import 'ace-builds/src-noconflict/theme-monokai';
-import { LeftOutlined } from '@ant-design/icons';
-import { Button, message, Form, Input, Card, Radio, Tabs, Divider, Popconfirm } from 'antd';
+import { LeftOutlined, CopyOutlined } from '@ant-design/icons';
+import {
+  Button,
+  message,
+  Form,
+  Input,
+  Card,
+  Radio,
+  Tabs,
+  Divider,
+  Popconfirm,
+  Row,
+  Col,
+} from 'antd';
 import copy from 'copy-to-clipboard';
 import { Resp } from '@/utils/request';
 import ParamTable from './components/ParamTable';
@@ -163,7 +175,11 @@ export default () => {
       const data = await add(params);
       hide();
       if (Resp.isOk(data)) {
-        message.success('添加成功');
+        if (params.status === 1) {
+          message.success('添加并发布成功');
+        } else {
+          message.success('添加成功');
+        }
         history.goBack();
       }
     } catch (error) {
@@ -204,6 +220,18 @@ export default () => {
     } catch (error) {
       hide();
       message.error('更新失败请重试！');
+    }
+  };
+
+  const handleAdd2Pub = async () => {
+    try {
+      const fields = await form.validateFields();
+      fields.status = 1;
+      await handleAdd(fields);
+    } catch (error) {
+      if (error.errorFields && error.errorFields.lengt > 0) {
+        form.scrollToField(error.errorFields[0].name[0]);
+      }
     }
   };
 
@@ -317,6 +345,11 @@ export default () => {
               <Button type="primary" htmlType="submit" disabled={formInit.status === 1}>
                 保存
               </Button>
+              {groupId && (
+                <Button style={{ marginLeft: 10 }} onClick={handleAdd2Pub}>
+                  保存并发布
+                </Button>
+              )}
               {id && formInit.status === 0 && (
                 <Button
                   style={{ marginLeft: 10 }}
@@ -357,6 +390,8 @@ export default () => {
               rules={[{ required: true, message: '请选择' }]}
             >
               <Radio.Group
+                size="small"
+                buttonStyle="solid"
                 onChange={(e) => {
                   setMethod(e.target.value);
                 }}
@@ -373,9 +408,24 @@ export default () => {
               wrapperCol={{ span: 8 }}
               rules={[{ required: true, message: '请输入接口地址' }]}
             >
-              <Input addonBefore={urlPrefix} />
+              <Input
+                addonBefore={urlPrefix}
+                suffix={
+                  <Button
+                    type="link"
+                    icon={<CopyOutlined />}
+                    onClick={() => {
+                      const errors = form.getFieldError('apiPath');
+                      if (!errors || errors.length === 0) {
+                        copy(urlPrefix + form.getFieldValue('apiPath'));
+                        message.success('复制成功');
+                      }
+                    }}
+                  />
+                }
+              />
             </Form.Item>
-            <Form.Item wrapperCol={{ offset: 4 }}>
+            {/* <Form.Item style={{ margin: 0, padding: 0 }} wrapperCol={{ offset: 4 }}>
               <Button
                 type="link"
                 onClick={() => {
@@ -388,140 +438,148 @@ export default () => {
               >
                 复制
               </Button>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               label="接口描述"
               name="apiComment"
               wrapperCol={{ span: 8 }}
               rules={[{ required: true, message: '请输入接口描述' }]}
             >
-              <TextArea rows={3} maxLength={220} />
+              <TextArea rows={2} maxLength={220} />
             </Form.Item>
           </Card>
-          <Card title="脚本信息及测试" style={{ marginTop: 10 }}>
-            <Form.Item
-              label="脚本类型"
-              name="scriptType"
-              rules={[{ required: true, message: '请选择脚本类型' }]}
-            >
-              <Radio.Group
-                onChange={(value) => {
-                  if (value.target.value === 'DataQL') {
-                    setAceType('javascript');
-                  } else {
-                    setAceType('sql');
-                  }
-                }}
-              >
-                <Radio.Button value="DataQL">DataQL</Radio.Button>
-                <Radio.Button value="SQL">SQL</Radio.Button>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 4 }}>
-              <div>
-                字体：
-                <Radio.Group
-                  value={aceFontSize}
-                  onChange={(value) => {
-                    setAceFontSize(value.target.value);
-                  }}
+          <Row>
+            <Col span={17}>
+              <Card title="脚本信息及测试" style={{ marginTop: 10 }}>
+                <Form.Item
+                  label="脚本类型"
+                  name="scriptType"
+                  rules={[{ required: true, message: '请选择脚本类型' }]}
                 >
-                  <Radio.Button value={15}>15</Radio.Button>
-                  <Radio.Button value={20}>20</Radio.Button>
-                  <Radio.Button value={23}>23</Radio.Button>
-                </Radio.Group>
-              </div>
-            </Form.Item>
-            <Form.Item
-              label="接口脚本"
-              name="apiScript"
-              wrapperCol={{ span: 8 }}
-              rules={[{ required: true, message: '请输入接口脚本' }]}
-            >
-              <AceEditor
-                mode={aceType}
-                theme="monokai"
-                width="800px"
-                height="300px"
-                fontSize={aceFontSize}
-                editorProps={{ $blockScrolling: true }}
-              />
-            </Form.Item>
-            {errorMsg && (
-              <Form.Item wrapperCol={{ offset: 4 }}>
-                <div className={styles.error}>{errorMsg}</div>
-              </Form.Item>
-            )}
-            <Form.Item label="测试参数">
-              <Tabs onChange={() => {}} type="card">
-                <TabPane tab="path" key="1">
-                  {pathVars.length > 0 && (
-                    <ParamTable
-                      dataSource={pathVars}
-                      onDataChange={(data) => {
-                        setPathVars(data);
+                  <Radio.Group
+                    size="small"
+                    buttonStyle="solid"
+                    onChange={(value) => {
+                      if (value.target.value === 'DataQL') {
+                        setAceType('javascript');
+                      } else {
+                        setAceType('sql');
+                      }
+                    }}
+                  >
+                    <Radio.Button value="DataQL">DataQL</Radio.Button>
+                    <Radio.Button value="SQL">SQL</Radio.Button>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item wrapperCol={{ offset: 4 }}>
+                  <div>
+                    字体：
+                    <Radio.Group
+                      value={aceFontSize}
+                      onChange={(value) => {
+                        setAceFontSize(value.target.value);
                       }}
-                      addable={false}
-                      deleteable={false}
-                    />
-                  )}
-                </TabPane>
-                {method === 'GET' && (
-                  <TabPane tab="query" key="2">
-                    <ParamTable
-                      editable={{
-                        name: true,
-                        type: true,
-                        desc: true,
-                        def: true,
-                      }}
-                      dataSource={[]}
-                      onDataChange={(data) => {
-                        setQueryData(data);
-                      }}
-                    />
-                  </TabPane>
+                    >
+                      <Radio.Button value={15}>15</Radio.Button>
+                      <Radio.Button value={20}>20</Radio.Button>
+                      <Radio.Button value={23}>23</Radio.Button>
+                    </Radio.Group>
+                  </div>
+                </Form.Item>
+                <Form.Item
+                  label="接口脚本"
+                  name="apiScript"
+                  wrapperCol={{ span: 8 }}
+                  rules={[{ required: true, message: '请输入接口脚本' }]}
+                >
+                  <AceEditor
+                    mode={aceType}
+                    theme="monokai"
+                    width="800px"
+                    height="300px"
+                    fontSize={aceFontSize}
+                    editorProps={{ $blockScrolling: true }}
+                  />
+                </Form.Item>
+                {errorMsg && (
+                  <Form.Item wrapperCol={{ offset: 4 }}>
+                    <div className={styles.error}>{errorMsg}</div>
+                  </Form.Item>
                 )}
-                {(method === 'POST' || method === 'PUT') && (
-                  <TabPane tab="body" key="3">
-                    <ParamTable
-                      editable={{
-                        name: true,
-                        type: true,
-                        desc: true,
-                        def: true,
-                      }}
-                      dataSource={[]}
-                      onDataChange={(data) => {
-                        setBodyData(data);
-                      }}
-                    />
-                  </TabPane>
-                )}
-              </Tabs>
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 4 }}>
-              <Button onClick={handleTest}>测试</Button>
-            </Form.Item>
-          </Card>
-          <Card title="请求响应" style={{ marginTop: 10 }}>
-            {testData ? (
-              <div>
-                执行时间：{testData.executionTime}ms
-                <Divider dashed />
-                {typeof testData.data === 'object' && (
-                  <>
-                    <div>执行结果：</div>
+                <Form.Item label="测试参数">
+                  <Tabs onChange={() => {}} type="card">
+                    <TabPane tab="path" key="1">
+                      {pathVars.length > 0 && (
+                        <ParamTable
+                          dataSource={pathVars}
+                          onDataChange={(data) => {
+                            setPathVars(data);
+                          }}
+                          addable={false}
+                          deleteable={false}
+                        />
+                      )}
+                    </TabPane>
+                    {method === 'GET' && (
+                      <TabPane tab="query" key="2">
+                        <ParamTable
+                          editable={{
+                            name: true,
+                            type: true,
+                            desc: true,
+                            def: true,
+                          }}
+                          dataSource={[]}
+                          onDataChange={(data) => {
+                            setQueryData(data);
+                          }}
+                        />
+                      </TabPane>
+                    )}
+                    {(method === 'POST' || method === 'PUT') && (
+                      <TabPane tab="body" key="3">
+                        <ParamTable
+                          editable={{
+                            name: true,
+                            type: true,
+                            desc: true,
+                            def: true,
+                          }}
+                          dataSource={[]}
+                          onDataChange={(data) => {
+                            setBodyData(data);
+                          }}
+                        />
+                      </TabPane>
+                    )}
+                  </Tabs>
+                </Form.Item>
+                <Form.Item wrapperCol={{ offset: 4 }}>
+                  <Button onClick={handleTest}>测试</Button>
+                </Form.Item>
+              </Card>
+            </Col>
+            <Col span={7}>
+              <Card title="请求响应" style={{ height: 680, marginLeft: 10, marginTop: 10 }}>
+                {testData ? (
+                  <div>
+                    执行时间：{testData.executionTime}ms
                     <Divider dashed />
-                    <ReactJson name={false} src={testData.data} />
-                  </>
+                    {typeof testData.data === 'object' && (
+                      <>
+                        <div>执行结果：</div>
+                        <Divider dashed />
+                        <ReactJson style={{ maxHeight: 600 }} name={false} src={testData.data} />
+                      </>
+                    )}
+                    {typeof testData.data !== 'object' && <div>执行结果：{testData.data}</div>}
+                  </div>
+                ) : (
+                  <div>无</div>
                 )}
-                {typeof testData.data !== 'object' && <div>执行结果：{testData.data}</div>}
-              </div>
-            ) : (
-              <div>无</div>
-            )}
-          </Card>
+              </Card>
+            </Col>
+          </Row>
         </div>
       </Form>
     </PageHeaderWrapper>
