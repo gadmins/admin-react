@@ -127,7 +127,7 @@ class EditableTable extends React.Component<ParamTableProps> {
       {
         title: '参数名称',
         dataIndex: 'name',
-        width: '30%',
+        width: 100,
         editable: editable ? editable.name : false,
       },
       {
