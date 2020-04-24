@@ -99,7 +99,7 @@
     "@types/react-helmet": "^5.0.15",
     "@umijs/fabric": "^2.0.8",
     "@umijs/preset-react": "^1.4.17",
-    "@umijs/preset-ui": "^2.1.12",
+    "@umijs/preset-ui": "^2.1.13",
     "chalk": "^4.0.0",
     "check-prettier": "^1.0.3",
     "cross-env": "^7.0.2",
