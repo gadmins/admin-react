@@ -343,7 +343,7 @@ export default () => {
           <div className={styles.toolbar}>
             <Form.Item>
               <Button type="primary" htmlType="submit" disabled={formInit.status === 1}>
-                保存
+                {groupId ? '保存' : '修改'}
               </Button>
               {groupId && (
                 <Button style={{ marginLeft: 10 }} onClick={handleAdd2Pub}>

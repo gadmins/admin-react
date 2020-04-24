@@ -3423,10 +3423,10 @@
   dependencies:
     "@umijs/test" "^3.0.7"
 
-"@umijs/plugin-ui-blocks@^2.1.7":
-  version "2.1.7"
-  resolved "https://registry.npm.taobao.org/@umijs/plugin-ui-blocks/download/@umijs/plugin-ui-blocks-2.1.7.tgz?cache=0&sync_timestamp=1587110108572&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fplugin-ui-blocks%2Fdownload%2F%40umijs%2Fplugin-ui-blocks-2.1.7.tgz#2e4f2ea17d7dcdb5e2233ad97aafdc829187a34b"
-  integrity sha1-Lk8uoX19zbXiIzrZeq/cgpGHo0s=
+"@umijs/plugin-ui-blocks@^2.1.8":
+  version "2.1.8"
+  resolved "https://registry.npm.taobao.org/@umijs/plugin-ui-blocks/download/@umijs/plugin-ui-blocks-2.1.8.tgz#4eb810493675fe3f7da0b200ed6dfd07de16f0fc"
+  integrity sha1-TrgQSTZ1/j99oLIA7W39B94W8Pw=
   dependencies:
     "@babel/parser" "7.4.5"
     "@babel/traverse" "7.4.5"
@@ -3495,12 +3495,12 @@
     "@umijs/plugin-request" "2.3.2"
     "@umijs/plugin-test" "1.0.0"
 
-"@umijs/preset-ui@^2.1.12":
-  version "2.1.12"
-  resolved "https://registry.npm.taobao.org/@umijs/preset-ui/download/@umijs/preset-ui-2.1.12.tgz?cache=0&sync_timestamp=1587110108345&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fpreset-ui%2Fdownload%2F%40umijs%2Fpreset-ui-2.1.12.tgz#ed25c7e535a5474ab6952e9235111a56ae65c78c"
-  integrity sha1-7SXH5TWlR0q2lS6SNREaVq5lx4w=
+"@umijs/preset-ui@^2.1.13":
+  version "2.1.13"
+  resolved "https://registry.npm.taobao.org/@umijs/preset-ui/download/@umijs/preset-ui-2.1.13.tgz#3212ebb037bae2a22942fefd1ec60a0f43274cfc"
+  integrity sha1-MhLrsDe64qIpQv79HsYKD0MnTPw=
   dependencies:
-    "@umijs/plugin-ui-blocks" "^2.1.7"
+    "@umijs/plugin-ui-blocks" "^2.1.8"
     "@umijs/plugin-ui-tasks" "^2.1.1"
     "@umijs/ui" "^2.1.7"
     immer "^5.0.0"
