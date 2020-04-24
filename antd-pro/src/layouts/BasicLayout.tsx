@@ -30,9 +30,12 @@ import defaultSettings from '../../config/defaultSettings';
 
 const UmiRoutes = require('@@/core/routes');
 
-const allRoutes: any[] = UmiRoutes.routes[1].routes[0].routes.filter(
-  (it: any) => it.path !== undefined,
-);
+let allRoutes: any[] = [];
+if (UmiRoutes.routes) {
+  allRoutes = UmiRoutes.routes
+    .filter((it: any) => it.path === '/')[0]
+    .routes[0].routes.filter((it: any) => it.path !== undefined);
+}
 
 const noMatch = (
   <Result

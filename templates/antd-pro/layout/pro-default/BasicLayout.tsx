@@ -25,14 +25,17 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { WithFalse } from '@ant-design/pro-layout/lib/typings';
 import { string2Icon } from '@/utils/icon';
 import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
+import logo from '@/assets/logo.svg';
 import defaultSettings from '../../config/defaultSettings';
-import logo from '../assets/logo.svg';
 
 const UmiRoutes = require('@@/core/routes');
 
-const allRoutes: any[] = UmiRoutes.routes[1].routes[0].routes.filter(
-  (it: any) => it.path !== undefined,
-);
+let allRoutes: any[] = [];
+if (UmiRoutes.routes) {
+  allRoutes = UmiRoutes.routes
+    .filter((it: any) => it.path === '/')[0]
+    .routes[0].routes.filter((it: any) => it.path !== undefined);
+}
 
 const noMatch = (
   <Result
@@ -96,7 +99,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;
 let lastPatname: string | undefined;
-const BasicLayout: React.FC<BasicLayoutProps> = props => {
+const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
     dispatch,
     children,
@@ -174,7 +177,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     if (lastPatname && history.location.pathname === lastPatname) {
       return;
     }
-    const idx = authFuncs.findIndex(it => history.location.pathname === it.url);
+    const idx = authFuncs.findIndex((it) => history.location.pathname === it.url);
     if (!keys || keys.length === 0) {
       let auth;
       if (idx === -1) {
@@ -191,15 +194,15 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     let childs: any[] = menus;
     const bcs: any[] = [];
     let menuKey = '';
-    keys.forEach(k => {
+    keys.forEach((k) => {
       if (k === '/') {
         bcs.push({
           path: `/#${menus[0].path}`,
           name: formatMsg(`menu.${menus[0].key}`, 'home'),
         });
       } else {
-        menuKey += `.%{k}`;
-        const midx = childs.findIndex(it => it.key === k);
+        menuKey += `.${k}`;
+        const midx = childs.findIndex((it) => it.key === k);
         if (midx > -1) {
           bcs.push({
             name: formatMsg(`menu.${menuKey}.${childs[midx].key}`, childs[midx].key),
@@ -228,6 +231,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     }
     if (location.state && location.state.funcId) {
       lastFuncId = location.state.funcId;
+      dispatch({
+        type: 'schema/querySchema',
+        payload: lastFuncId,
+      });
     }
     setAuthority(undefined);
     showPage();
@@ -241,10 +248,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     if (pathkeys.length > 0) {
       curKey = [pathkeys[0]];
       if (menus.length > 0) {
-        curIdx = menus.findIndex(it => it.name === pathkeys[0]);
+        curIdx = menus.findIndex((it) => it.name === pathkeys[0]);
       }
     }
-
     const customMenuDataRender = () => {
       if (!hasSysMenu) {
         return menus;
@@ -281,10 +287,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
               border: 'none',
             }}
             onClick={({ key }) => {
-              curIdx = menus.findIndex(it => it.name === key);
+              curIdx = menus.findIndex((it) => it.name === key);
             }}
           >
-            {sysMenus.map(it => (
+            {sysMenus.map((it) => (
               <Menu.Item key={it.name}>
                 <Link
                   to={{
@@ -303,7 +309,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         )}
         {!hasSysMenu && (
           <Breadcrumb>
-            {breadcrumbs.map(b => (
+            {breadcrumbs.map((b) => (
               <Breadcrumb.Item>{b.path ? <a href={b.path}>{b.name}</a> : b.name}</Breadcrumb.Item>
             ))}
           </Breadcrumb>
@@ -322,7 +328,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       ...routers,
     ];
     if (hasSysMenu) {
-      sysMenus = menus.map(it => ({
+      sysMenus = menus.map((it) => ({
         icon: it.icon,
         name: it.name,
         defTxt: it.defTxt,
@@ -351,7 +357,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       onOpenChange={onOpenChange}
       onCollapse={handleMenuCollapse}
       menuProps={{
-        onClick: item => {
+        onClick: (item) => {
           if (item.key === lastMenuKey) {
             return;
           }
@@ -375,7 +381,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           </Link>
         );
       }}
-      itemRender={(route, params, routes, paths) => {
+      itemRender={(route, _, routes, paths) => {
         const first = routes.indexOf(route) === 0;
         return first ? (
           <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
@@ -384,7 +390,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         );
       }}
       footerRender={footerRender}
-      formatMessage={e => {
+      formatMessage={(e) => {
         const defTxt = e.defaultMessage && defMenuTxt[e.defaultMessage];
         if (defTxt) {
           e.defaultMessage = defTxt;

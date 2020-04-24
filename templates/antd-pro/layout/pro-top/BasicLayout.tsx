@@ -31,9 +31,12 @@ import './layout.less';
 
 const UmiRoutes = require('@@/core/routes');
 
-const allRoutes: any[] = UmiRoutes.routes[1].routes[0].routes.filter(
-  (it: any) => it.path !== undefined,
-);
+let allRoutes: any[] = [];
+if (UmiRoutes.routes) {
+  allRoutes = UmiRoutes.routes
+    .filter((it: any) => it.path === '/')[0]
+    .routes[0].routes.filter((it: any) => it.path !== undefined);
+}
 
 const noMatch = (
   <Result
@@ -197,7 +200,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           name: formatMsg(`menu.${menus[0].key}`, 'home'),
         });
       } else {
-        menuKey += `.%{k}`;
+        menuKey += `.${k}`;
         const midx = childs.findIndex(it => it.key === k);
         if (midx > -1) {
           bcs.push({
@@ -226,6 +229,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     }
     if (location.state && location.state.funcId) {
       lastFuncId = location.state.funcId;
+      dispatch({
+        type: 'schema/querySchema',
+        payload: lastFuncId,
+      });
     }
     setAuthority(undefined);
     showPage();
