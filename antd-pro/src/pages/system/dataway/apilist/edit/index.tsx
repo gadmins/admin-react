@@ -23,6 +23,7 @@ import {
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import { Resp } from '@/utils/request';
+import IconFont from '@/components/IconFont';
 import ParamTable from './components/ParamTable';
 import { add, update, getById, publish, testScript, offline } from '../service';
 import { getById as getGroupById } from '../../service';
@@ -368,7 +369,7 @@ export default () => {
                   okText="确定"
                   cancelText="取消"
                 >
-                  <Button>发布</Button>
+                  <Button icon={<IconFont type="g-fabu" />}>发布</Button>
                 </Popconfirm>
               )}
               {id && formInit.status === 1 && (
@@ -378,7 +379,7 @@ export default () => {
                   okText="确定"
                   cancelText="取消"
                 >
-                  <Button>下线</Button>
+                  <Button icon={<IconFont type="g-xiajia" />}>下线</Button>
                 </Popconfirm>
               )}
             </Form.Item>
