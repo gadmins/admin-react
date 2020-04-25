@@ -26,6 +26,7 @@ const handleAdd = async (fields: any) => {
       message.success('添加成功');
       return true;
     }
+    message.warn(data.msg);
     return false;
   } catch (error) {
     hide();
@@ -78,7 +79,7 @@ export default () => {
   const [copyMenu, setCopyMenu] = useState(undefined);
 
   const loadMenuTree = () => {
-    getMenuTree().then(data => {
+    getMenuTree().then((data) => {
       if (data && data.data) {
         setMenuTree(data.data);
         setTimeout(() => {
@@ -213,7 +214,7 @@ export default () => {
               {selectMenu && (
                 <UpdateForm
                   onSubmit={(formVals: FormValueType) => {
-                    updateMenu(formVals).then(data => {
+                    updateMenu(formVals).then((data) => {
                       if (Resp.isOk(data)) {
                         message.success('修改成功');
                         loadMenuTree();
@@ -231,7 +232,7 @@ export default () => {
       </div>
       {createModalVisible && (
         <CreateForm
-          onSubmit={async value => {
+          onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {
               handleModalVisible(false);

@@ -23,6 +23,7 @@ import {
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import { Resp } from '@/utils/request';
+import IconFont from '@/components/IconFont';
 import ParamTable from './components/ParamTable';
 import { add, update, getById, publish, testScript, offline } from '../service';
 import { getById as getGroupById } from '../../service';
@@ -170,7 +171,11 @@ export default () => {
     try {
       params.groupId = groupId;
       params.apiPath = urlPrefix + params.apiPath;
-      params.apiReqSchema = JSON.stringify({});
+      params.apiReqSchema = JSON.stringify({
+        path: pathVars,
+        query: queryData,
+        body: bodyData,
+      });
       params.apiRespSchema = JSON.stringify({});
       const data = await add(params);
       hide();
@@ -181,6 +186,8 @@ export default () => {
           message.success('添加成功');
         }
         history.goBack();
+      } else {
+        message.warn(data.msg);
       }
     } catch (error) {
       hide();
@@ -206,7 +213,11 @@ export default () => {
     try {
       params.groupId = groupId;
       params.apiPath = urlPrefix + params.apiPath;
-      params.apiReqSchema = JSON.stringify({});
+      params.apiReqSchema = JSON.stringify({
+        path: pathVars,
+        query: queryData,
+        body: bodyData,
+      });
       params.apiRespSchema = JSON.stringify({});
       const data = await update({
         id,
@@ -216,6 +227,8 @@ export default () => {
       if (Resp.isOk(data)) {
         message.success('更新成功');
         setReload(!reload);
+      } else {
+        message.warn(data.msg);
       }
     } catch (error) {
       hide();
@@ -249,6 +262,8 @@ export default () => {
       if (Resp.isOk(data)) {
         message.success('发布成功');
         setReload(!reload);
+      } else {
+        message.warn(data.msg);
       }
     } catch (error) {
       hide();
@@ -270,6 +285,8 @@ export default () => {
       if (Resp.isOk(data)) {
         message.success('下线成功');
         setReload(!reload);
+      } else {
+        message.warn(data.msg);
       }
     } catch (error) {
       hide();
@@ -368,7 +385,7 @@ export default () => {
                   okText="确定"
                   cancelText="取消"
                 >
-                  <Button>发布</Button>
+                  <Button icon={<IconFont type="g-fabu" />}>发布</Button>
                 </Popconfirm>
               )}
               {id && formInit.status === 1 && (
@@ -378,7 +395,7 @@ export default () => {
                   okText="确定"
                   cancelText="取消"
                 >
-                  <Button>下线</Button>
+                  <Button icon={<IconFont type="g-xiajia" />}>下线</Button>
                 </Popconfirm>
               )}
             </Form.Item>

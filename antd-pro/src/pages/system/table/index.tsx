@@ -23,7 +23,7 @@ const handleAdd = async (fields: any) => {
       message.success('添加成功');
       return true;
     }
-    message.error(data.msg);
+    message.warn(data.msg);
     return false;
   } catch (error) {
     hide();
@@ -45,7 +45,7 @@ const handleUpdate = async (fields: any) => {
       message.success('更新成功');
       return true;
     }
-    message.error(data.msg);
+    message.warn(data.msg);
     return false;
   } catch (error) {
     hide();
@@ -68,6 +68,7 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
       message.success('删除成功，即将刷新');
       return true;
     }
+    message.warn(data.msg);
     return false;
   } catch (error) {
     hide();
