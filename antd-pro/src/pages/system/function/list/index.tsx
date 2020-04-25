@@ -22,6 +22,7 @@ const handleUpdate = async (fields: any) => {
       message.success('更新成功');
       return true;
     }
+    message.warn(data.msg);
     return false;
   } catch (error) {
     hide();

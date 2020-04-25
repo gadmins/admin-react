@@ -22,6 +22,7 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
       message.success('删除成功，即将刷新');
       return true;
     }
+    message.warn(data.msg);
     return false;
   } catch (error) {
     hide();
@@ -48,6 +49,15 @@ export default () => {
     {
       title: '接口请求方法',
       dataIndex: 'apiMethod',
+      valueEnum: {
+        GET: 'GET',
+        POST: 'POST',
+        PUT: 'PUT',
+        DELETE: 'DELETE',
+      },
+      formItemProps: {
+        allowClear: true,
+      },
     },
     {
       title: '接口描述',
@@ -65,6 +75,9 @@ export default () => {
           text: '已发布',
           status: 'Success',
         },
+      },
+      formItemProps: {
+        allowClear: true,
       },
     },
     {

@@ -171,7 +171,11 @@ export default () => {
     try {
       params.groupId = groupId;
       params.apiPath = urlPrefix + params.apiPath;
-      params.apiReqSchema = JSON.stringify({});
+      params.apiReqSchema = JSON.stringify({
+        path: pathVars,
+        query: queryData,
+        body: bodyData,
+      });
       params.apiRespSchema = JSON.stringify({});
       const data = await add(params);
       hide();
@@ -182,6 +186,8 @@ export default () => {
           message.success('添加成功');
         }
         history.goBack();
+      } else {
+        message.warn(data.msg);
       }
     } catch (error) {
       hide();
@@ -207,7 +213,11 @@ export default () => {
     try {
       params.groupId = groupId;
       params.apiPath = urlPrefix + params.apiPath;
-      params.apiReqSchema = JSON.stringify({});
+      params.apiReqSchema = JSON.stringify({
+        path: pathVars,
+        query: queryData,
+        body: bodyData,
+      });
       params.apiRespSchema = JSON.stringify({});
       const data = await update({
         id,
@@ -217,6 +227,8 @@ export default () => {
       if (Resp.isOk(data)) {
         message.success('更新成功');
         setReload(!reload);
+      } else {
+        message.warn(data.msg);
       }
     } catch (error) {
       hide();
@@ -250,6 +262,8 @@ export default () => {
       if (Resp.isOk(data)) {
         message.success('发布成功');
         setReload(!reload);
+      } else {
+        message.warn(data.msg);
       }
     } catch (error) {
       hide();
@@ -271,6 +285,8 @@ export default () => {
       if (Resp.isOk(data)) {
         message.success('下线成功');
         setReload(!reload);
+      } else {
+        message.warn(data.msg);
       }
     } catch (error) {
       hide();
