@@ -99,6 +99,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;
 let lastPatname: string | undefined;
+let documentTitle: string | undefined;
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
     dispatch,
@@ -134,6 +135,15 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       });
     }
   }, []);
+
+  if (documentTitle) {
+    document.title = documentTitle;
+  } else if (menus && menus.length > 0) {
+    const keys = history.location.pathname.split('/').filter((it) => it !== '');
+    if (keys.length > 0) {
+      document.title = `${defMenuTxt[keys[keys.length - 1]]} - ${defaultSettings.title}`;
+    }
+  }
 
   const formatMsg = (id: String, key: string) => {
     const e: any = { id };
@@ -295,9 +305,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
                 <Link
                   to={{
                     pathname: it.path || '/',
-                    state: {
-                      funcId: it.funcId,
-                    },
                   }}
                 >
                   {it.icon}
@@ -372,9 +379,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
           <Link
             to={{
               pathname: menuItemProps.path,
-              state: {
-                funcId: menuItemProps.funcId,
-              },
+            }}
+            onClick={() => {
+              documentTitle = `${menuItemProps.name} - ${defaultSettings.title}`;
             }}
           >
             {defaultDom}
