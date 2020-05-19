@@ -5,6 +5,7 @@ import webpackPlugin from './plugin.config';
 const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION, REACT_APP_ENV } = process.env;
 const { winPath } = utils;
 export default defineConfig({
+  publicPath: './',
   antd: {
     // dark: true,
     // compact: true,
