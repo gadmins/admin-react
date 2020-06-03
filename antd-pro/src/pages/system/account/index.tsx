@@ -5,7 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
 import { Resp } from '@/utils/request';
-import { queryAllRole, queryList, add, remove, update } from './service';
+import { queryAllRole, queryList, add, remove, update, unlock } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 
@@ -72,6 +72,29 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   } catch (error) {
     hide();
     message.error('删除失败，请重试');
+    return false;
+  }
+};
+
+/**
+ *  解锁
+ * @param selectedRows
+ */
+const handleUnlock = async (selectedRows: TableListItem[]) => {
+  const hide = message.loading('正在解锁');
+  if (!selectedRows) return true;
+  try {
+    const data = await unlock(selectedRows.map((row) => row.id));
+    hide();
+    if (Resp.isOk(data)) {
+      message.success('解锁成功，即将刷新');
+      return true;
+    }
+    message.warn(data.msg);
+    return false;
+  } catch (error) {
+    hide();
+    message.error('解锁失败，请重试');
     return false;
   }
 };
@@ -196,11 +219,22 @@ const TableList: React.FC<{}> = () => {
                           });
                         },
                       });
+                    } else if (e.key === 'unlock') {
+                      Modal.confirm({
+                        title: '确定要解锁这些用户?',
+                        content: '解锁提示',
+                        onOk() {
+                          handleUnlock(selectedRows).then(() => {
+                            action.reload();
+                          });
+                        },
+                      });
                     }
                   }}
                   selectedKeys={[]}
                 >
                   <Menu.Item key="remove">批量删除</Menu.Item>
+                  <Menu.Item key="unlock">批量解锁</Menu.Item>
                 </Menu>
               }
             >
