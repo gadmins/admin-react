@@ -32,6 +32,12 @@ export async function remove(ids: number[]) {
   });
 }
 
+export async function unlock(ids: number[]) {
+  return request(`/adminapi/account/unlock/${ids.join(',')}`, {
+    method: 'PUT',
+  });
+}
+
 export async function update(params: TableListParams) {
   return request(`/adminapi/account/${params.id}`, {
     method: 'PUT',
