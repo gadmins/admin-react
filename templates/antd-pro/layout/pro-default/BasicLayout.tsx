@@ -184,6 +184,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     }, 10);
   };
   const onOpenChange = (keys: WithFalse<string[]>) => {
+    if (authFuncs.length === 0) {
+      return;
+    }
     if (lastPatname && history.location.pathname === lastPatname) {
       return;
     }

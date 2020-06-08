@@ -33,7 +33,7 @@ const errorHandler = (error: { response: Response }): Response => {
     response
       .clone()
       .json()
-      .then(data => {
+      .then((data) => {
         if (data && data.msg) {
           if (data.code === 501) {
             if (history.location.pathname !== '/account/login') {
@@ -75,10 +75,16 @@ const errorHandler = (error: { response: Response }): Response => {
  */
 const request = extend({
   errorHandler, // 默认错误处理
+  prefix: process.env.apiUrl,
   credentials: 'include', // 默认请求是否带上cookie
 });
 
 export default request;
+
+/**
+ * 接口BASE_URL
+ */
+export const API_BASE_URL = process.env.apiUrl;
 
 const CODE = {
   OK: 0,

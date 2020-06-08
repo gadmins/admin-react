@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext, useEffect, MutableRefObject } from
 import { Table, Select, Checkbox, Form, Input, Button, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import * as HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import '../index.less';
 
@@ -16,7 +16,7 @@ const DragableBodyRow = ({ index = 0, moveRow, className = '', style = {}, ...re
   const ref = React.useRef();
   const [{ isOver, dropClassName }, drop] = useDrop({
     accept: type,
-    collect: monitor => {
+    collect: (monitor) => {
       const { index: dragIndex } = monitor.getItem() || {};
       if (dragIndex === index) {
         return {};
@@ -32,7 +32,7 @@ const DragableBodyRow = ({ index = 0, moveRow, className = '', style = {}, ...re
   });
   const [, drag] = useDrag({
     item: { type, index },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
@@ -147,7 +147,7 @@ export default (props: any) => {
   const { dataSrouce, onDataChange, onAddRow, onDeleteRow } = props;
   const handleSave = (row: any) => {
     const newData = [...dataSrouce];
-    const index = newData.findIndex(item => row.key === item.key);
+    const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
     newData.splice(index, 1, {
       ...item,
@@ -230,7 +230,7 @@ export default (props: any) => {
         </Popconfirm>
       ),
     },
-  ].map(col => {
+  ].map((col) => {
     if (!col.editable) {
       return col;
     }
