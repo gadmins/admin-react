@@ -1,6 +1,6 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Input, Upload, Form, message } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi';
+import { FormattedMessage, injectIntl, IntlShape } from 'umi';
 import React, { Component, Fragment } from 'react';
 
 import { connect } from 'dva';
@@ -69,6 +69,7 @@ const AvatarView = ({ avatar }: { avatar: string }) => (
 
 interface BaseViewProps {
   currentUser?: CurrentUser;
+  intl: IntlShape;
 }
 
 class BaseView extends Component<BaseViewProps> {
@@ -91,11 +92,13 @@ class BaseView extends Component<BaseViewProps> {
   };
 
   handleFinish = () => {
+    const { formatMessage } = this.props.intl;
     message.success(formatMessage({ id: 'accountsettings.basic.update.success' }));
   };
 
   render() {
     const { currentUser } = this.props;
+    const { formatMessage } = this.props.intl;
     return (
       <div className={styles.baseView} ref={this.getViewDom}>
         <div className={styles.left}>
@@ -151,4 +154,4 @@ export default connect(
   ({ accountSettings }: { accountSettings: { currentUser: CurrentUser } }) => ({
     currentUser: accountSettings.currentUser,
   }),
-)(BaseView);
+)(injectIntl(BaseView));
