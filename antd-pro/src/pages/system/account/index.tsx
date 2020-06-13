@@ -211,8 +211,8 @@ const TableList: React.FC<{}> = () => {
                   onClick={async (e) => {
                     if (e.key === 'remove') {
                       Modal.confirm({
-                        title: '确定要删除这些用户?',
-                        content: '删除提示',
+                        title: '删除提示',
+                        content: '确定要删除这些用户?',
                         onOk() {
                           handleRemove(selectedRows).then(() => {
                             action.reload();
@@ -221,8 +221,8 @@ const TableList: React.FC<{}> = () => {
                       });
                     } else if (e.key === 'unlock') {
                       Modal.confirm({
-                        title: '确定要解锁这些用户?',
-                        content: '解锁提示',
+                        title: '解锁提示',
+                        content: '确定要解锁这些用户?',
                         onOk() {
                           handleUnlock(selectedRows).then(() => {
                             action.reload();

@@ -50,7 +50,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
             message: '角色不能为空',
           },
         ],
-        enum: roles.map(it => ({
+        enum: roles.map((it) => ({
           value: it.id,
           label: it.name,
         })),
@@ -58,7 +58,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
     },
   };
   useEffect(() => {
-    queryAllRole().then(data => {
+    queryAllRole().then((data) => {
       if (Resp.isOk(data)) {
         setRoles(data.data);
       }

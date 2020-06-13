@@ -177,8 +177,8 @@ const TableList: React.FC<{}> = () => {
                   onClick={async (e) => {
                     if (e.key === 'remove') {
                       Modal.confirm({
-                        title: '确定要删除这些角色?',
-                        content: '删除提示',
+                        title: '删除提示',
+                        content: '删除角色将导致用户角色权限失效，确定要删除这些角色?',
                         onOk() {
                           handleRemove(selectedRows).then(() => {
                             action.reload();
