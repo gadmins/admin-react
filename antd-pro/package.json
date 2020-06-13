@@ -60,7 +60,7 @@
     "@formily/antd": "^1.1.7",
     "@formily/antd-components": "^1.1.7",
     "ace-builds": "^1.4.11",
-    "ahooks": "^1.0.0",
+    "ahooks": "^1.0.1",
     "antd": "^4.3.3",
     "classnames": "^2.2.6",
     "copy-to-clipboard": "^3.3.1",

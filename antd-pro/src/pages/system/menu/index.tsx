@@ -154,8 +154,8 @@ export default () => {
           icon={<MinusOutlined />}
           onClick={async () => {
             Modal.confirm({
-              title: '确定要删除这些菜单?',
-              content: '删除提示',
+              title: '删除提示',
+              content: '确定要删除这些菜单?',
               onOk() {
                 delMenus(menuIds);
               },

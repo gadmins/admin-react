@@ -133,8 +133,8 @@ export default () => {
                   onClick={async (e) => {
                     if (e.key === 'remove') {
                       Modal.confirm({
-                        title: '确定要删除这些字典?',
-                        content: '删除提示',
+                        title: '删除提示',
+                        content: '确定要删除这些字典?',
                         onOk() {
                           handleRemove(selectedRows).then(() => {
                             action.reload();
