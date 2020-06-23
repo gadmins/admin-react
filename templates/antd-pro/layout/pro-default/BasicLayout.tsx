@@ -28,6 +28,8 @@ import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
 import logo from '@/assets/logo.svg';
 import defaultSettings from '../../config/defaultSettings';
 
+const enableI18n = false;
+
 const UmiRoutes = require('@@/core/routes');
 
 let allRoutes: any[] = [];
@@ -98,7 +100,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 };
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;
-let lastPatname: string | undefined;
+let lastPathname: string | undefined;
 let documentTitle: string | undefined;
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
@@ -139,7 +141,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   if (documentTitle) {
     document.title = documentTitle;
   } else if (menus && menus.length > 0) {
-    const keys = history.location.pathname.split('/').filter((it) => it !== '');
+    const keys = history.location.pathname.split('/').filter((it: string) => it !== '');
     if (keys.length > 0) {
       document.title = `${defMenuTxt[keys[keys.length - 1]]} - ${defaultSettings.title}`;
     }
@@ -153,6 +155,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     const defTxt = e.defaultMessage && defMenuTxt[e.defaultMessage];
     if (defTxt) {
       e.defaultMessage = defTxt;
+    }
+    if (enableI18n === false) {
+      return e.defaultMessage;
     }
     return intl.formatMessage(e);
   };
@@ -168,9 +173,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       });
     }
   };
-  history.listen(({ pathname }) => {
+  history.listen((data: any) => {
+    const { pathname } = data;
     if (pathname === '/account/login') {
-      lastPatname = '/account/login';
+      lastPathname = '/account/login';
       lastFuncId = undefined;
       lastMenuKey = undefined;
     }
@@ -180,14 +186,24 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     // 显示界面
     setTimeout(() => {
       setReady(true);
-      lastPatname = history.location.pathname;
+      lastPathname = history.location.pathname;
+      const routeIdx = allRoutes.findIndex((it: any) => it.path === lastPathname);
+      if (routeIdx > -1) {
+        const { title, name } = allRoutes[routeIdx];
+        const pageTitle = title || defMenuTxt[name];
+        if (pageTitle && pageTitle !== '') {
+          document.title = `${pageTitle}-${defaultSettings.title}`;
+        } else {
+          document.title = defaultSettings.title;
+        }
+      }
     }, 10);
   };
   const onOpenChange = (keys: WithFalse<string[]>) => {
     if (authFuncs.length === 0) {
       return;
     }
-    if (lastPatname && history.location.pathname === lastPatname) {
+    if (lastPathname && history.location.pathname === lastPathname) {
       return;
     }
     const idx = authFuncs.findIndex((it) => history.location.pathname === it.url);
@@ -236,7 +252,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       }
     }
     if (location.state && lastFuncId && lastFuncId === location.state.funcId) {
-      if (ready === false || history.location.pathname !== lastPatname) {
+      if (ready === false || history.location.pathname !== lastPathname) {
         setAuthority(undefined);
         showPage();
       }
@@ -330,10 +346,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     const customBreadcrumbRender = (routers: Route[] = []) => [
       {
         path: `/${menus[curIdx] ? menus[curIdx].path || '/' : ''}`,
-        breadcrumbName: intl.formatMessage({
-          id: `menu.${curKey[0] || 'home'}`,
-          defaultMessage: curKey[0] || 'Home',
-        }),
+        breadcrumbName: enableI18n
+          ? intl.formatMessage({
+              id: `menu.${curKey[0] || 'home'}`,
+              defaultMessage: curKey[0] || 'Home',
+            })
+          : defMenuTxt[curKey[0] || 'Home'],
       },
       ...routers,
     ];
@@ -346,10 +364,21 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         funcId: it.funcId,
       }));
     }
+    const formatMessage = (e: any) => {
+      const defTxt = e.defaultMessage && defMenuTxt[e.defaultMessage];
+      if (defTxt) {
+        e.defaultMessage = defTxt;
+      }
+      if (enableI18n === false) {
+        return e.defaultMessage;
+      }
+      return intl.formatMessage(e);
+    };
     return {
       breadcrumbRender: hasSysMenu ? customBreadcrumbRender : undefined,
       headerRender: customHeaderRender,
       menuDataRender: customMenuDataRender,
+      formatMessage,
     };
   };
 
@@ -357,7 +386,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   return (
     <ProLayout
       logo={logo}
-      title={defaultSettings.title}
       menuHeaderRender={(logoDom, titleDom) => (
         <Link to="/">
           {logoDom}
@@ -400,13 +428,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         );
       }}
       footerRender={footerRender}
-      formatMessage={(e) => {
-        const defTxt = e.defaultMessage && defMenuTxt[e.defaultMessage];
-        if (defTxt) {
-          e.defaultMessage = defTxt;
-        }
-        return intl.formatMessage(e);
-      }}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
@@ -433,10 +454,11 @@ const parseIcon = (menus: any[]) =>
     return item;
   });
 
-export default connect(({ global, account }: ConnectState) => ({
+export default connect(({ global, account, settings }: ConnectState) => ({
   collapsed: global.collapsed,
   hasSysMenu: account.hasSysMenu,
   menus: parseIcon(account.menus),
   authFuncs: account.authFuncs,
   defMenuTxt: account.defMenuTxt,
+  settings,
 }))(BasicLayout);

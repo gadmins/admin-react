@@ -105,7 +105,7 @@ const footerRender: BasicLayoutProps["footerRender"] = () => {
 };
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;
-let lastPatname: string | undefined;
+let lastPathname: string | undefined;
 let documentTitle: string | undefined;
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
@@ -176,7 +176,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   };
   history.listen(({ pathname }) => {
     if (pathname === "/account/login") {
-      lastPatname = "/account/login";
+      lastPathname = "/account/login";
       lastFuncId = undefined;
       lastMenuKey = undefined;
     }
@@ -186,14 +186,24 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     // 显示界面
     setTimeout(() => {
       setReady(true);
-      lastPatname = history.location.pathname;
+      lastPathname = history.location.pathname;
+      const routeIdx = allRoutes.findIndex((it: any) => it.path === lastPathname);
+      if (routeIdx > -1) {
+        const { title, name } = allRoutes[routeIdx];
+        const pageTitle = title || defMenuTxt[name];
+        if (pageTitle && pageTitle !== '') {
+          document.title = `${pageTitle}-${defaultSettings.title}`;
+        } else {
+          document.title = defaultSettings.title;
+        }
+      }
     }, 10);
   };
   const onOpenChange = (keys: WithFalse<string[]>) => {
     if (authFuncs.length === 0) {
       return;
     }
-    if (lastPatname && history.location.pathname === lastPatname) {
+    if (lastPathname && history.location.pathname === lastPathname) {
       return;
     }
     const idx = authFuncs.findIndex(
@@ -248,7 +258,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       }
     }
     if (location.state && lastFuncId && lastFuncId === location.state.funcId) {
-      if (ready === false || history.location.pathname !== lastPatname) {
+      if (ready === false || history.location.pathname !== lastPathname) {
         setAuthority(undefined);
         showPage();
       }
