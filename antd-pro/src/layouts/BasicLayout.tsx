@@ -187,6 +187,16 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     setTimeout(() => {
       setReady(true);
       lastPathname = history.location.pathname;
+      const routeIdx = allRoutes.findIndex((it: any) => it.path === lastPathname);
+      if (routeIdx > -1) {
+        const { title, name } = allRoutes[routeIdx];
+        const pageTitle = title || defMenuTxt[name];
+        if (pageTitle && pageTitle !== '') {
+          document.title = `${pageTitle}-${defaultSettings.title}`;
+        } else {
+          document.title = defaultSettings.title;
+        }
+      }
     }, 10);
   };
   const onOpenChange = (keys: WithFalse<string[]>) => {
