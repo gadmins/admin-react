@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { Subscription, Effect } from 'dva';
+import { Subscription, Effect } from 'umi';
 
 import { NoticeIconData } from '@/components/NoticeIcon';
 import { queryNotices } from '@/services/account';
@@ -45,7 +45,7 @@ const GlobalModel: GlobalModelType = {
         payload: data,
       });
       const unreadCount: number = yield select(
-        (state: ConnectState) => state.global.notices.filter(item => !item.read).length,
+        (state: ConnectState) => state.global.notices.filter((item) => !item.read).length,
       );
       yield put({
         type: 'account/changeNotifyCount',
@@ -62,7 +62,7 @@ const GlobalModel: GlobalModelType = {
       });
       const count: number = yield select((state: ConnectState) => state.global.notices.length);
       const unreadCount: number = yield select(
-        (state: ConnectState) => state.global.notices.filter(item => !item.read).length,
+        (state: ConnectState) => state.global.notices.filter((item) => !item.read).length,
       );
       yield put({
         type: 'account/changeNotifyCount',
@@ -74,7 +74,7 @@ const GlobalModel: GlobalModelType = {
     },
     *changeNoticeReadState({ payload }, { put, select }) {
       const notices: NoticeItem[] = yield select((state: ConnectState) =>
-        state.global.notices.map(item => {
+        state.global.notices.map((item) => {
           const notice = { ...item };
           if (notice.id === payload) {
             notice.read = true;
@@ -92,7 +92,7 @@ const GlobalModel: GlobalModelType = {
         type: 'account/changeNotifyCount',
         payload: {
           totalCount: notices.length,
-          unreadCount: notices.filter(item => !item.read).length,
+          unreadCount: notices.filter((item) => !item.read).length,
         },
       });
     },

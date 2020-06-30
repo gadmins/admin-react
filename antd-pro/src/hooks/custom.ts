@@ -1,4 +1,4 @@
-import { useStore } from 'dva';
+import { useStore } from 'umi';
 
 /**
  * 判断是否有按钮权限

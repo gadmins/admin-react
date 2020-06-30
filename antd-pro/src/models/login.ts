@@ -1,12 +1,12 @@
 import { Reducer } from 'redux';
 import { stringify } from 'querystring';
-import { history } from 'umi';
+import { history, Effect } from 'umi';
 
 import { fakeAccountLogin, fakeAccountLogout, getFakeCaptcha } from '@/services/login';
 // import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import Cookies from 'js-cookie';
-import { Effect } from 'dva';
+
 import { message } from 'antd';
 
 export interface LoginModelState {

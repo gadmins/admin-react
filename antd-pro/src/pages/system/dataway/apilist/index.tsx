@@ -3,9 +3,9 @@ import React, { useRef } from 'react';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
 import { Button, Dropdown, Menu, Modal, message } from 'antd';
-import { useParams } from 'dva';
+import { useParams, history } from 'umi';
 import { LeftOutlined, PlusOutlined, DownOutlined } from '@ant-design/icons';
-import { history } from 'umi';
+
 import { queryList, remove } from './service';
 
 /**
