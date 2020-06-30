@@ -3,7 +3,7 @@ import { Alert, Checkbox } from 'antd';
 import React, { useState } from 'react';
 import { Dispatch, AnyAction } from 'redux';
 // import { Link } from 'umi';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { LoginParamsType } from '@/services/login';
 import { ConnectState, LoginModelState } from '@/models/connect';
 import MD5 from 'crypto-js/md5';

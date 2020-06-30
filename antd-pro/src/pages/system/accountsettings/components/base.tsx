@@ -1,9 +1,8 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Input, Upload, Form, message } from 'antd';
-import { FormattedMessage, injectIntl, IntlShape } from 'umi';
+import { FormattedMessage, injectIntl, IntlShape, connect } from 'umi';
 import React, { Component, Fragment } from 'react';
 
-import { connect } from 'dva';
 import { CurrentUser } from '../data.d';
 // import GeographicView from './GeographicView';
 // import PhoneView from './PhoneView';

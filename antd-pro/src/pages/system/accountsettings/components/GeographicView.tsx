@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Select, Spin } from 'antd';
 
 import { Dispatch } from 'redux';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { GeographicItemType } from '../data.d';
 import styles from './GeographicView.less';
 
@@ -76,7 +76,7 @@ class GeographicView extends Component<GeographicViewProps> {
         </Option>
       );
     }
-    return list.map(item => (
+    return list.map((item) => (
       <Option key={item.id} value={item.id}>
         {item.name}
       </Option>

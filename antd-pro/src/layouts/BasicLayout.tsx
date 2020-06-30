@@ -11,9 +11,8 @@ import ProLayout, {
   DefaultFooter,
 } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
-import { Link, useIntl, history } from 'umi';
+import { Link, useIntl, history, connect } from 'umi';
 import { Dispatch } from 'redux';
-import { connect } from 'dva';
 import { Result, Button, Menu, Breadcrumb } from 'antd';
 
 import Authorized from '@/utils/Authorized';
@@ -26,6 +25,7 @@ import { WithFalse } from '@ant-design/pro-layout/lib/typings';
 import { string2Icon } from '@/utils/icon';
 import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
 import logo from '@/assets/logo.svg';
+import { pathToRegexp } from 'path-to-regexp';
 import defaultSettings from '../../config/defaultSettings';
 
 const enableI18n = false;
@@ -101,7 +101,7 @@ const footerRender: BasicLayoutProps['footerRender'] = () => {
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;
 let lastPathname: string | undefined;
-let documentTitle: string | undefined;
+
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
     dispatch,
@@ -121,7 +121,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const [authority, setAuthority] = useState<string | undefined>(undefined);
 
   const [breadcrumbs, setBreadcrumbs] = useState<any[]>([]);
-
   useEffect(() => {
     if (dispatch) {
       dispatch({
@@ -137,15 +136,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       });
     }
   }, []);
-
-  if (documentTitle) {
-    document.title = documentTitle;
-  } else if (menus && menus.length > 0) {
-    const keys = history.location.pathname.split('/').filter((it: string) => it !== '');
-    if (keys.length > 0) {
-      document.title = `${defMenuTxt[keys[keys.length - 1]]} - ${defaultSettings.title}`;
-    }
-  }
 
   const formatMsg = (id: String, key: string) => {
     const e: any = { id };
@@ -187,7 +177,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     setTimeout(() => {
       setReady(true);
       lastPathname = history.location.pathname;
-      const routeIdx = allRoutes.findIndex((it: any) => it.path === lastPathname);
+      const routeIdx = allRoutes.findIndex((it: any) => pathToRegexp(it.path).exec(lastPathname));
       if (routeIdx > -1) {
         const { title, name } = allRoutes[routeIdx];
         const pageTitle = title || defMenuTxt[name];
@@ -196,6 +186,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         } else {
           document.title = defaultSettings.title;
         }
+      } else {
+        document.title = defaultSettings.title;
       }
     }, 10);
   };
@@ -410,9 +402,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
           <Link
             to={{
               pathname: menuItemProps.path,
-            }}
-            onClick={() => {
-              documentTitle = `${menuItemProps.name} - ${defaultSettings.title}`;
             }}
           >
             {defaultDom}

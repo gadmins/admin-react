@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Form, Input, message } from 'antd';
 import request, { Resp } from '@/utils/request';
 import MD5 from 'crypto-js/md5';
-import { connect } from 'dva';
+import { connect } from 'umi';
 
 const service = {
   modifyPwd(data: any) {

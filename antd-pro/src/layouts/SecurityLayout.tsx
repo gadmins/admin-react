@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect, Redirect } from 'umi';
 import { PageLoading } from '@ant-design/pro-layout';
-import { Redirect } from 'umi';
+
 import { stringify } from 'querystring';
 import { ConnectState, ConnectProps } from '@/models/connect';
 import Cookies from 'js-cookie';

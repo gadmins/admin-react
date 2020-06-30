@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { useParams } from 'dva';
-import { history } from 'umi';
+import { history, useParams } from 'umi';
 import AceEditor from 'react-ace';
 import ReactJson from 'react-json-view';
 import 'ace-builds/src-noconflict/mode-javascript';
@@ -320,7 +319,7 @@ export default () => {
         params,
       });
       if (Resp.isOk(data)) {
-        setTestData(data.data);
+        setTestData(data);
         setErrorMsg(undefined);
       } else {
         setTestData(undefined);

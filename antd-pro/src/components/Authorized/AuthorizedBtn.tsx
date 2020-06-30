@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { ConnectState } from '@/models/connect';
 
 interface AuthorizedBtnProps {

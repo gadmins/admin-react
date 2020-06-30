@@ -1,4 +1,4 @@
-import { Effect } from 'dva';
+import { Effect } from 'umi';
 import { Reducer } from 'redux';
 import Cookies from 'js-cookie';
 

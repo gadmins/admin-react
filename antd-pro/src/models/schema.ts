@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import { querySchema, queryTableData } from '@/services/schema';
-import { Effect } from 'dva';
+import { Effect } from 'umi';
 
 export interface StateType {
   funcConfig: any | undefined;

@@ -3,9 +3,9 @@ import React, { useState, useRef } from 'react';
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
 import { Button } from 'antd';
-import { useParams } from 'dva';
+import { useParams, history } from 'umi';
 import { LeftOutlined } from '@ant-design/icons';
-import { history } from 'umi';
+
 import { queryList } from './service';
 
 export default () => {

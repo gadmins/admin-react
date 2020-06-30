@@ -135,6 +135,7 @@ export default defineConfig({
             },
             {
               name: 'apilist',
+              title: '接口列表',
               path: '/system/dataway/:groupId/apilist',
               component: './system/dataway/apilist',
             },
