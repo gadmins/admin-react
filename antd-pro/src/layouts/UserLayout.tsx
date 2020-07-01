@@ -12,7 +12,7 @@ export interface UserLayoutProps extends ConnectProps {
   breadcrumbNameMap: { [path: string]: MenuDataItem };
 }
 
-const UserLayout: React.FC<UserLayoutProps> = props => {
+const UserLayout: React.FC<UserLayoutProps> = (props) => {
   const intl = useIntl();
   const {
     route = {
@@ -56,7 +56,7 @@ const UserLayout: React.FC<UserLayoutProps> = props => {
           </div>
           {children}
         </div>
-        <DefaultFooter />
+        <DefaultFooter copyright="2020 通用管理系统" links={[]} />
       </div>
     </>
   );

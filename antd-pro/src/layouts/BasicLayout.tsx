@@ -18,7 +18,6 @@ import { Result, Button, Menu, Breadcrumb } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
-import { isAntDesignPro } from '@/utils/utils';
 
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { WithFalse } from '@ant-design/pro-layout/lib/typings';
@@ -72,31 +71,10 @@ export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
   };
 };
 
-const defaultFooterDom = <DefaultFooter copyright="2020 通用管理系统" links={[]} />;
+const defaultFooterDom = <DefaultFooter copyright={defaultSettings.copyright} links={[]} />;
 
 const footerRender: BasicLayoutProps['footerRender'] = () => {
-  if (!isAntDesignPro()) {
-    return defaultFooterDom;
-  }
-  return (
-    <>
-      {defaultFooterDom}
-      <div
-        style={{
-          padding: '0px 24px 24px',
-          textAlign: 'center',
-        }}
-      >
-        <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-          <img
-            src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg"
-            width="82px"
-            alt="netlify logo"
-          />
-        </a>
-      </div>
-    </>
-  );
+  return <>{defaultFooterDom}</>;
 };
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;

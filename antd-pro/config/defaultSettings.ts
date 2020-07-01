@@ -40,7 +40,10 @@ export interface DefaultSettings {
   // Usage: https://github.com/ant-design/ant-design-pro/pull/3517
   iconfontUrl: string;
   colorWeak: boolean;
+  copyright: string;
 }
+
+const title = '通用管理系统';
 
 export default {
   navTheme: 'dark',
@@ -55,7 +58,8 @@ export default {
   menu: {
     locale: true,
   },
-  title: '通用管理系统',
+  title,
+  copyright: `2020 ${title}`,
   pwa: false,
   iconfontUrl: '',
 } as DefaultSettings;
