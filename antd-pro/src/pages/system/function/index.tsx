@@ -6,7 +6,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { history } from 'umi';
 import { TableListItem } from '@/pages/data';
 import { Resp } from '@/utils/request';
-import { queryList, refresh } from './service';
+import { queryList, refresh, reset } from './service';
 
 const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
@@ -83,6 +83,22 @@ const TableList: React.FC<{}> = () => {
             }}
           >
             同步
+          </Button>,
+          <Button
+            icon={<SyncOutlined />}
+            type="primary"
+            onClick={() => {
+              reset().then((data) => {
+                if (Resp.isOk(data)) {
+                  message.success('重置成功');
+                  if (actionRef.current) {
+                    actionRef.current.reload();
+                  }
+                }
+              });
+            }}
+          >
+            重置
           </Button>,
         ]}
         request={async (params) => {

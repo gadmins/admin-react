@@ -177,7 +177,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     setTimeout(() => {
       setReady(true);
       lastPathname = history.location.pathname;
-      const routeIdx = allRoutes.findIndex((it: any) => pathToRegexp(it.path).exec(lastPathname));
+      const routeIdx = allRoutes.findIndex(
+        (it: any) => lastPathname && pathToRegexp(it.path).exec(lastPathname),
+      );
       if (routeIdx > -1) {
         const { title, name } = allRoutes[routeIdx];
         const pageTitle = title || defMenuTxt[name];

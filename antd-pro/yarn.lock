@@ -1494,73 +1494,73 @@
   resolved "https://registry.npm.taobao.org/@formatjs/macro/download/@formatjs/macro-0.2.8.tgz#e43228e02d0159817734ad80cc0326cfefaeeb6c"
   integrity sha1-5DIo4C0BWYF3NK2AzAMmz++u62w=
 
-"@formily/antd-components@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@formily/antd-components/download/@formily/antd-components-1.2.0.tgz#3d432738948b36065fb5056a342c831846d76494"
-  integrity sha1-PUMnOJSLNgZftQVqNCyDGEbXZJQ=
+"@formily/antd-components@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/@formily/antd-components/download/@formily/antd-components-1.2.2.tgz#897c1a6b77c4bf2cdde1bc0be6a597f0fe2ad691"
+  integrity sha1-iXwaa3fEvyzd4bwL5qWX8P4q1pE=
   dependencies:
     "@ant-design/icons" "^4.0.0-rc.0"
-    "@formily/antd" "^1.2.0"
-    "@formily/react-schema-renderer" "^1.2.0"
-    "@formily/react-shared-components" "^1.2.0"
-    "@formily/shared" "^1.2.0"
+    "@formily/antd" "^1.2.2"
+    "@formily/react-schema-renderer" "^1.2.2"
+    "@formily/react-shared-components" "^1.2.2"
+    "@formily/shared" "^1.2.2"
     classnames "^2.2.6"
     styled-components "^4.1.1"
 
-"@formily/antd@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@formily/antd/download/@formily/antd-1.2.0.tgz#0c240582c07715eb43c5361d9b3adc5f4a2bfbcd"
-  integrity sha1-DCQFgsB3FetDxTYdmzrcX0or+80=
+"@formily/antd@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/@formily/antd/download/@formily/antd-1.2.2.tgz#ae8d18a0cda94865d47839ae96bde856c6bff124"
+  integrity sha1-ro0YoM2pSGXUeDmulr3oVsa/8SQ=
   dependencies:
-    "@formily/react-schema-renderer" "^1.2.0"
-    "@formily/react-shared-components" "^1.2.0"
-    "@formily/shared" "^1.2.0"
+    "@formily/react-schema-renderer" "^1.2.2"
+    "@formily/react-shared-components" "^1.2.2"
+    "@formily/shared" "^1.2.2"
     classnames "^2.2.6"
     react-eva "^1.0.0-alpha.0"
     react-stikky "^0.1.15"
     rxjs "^6.5.1"
     styled-components "^4.1.1"
 
-"@formily/core@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@formily/core/download/@formily/core-1.2.0.tgz#49f96397ed04e955e5752a38568cf46dc7fd74e8"
-  integrity sha1-Sfljl+0E6VXldSo4Voz0bcf9dOg=
+"@formily/core@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/@formily/core/download/@formily/core-1.2.2.tgz#dda2a359143667595b89d6fa5a571cec151f6659"
+  integrity sha1-3aKjWRQ2Z1lbidb6Wlcc7BUfZlk=
   dependencies:
-    "@formily/shared" "^1.2.0"
-    "@formily/validator" "^1.2.0"
+    "@formily/shared" "^1.2.2"
+    "@formily/validator" "^1.2.2"
     immer "^6.0.3"
 
-"@formily/react-schema-renderer@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@formily/react-schema-renderer/download/@formily/react-schema-renderer-1.2.0.tgz#0a24c12dd6b77d7ee8a1046648811f4424da1b7c"
-  integrity sha1-CiTBLda3fX7ooQRmSIEfRCTaG3w=
+"@formily/react-schema-renderer@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/@formily/react-schema-renderer/download/@formily/react-schema-renderer-1.2.2.tgz#716301060b299a78c87e3946ae6a0eac6de5dc6b"
+  integrity sha1-cWMBBgspmnjIfjlGrmoOrG3l3Gs=
   dependencies:
-    "@formily/core" "^1.2.0"
-    "@formily/react" "^1.2.0"
-    "@formily/shared" "^1.2.0"
-    "@formily/validator" "^1.2.0"
+    "@formily/core" "^1.2.2"
+    "@formily/react" "^1.2.2"
+    "@formily/shared" "^1.2.2"
+    "@formily/validator" "^1.2.2"
     pascal-case "^2.0.1"
 
-"@formily/react-shared-components@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@formily/react-shared-components/download/@formily/react-shared-components-1.2.0.tgz#780c8f9376ede08a0bdc2c8b4d31a672ef4d17d3"
-  integrity sha1-eAyPk3bt4IoL3CyLTTGmcu9NF9M=
+"@formily/react-shared-components@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/@formily/react-shared-components/download/@formily/react-shared-components-1.2.2.tgz#46aafdc1d11232822d5845b29a5b29828fc0f492"
+  integrity sha1-Rqr9wdESMoItWEWymlspgo/A9JI=
   dependencies:
-    "@formily/shared" "^1.2.0"
+    "@formily/shared" "^1.2.2"
     react-drag-listview "^0.1.6"
 
-"@formily/react@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@formily/react/download/@formily/react-1.2.0.tgz#183c07debc9f54bc26e3c3c945e8ae7b805144bc"
-  integrity sha1-GDwH3ryfVLwm48PJReiue4BRRLw=
+"@formily/react@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/@formily/react/download/@formily/react-1.2.2.tgz#8b5a6dbd3ceb89dc9e53c42fd9a6be5d5232d79e"
+  integrity sha1-i1ptvTzridyeU8Qv2aa+XVIy154=
   dependencies:
-    "@formily/core" "^1.2.0"
-    "@formily/shared" "^1.2.0"
+    "@formily/core" "^1.2.2"
+    "@formily/shared" "^1.2.2"
 
-"@formily/shared@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@formily/shared/download/@formily/shared-1.2.0.tgz#7ce734b3c3e5cec5cf0bee9f79805c90ff75d43a"
-  integrity sha1-fOc0s8PlzsXPC+6feYBckP911Do=
+"@formily/shared@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/@formily/shared/download/@formily/shared-1.2.2.tgz#fda3efad780cd6c9077fdd515de320294df79fc6"
+  integrity sha1-/aPvrXgM1skHf91RXeMgKU33n8Y=
   dependencies:
     camel-case "~3.0.0"
     cool-path "^0.1.23"
@@ -1568,12 +1568,12 @@
     scheduler "~0.19.0"
     upper-case "~1.1.3"
 
-"@formily/validator@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@formily/validator/download/@formily/validator-1.2.0.tgz#259d7542751186c937e5db1b8131f8e00bf9dbe3"
-  integrity sha1-JZ11QnURhsk35dsbgTH44Av52+M=
+"@formily/validator@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npm.taobao.org/@formily/validator/download/@formily/validator-1.2.2.tgz#f7f8963a5af7671a35036ff9b0affea08fb44622"
+  integrity sha1-9/iWOlr3Zxo1A2/5sK/+oI+0RiI=
   dependencies:
-    "@formily/shared" "^1.2.0"
+    "@formily/shared" "^1.2.2"
 
 "@hapi/address@2.x.x", "@hapi/address@^2.1.2":
   version "2.1.4"
@@ -3965,7 +3965,7 @@ antd-mobile@^2.3.1:
     rmc-tabs "~1.2.0"
     rmc-tooltip "~1.0.0"
 
-antd@^4.1.2, antd@^4.1.3, antd@^4.1.5, antd@^4.3.5:
+antd@^4.1.2, antd@^4.1.3, antd@^4.1.5:
   version "4.3.5"
   resolved "https://registry.npm.taobao.org/antd/download/antd-4.3.5.tgz?cache=0&sync_timestamp=1592726824105&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fantd%2Fdownload%2Fantd-4.3.5.tgz#1bafbc2920a1b5266bcd46496532578b2fd0f98e"
   integrity sha1-G6+8KSChtSZrzUZJZTJXiy/Q+Y4=
@@ -4006,6 +4006,54 @@ antd@^4.1.2, antd@^4.1.3, antd@^4.1.5, antd@^4.3.5:
     rc-tooltip "~4.2.0"
     rc-tree "~3.3.0"
     rc-tree-select "~4.0.0"
+    rc-trigger "~4.3.0"
+    rc-upload "~3.2.0"
+    rc-util "^5.0.1"
+    scroll-into-view-if-needed "^2.2.25"
+    warning "^4.0.3"
+
+antd@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.npm.taobao.org/antd/download/antd-4.4.0.tgz?cache=0&sync_timestamp=1593496486609&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fantd%2Fdownload%2Fantd-4.4.0.tgz#10df07ad1bb30d54ffbd45926107f3f399f96e89"
+  integrity sha1-EN8HrRuzDVT/vUWSYQfz85n5bok=
+  dependencies:
+    "@ant-design/css-animation" "^1.7.2"
+    "@ant-design/icons" "^4.2.1"
+    "@ant-design/react-slick" "~0.26.1"
+    array-tree-filter "^2.1.0"
+    classnames "^2.2.6"
+    copy-to-clipboard "^3.2.0"
+    lodash "^4.17.13"
+    moment "^2.25.3"
+    omit.js "^1.0.2"
+    raf "^3.4.1"
+    rc-animate "~3.1.0"
+    rc-cascader "~1.3.0"
+    rc-checkbox "~2.2.0"
+    rc-collapse "~2.0.0"
+    rc-dialog "~8.0.0"
+    rc-drawer "~4.1.0"
+    rc-dropdown "~3.1.2"
+    rc-field-form "~1.5.0"
+    rc-input-number "~5.1.0"
+    rc-mentions "~1.3.0"
+    rc-menu "~8.3.0"
+    rc-notification "~4.4.0"
+    rc-pagination "~2.4.1"
+    rc-picker "~1.10.0"
+    rc-progress "~3.0.0"
+    rc-rate "~2.8.2"
+    rc-resize-observer "^0.2.3"
+    rc-select "~11.0.0"
+    rc-slider "~9.3.0"
+    rc-steps "~4.0.1"
+    rc-switch "~3.2.0"
+    rc-table "~7.8.0"
+    rc-tabs "~11.5.0"
+    rc-textarea "~0.2.2"
+    rc-tooltip "~4.2.0"
+    rc-tree "~3.6.0"
+    rc-tree-select "~4.0.2"
     rc-trigger "~4.3.0"
     rc-upload "~3.2.0"
     rc-util "^5.0.1"
@@ -13713,6 +13761,16 @@ rc-cascader@~1.2.0:
     rc-util "^5.0.1"
     warning "^4.0.1"
 
+rc-cascader@~1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npm.taobao.org/rc-cascader/download/rc-cascader-1.3.0.tgz#67925c7ac4b732fe06cabb3a9c91631c96d04ccf"
+  integrity sha1-Z5JcesS3Mv4Gyrs6nJFjHJbQTM8=
+  dependencies:
+    array-tree-filter "^2.1.0"
+    rc-trigger "^4.0.0"
+    rc-util "^5.0.1"
+    warning "^4.0.1"
+
 rc-checkbox@~2.0.0:
   version "2.0.3"
   resolved "https://registry.npm.taobao.org/rc-checkbox/download/rc-checkbox-2.0.3.tgz#436a9d508948e224980f0535ea738b48177a8f25"
@@ -13770,6 +13828,15 @@ rc-drawer@~4.0.0:
     classnames "^2.2.6"
     rc-util "^5.0.1"
 
+rc-drawer@~4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/rc-drawer/download/rc-drawer-4.1.0.tgz?cache=0&sync_timestamp=1591625506897&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-drawer%2Fdownload%2Frc-drawer-4.1.0.tgz#d7bf0bc030300b62d282bc04e053b9acad6b08b4"
+  integrity sha1-178LwDAwC2LSgrwE4FO5rK1rCLQ=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.6"
+    rc-util "^5.0.1"
+
 rc-dropdown@^3.1.0, rc-dropdown@~3.1.2:
   version "3.1.2"
   resolved "https://registry.npm.taobao.org/rc-dropdown/download/rc-dropdown-3.1.2.tgz#5199bd532ac8519813a347d194ab4b0cee702333"
@@ -13783,6 +13850,15 @@ rc-field-form@~1.4.1:
   version "1.4.4"
   resolved "https://registry.npm.taobao.org/rc-field-form/download/rc-field-form-1.4.4.tgz?cache=0&sync_timestamp=1592966472240&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-field-form%2Fdownload%2Frc-field-form-1.4.4.tgz#3689d19a8acd2bb9fe7ff43275bc42170d62f20d"
   integrity sha1-NonRmorNK7n+f/QydbxCFw1i8g0=
+  dependencies:
+    "@babel/runtime" "^7.8.4"
+    async-validator "^3.0.3"
+    rc-util "^5.0.0"
+
+rc-field-form@~1.5.0:
+  version "1.5.0"
+  resolved "https://registry.npm.taobao.org/rc-field-form/download/rc-field-form-1.5.0.tgz?cache=0&sync_timestamp=1592966542899&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-field-form%2Fdownload%2Frc-field-form-1.5.0.tgz#3c0c7f138c28c2f5c502d5723f2c00513e9f01bb"
+  integrity sha1-PAx/E4wowvXFAtVyPywAUT6fAbs=
   dependencies:
     "@babel/runtime" "^7.8.4"
     async-validator "^3.0.3"
@@ -13803,6 +13879,14 @@ rc-input-number@~5.0.0:
     classnames "^2.2.0"
     rc-util "^5.0.1"
 
+rc-input-number@~5.1.0:
+  version "5.1.0"
+  resolved "https://registry.npm.taobao.org/rc-input-number/download/rc-input-number-5.1.0.tgz?cache=0&sync_timestamp=1593316227586&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-input-number%2Fdownload%2Frc-input-number-5.1.0.tgz#64da7d8c24ad0c5603d32faba22fd25733d6f96a"
+  integrity sha1-ZNp9jCStDFYD0y+roi/SVzPW+Wo=
+  dependencies:
+    classnames "^2.2.0"
+    rc-util "^5.0.1"
+
 rc-mentions@~1.2.0:
   version "1.2.0"
   resolved "https://registry.npm.taobao.org/rc-mentions/download/rc-mentions-1.2.0.tgz#54347ac3c699318af9f14828acad012f32cd51cd"
@@ -13811,6 +13895,18 @@ rc-mentions@~1.2.0:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.6"
     rc-menu "^8.0.1"
+    rc-trigger "^4.3.0"
+    rc-util "^5.0.1"
+
+rc-mentions@~1.3.0:
+  version "1.3.0"
+  resolved "https://registry.npm.taobao.org/rc-mentions/download/rc-mentions-1.3.0.tgz?cache=0&sync_timestamp=1591879788020&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-mentions%2Fdownload%2Frc-mentions-1.3.0.tgz#275807b6beca082d8d7045f67e95443f2f82d2b9"
+  integrity sha1-J1gHtr7KCC2NcEX2fpVEPy+C0rk=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.6"
+    rc-menu "^8.0.1"
+    rc-textarea "^0.2.0"
     rc-trigger "^4.3.0"
     rc-util "^5.0.1"
 
@@ -13846,6 +13942,26 @@ rc-pagination@~2.2.5:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.1"
 
+rc-pagination@~2.4.1:
+  version "2.4.1"
+  resolved "https://registry.npm.taobao.org/rc-pagination/download/rc-pagination-2.4.1.tgz?cache=0&sync_timestamp=1592583917395&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-pagination%2Fdownload%2Frc-pagination-2.4.1.tgz#ec0586ee704ce6f024e5aab5f05af948c80a616e"
+  integrity sha1-7AWG7nBM5vAk5aq18Fr5SMgKYW4=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.1"
+
+rc-picker@~1.10.0:
+  version "1.10.3"
+  resolved "https://registry.npm.taobao.org/rc-picker/download/rc-picker-1.10.3.tgz?cache=0&sync_timestamp=1593493546759&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-picker%2Fdownload%2Frc-picker-1.10.3.tgz#de47c26943228300dd77ca6238d3bb5c76dfc0fb"
+  integrity sha1-3kfCaUMigwDdd8piONO7XHbfwPs=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.1"
+    moment "^2.24.0"
+    rc-trigger "^4.0.0"
+    rc-util "^5.0.1"
+    shallowequal "^1.1.0"
+
 rc-picker@~1.6.1:
   version "1.6.4"
   resolved "https://registry.npm.taobao.org/rc-picker/download/rc-picker-1.6.4.tgz?cache=0&sync_timestamp=1592967170481&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-picker%2Fdownload%2Frc-picker-1.6.4.tgz#bafb4bb3edc82440820572a9cefba436fabfc3fd"
@@ -13874,6 +13990,15 @@ rc-rate@~2.7.0:
     classnames "^2.2.5"
     rc-util "^5.0.1"
 
+rc-rate@~2.8.2:
+  version "2.8.2"
+  resolved "https://registry.npm.taobao.org/rc-rate/download/rc-rate-2.8.2.tgz?cache=0&sync_timestamp=1592195412257&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-rate%2Fdownload%2Frc-rate-2.8.2.tgz#d82d237d74fd4aef3e0581d2700b646cdd1cd8a2"
+  integrity sha1-2C0jfXT9Su8+BYHScAtkbN0c2KI=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.5"
+    rc-util "^5.0.1"
+
 rc-resize-observer@^0.2.0, rc-resize-observer@^0.2.1, rc-resize-observer@^0.2.3:
   version "0.2.3"
   resolved "https://registry.npm.taobao.org/rc-resize-observer/download/rc-resize-observer-0.2.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-resize-observer%2Fdownload%2Frc-resize-observer-0.2.3.tgz#8268284d1766d163240b1682661ae7b59bc4523d"
@@ -13888,6 +14013,19 @@ rc-select@^11.0.0, rc-select@~11.0.0:
   version "11.0.3"
   resolved "https://registry.npm.taobao.org/rc-select/download/rc-select-11.0.3.tgz?cache=0&sync_timestamp=1592533681609&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-select%2Fdownload%2Frc-select-11.0.3.tgz#12bc63b0a55e18384596fea1c3845dbc33e254c5"
   integrity sha1-ErxjsKVeGDhFlv6hw4RdvDPiVMU=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "2.x"
+    rc-animate "^3.0.0"
+    rc-trigger "^4.3.0"
+    rc-util "^5.0.1"
+    rc-virtual-list "^1.1.2"
+    warning "^4.0.3"
+
+rc-select@^11.0.4:
+  version "11.0.5"
+  resolved "https://registry.npm.taobao.org/rc-select/download/rc-select-11.0.5.tgz?cache=0&sync_timestamp=1593411035265&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-select%2Fdownload%2Frc-select-11.0.5.tgz#fd581b737a5e29bed174236e89776662cae454b7"
+  integrity sha1-/Vgbc3peKb7RdCNuiXdmYsrkVLc=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
@@ -13921,7 +14059,7 @@ rc-slider@~9.3.0:
     rc-util "^5.0.0"
     shallowequal "^1.1.0"
 
-rc-steps@~4.0.0:
+rc-steps@~4.0.0, rc-steps@~4.0.1:
   version "4.0.1"
   resolved "https://registry.npm.taobao.org/rc-steps/download/rc-steps-4.0.1.tgz?cache=0&sync_timestamp=1592803234936&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-steps%2Fdownload%2Frc-steps-4.0.1.tgz#a0e52f951b4e370d0cd2df29ae87eb744431d0d1"
   integrity sha1-oOUvlRtONw0M0t8profrdEQx0NE=
@@ -13975,6 +14113,30 @@ rc-tabs@~11.4.1:
     rc-trigger "^4.2.1"
     rc-util "^5.0.0"
 
+rc-tabs@~11.5.0:
+  version "11.5.1"
+  resolved "https://registry.npm.taobao.org/rc-tabs/download/rc-tabs-11.5.1.tgz?cache=0&sync_timestamp=1593422458036&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-tabs%2Fdownload%2Frc-tabs-11.5.1.tgz#de153295a23337dcaff0322da6e5ac37261218a8"
+  integrity sha1-3hUylaIzN9yv8DItpuWsNyYSGKg=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "2.x"
+    raf "^3.4.1"
+    rc-dropdown "^3.1.0"
+    rc-menu "^8.2.1"
+    rc-resize-observer "^0.2.1"
+    rc-trigger "^4.2.1"
+    rc-util "^5.0.0"
+
+rc-textarea@^0.2.0, rc-textarea@~0.2.2:
+  version "0.2.6"
+  resolved "https://registry.npm.taobao.org/rc-textarea/download/rc-textarea-0.2.6.tgz#7a73c8da108b7593fb7bf40f8c0e945cf196ac80"
+  integrity sha1-enPI2hCLdZP7e/QPjA6UXPGWrIA=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "^2.2.1"
+    omit.js "^1.0.2"
+    rc-resize-observer "^0.2.3"
+
 rc-tooltip@^3.4.2:
   version "3.7.3"
   resolved "https://registry.npm.taobao.org/rc-tooltip/download/rc-tooltip-3.7.3.tgz?cache=0&sync_timestamp=1590501414804&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-tooltip%2Fdownload%2Frc-tooltip-3.7.3.tgz#280aec6afcaa44e8dff0480fbaff9e87fc00aecc"
@@ -14002,10 +14164,32 @@ rc-tree-select@~4.0.0:
     rc-tree "^3.1.0"
     rc-util "^5.0.1"
 
+rc-tree-select@~4.0.2:
+  version "4.0.2"
+  resolved "https://registry.npm.taobao.org/rc-tree-select/download/rc-tree-select-4.0.2.tgz?cache=0&sync_timestamp=1593312501427&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-tree-select%2Fdownload%2Frc-tree-select-4.0.2.tgz#78d0f071145f05b434743dad53ee4c8ebdd0c613"
+  integrity sha1-eNDwcRRfBbQ0dD2tU+5Mjr3QxhM=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "2.x"
+    rc-select "^11.0.4"
+    rc-tree "^3.6.0"
+    rc-util "^5.0.1"
+
 rc-tree@^3.1.0:
   version "3.5.0"
   resolved "https://registry.npm.taobao.org/rc-tree/download/rc-tree-3.5.0.tgz?cache=0&sync_timestamp=1592295248847&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-tree%2Fdownload%2Frc-tree-3.5.0.tgz#261a57f44ba11567fab73ae565eb885d167bea3f"
   integrity sha1-JhpX9EuhFWf6tzrlZeuIXRZ76j8=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "2.x"
+    rc-animate "^3.1.0"
+    rc-util "^5.0.0"
+    rc-virtual-list "^1.1.0"
+
+rc-tree@^3.6.0, rc-tree@~3.6.0:
+  version "3.6.0"
+  resolved "https://registry.npm.taobao.org/rc-tree/download/rc-tree-3.6.0.tgz#5b32b70c6323d6bd533c65930294fe652db58e5b"
+  integrity sha1-WzK3DGMj1r1TPGWTApT+ZS21jls=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
