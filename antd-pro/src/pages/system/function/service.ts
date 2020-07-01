@@ -10,3 +10,7 @@ export async function queryList(params?: TableListParams) {
 export async function refresh() {
   return request('/adminapi/menu/refresh');
 }
+
+export async function reset() {
+  return request('/adminapi/menu/reset');
+}
