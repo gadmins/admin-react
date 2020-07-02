@@ -2,11 +2,13 @@
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
-import { extend } from 'umi-request';
+import Request, { extend, RequestOptionsWithResponse } from 'umi-request';
 import { notification, message } from 'antd';
 import { stringify } from 'qs';
 import { history } from 'umi';
 import Cookies from 'js-cookie';
+
+const { CancelToken } = Request;
 
 const codeMessage = {
   400: '参数错误。',
@@ -73,13 +75,26 @@ const errorHandler = (error: { response: Response }): Response => {
 /**
  * 配置request请求时的默认参数
  */
-const request = extend({
+const umiRequest = extend({
   errorHandler, // 默认错误处理
   prefix: process.env.apiUrl,
   credentials: 'include', // 默认请求是否带上cookie
 });
+let cancel: () => void;
+const request = (url: string, options: RequestOptionsWithResponse) => {
+  return umiRequest(url, {
+    ...options,
+    cancelToken: new CancelToken(function executor(c) {
+      cancel = c;
+    }),
+  });
+};
 
 export default request;
+
+export const abortRequest = () => {
+  cancel();
+};
 
 /**
  * 接口BASE_URL

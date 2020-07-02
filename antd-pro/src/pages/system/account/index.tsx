@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
-import { Resp } from '@/utils/request';
+import { Resp, abortRequest } from '@/utils/request';
 import { queryAllRole, queryList, add, remove, update, unlock } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -117,6 +117,9 @@ const TableList: React.FC<{}> = () => {
         setRoleList(list);
       }
     });
+    return () => {
+      abortRequest();
+    };
   }, []);
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [

@@ -5,7 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { history } from 'umi';
 import { TableListItem } from '@/pages/data';
-import { Resp } from '@/utils/request';
+import { Resp, abortRequest } from '@/utils/request';
 import { groupOptions, queryList, add, update, remove } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -170,6 +170,9 @@ const TableList: React.FC<{}> = () => {
         setGroupTypes(types);
       }
     });
+    return () => {
+      abortRequest();
+    };
   }, []);
 
   return (

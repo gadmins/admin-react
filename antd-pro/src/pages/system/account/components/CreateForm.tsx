@@ -3,7 +3,7 @@ import { Modal } from 'antd';
 import SchemaForm, { useForm, createFormActions, ISchema } from '@formily/antd';
 import { setup } from '@formily/antd-components';
 import MD5 from 'crypto-js/md5';
-import { Resp } from '@/utils/request';
+import { Resp, abortRequest } from '@/utils/request';
 import { queryAllRole } from '../service';
 
 interface FormProps {
@@ -81,7 +81,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
             message: '角色不能为空',
           },
         ],
-        enum: roles.map(it => ({
+        enum: roles.map((it) => ({
           value: it.id,
           label: it.name,
         })),
@@ -90,11 +90,14 @@ export default (props: React.PropsWithChildren<FormProps>) => {
   };
 
   useEffect(() => {
-    queryAllRole().then(data => {
+    queryAllRole().then((data) => {
       if (Resp.isOk(data)) {
         setRoles(data.data);
       }
     });
+    return () => {
+      abortRequest();
+    };
   }, []);
 
   const okHandle = async () => {

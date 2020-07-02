@@ -106,7 +106,7 @@ const footerRender: BasicLayoutProps["footerRender"] = () => {
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;
 let lastPathname: string | undefined;
-let documentTitle: string | undefined;
+
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
     dispatch,
@@ -142,16 +142,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       });
     }
   }, []);
-  if (documentTitle) {
-    document.title = documentTitle;
-  } else if (menus && menus.length > 0) {
-    const keys = history.location.pathname.split("/").filter((it) => it !== "");
-    if (keys.length > 0) {
-      document.title = `${defMenuTxt[keys[keys.length - 1]]} - ${
-        defaultSettings.title
-      }`;
-    }
-  }
   const formatMsg = (id: String, key: string) => {
     const e: any = { id };
     if (!e.defaultMessage) {
@@ -204,6 +194,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       return;
     }
     if (lastPathname && history.location.pathname === lastPathname) {
+      if (ready === false) {
+        showPage();
+      }
       return;
     }
     const idx = authFuncs.findIndex(
@@ -322,9 +315,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
             style={{
               border: "none",
             }}
-            onClick={({ key }) => {
-              curIdx = menus.findIndex((it) => it.name === key);
-            }}
           >
             {sysMenus.map((it) => (
               <Menu.Item key={it.name}>
@@ -384,12 +374,16 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       logo={logo}
       fixedHeader
       title={defaultSettings.title}
-      menuHeaderRender={(logoDom, titleDom) => (
-        <Link to="/">
-          {logoDom}
-          {titleDom}
-        </Link>
-      )}
+      menuHeaderRender={(logoDom, titleDom) => {
+        return (
+          menus.length > 0 && (
+            <Link to={(menus[0] && menus[0].path) || '/'}>
+              {logoDom}
+              {titleDom}
+            </Link>
+          )
+        );
+      }}
       disableContentMargin
       rightContentRender={() => <RightContent />}
       layout="topmenu"
@@ -420,9 +414,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
             <Link
               to={{
                 pathname: menuItemProps.path,
-              }}
-              onClick={() => {
-                documentTitle = `${menuItemProps.name} - ${defaultSettings.title}`;
               }}
             >
               {defaultDom}
