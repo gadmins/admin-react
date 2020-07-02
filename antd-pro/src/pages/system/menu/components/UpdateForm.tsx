@@ -146,11 +146,18 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         <>
           <FormItem {...formLayout} label="功能组关联" name="funcId">
             <TreeSelect
+              showSearch
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder="请选择"
               allowClear
               treeDefaultExpandAll
+              filterTreeNode={(input, option) => {
+                if (option?.title) {
+                  return option.title.toString().toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                }
+                return false;
+              }}
               onChange={(e) => {
                 const func = functions.filter((it) => it.id === e);
                 if (func && func.length > 0) {
