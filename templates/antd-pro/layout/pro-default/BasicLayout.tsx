@@ -18,7 +18,6 @@ import { Result, Button, Menu, Breadcrumb } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
-import { isAntDesignPro } from '@/utils/utils';
 
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { WithFalse } from '@ant-design/pro-layout/lib/typings';
@@ -72,31 +71,10 @@ export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
   };
 };
 
-const defaultFooterDom = <DefaultFooter copyright="2020 通用管理系统" links={[]} />;
+const defaultFooterDom = <DefaultFooter copyright={defaultSettings.copyright} links={[]} />;
 
 const footerRender: BasicLayoutProps['footerRender'] = () => {
-  if (!isAntDesignPro()) {
-    return defaultFooterDom;
-  }
-  return (
-    <>
-      {defaultFooterDom}
-      <div
-        style={{
-          padding: '0px 24px 24px',
-          textAlign: 'center',
-        }}
-      >
-        <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-          <img
-            src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg"
-            width="82px"
-            alt="netlify logo"
-          />
-        </a>
-      </div>
-    </>
-  );
+  return <>{defaultFooterDom}</>;
 };
 let lastFuncId: number | undefined;
 let lastMenuKey: string | undefined;
@@ -198,6 +176,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       return;
     }
     if (lastPathname && history.location.pathname === lastPathname) {
+      if (ready === false) {
+        showPage();
+      }
       return;
     }
     const idx = authFuncs.findIndex((it) => history.location.pathname === it.url);
@@ -309,9 +290,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
             style={{
               border: 'none',
             }}
-            onClick={({ key }) => {
-              curIdx = menus.findIndex((it) => it.name === key);
-            }}
           >
             {sysMenus.map((it) => (
               <Menu.Item key={it.name}>
@@ -380,12 +358,16 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   return (
     <ProLayout
       logo={logo}
-      menuHeaderRender={(logoDom, titleDom) => (
-        <Link to="/">
-          {logoDom}
-          {titleDom}
-        </Link>
-      )}
+      menuHeaderRender={(logoDom, titleDom) => {
+        return (
+          menus.length > 0 && (
+            <Link to={(menus[0] && menus[0].path) || '/'}>
+              {logoDom}
+              {titleDom}
+            </Link>
+          )
+        );
+      }}
       onOpenChange={onOpenChange}
       onCollapse={handleMenuCollapse}
       menuProps={{

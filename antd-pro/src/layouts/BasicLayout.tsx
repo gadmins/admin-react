@@ -176,6 +176,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       return;
     }
     if (lastPathname && history.location.pathname === lastPathname) {
+      if (ready === false) {
+        showPage();
+      }
       return;
     }
     const idx = authFuncs.findIndex((it) => history.location.pathname === it.url);
@@ -287,9 +290,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
             style={{
               border: 'none',
             }}
-            onClick={({ key }) => {
-              curIdx = menus.findIndex((it) => it.name === key);
-            }}
           >
             {sysMenus.map((it) => (
               <Menu.Item key={it.name}>
@@ -358,12 +358,16 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   return (
     <ProLayout
       logo={logo}
-      menuHeaderRender={(logoDom, titleDom) => (
-        <Link to="/">
-          {logoDom}
-          {titleDom}
-        </Link>
-      )}
+      menuHeaderRender={(logoDom, titleDom) => {
+        return (
+          menus.length > 0 && (
+            <Link to={(menus[0] && menus[0].path) || '/'}>
+              {logoDom}
+              {titleDom}
+            </Link>
+          )
+        );
+      }}
       onOpenChange={onOpenChange}
       onCollapse={handleMenuCollapse}
       menuProps={{
