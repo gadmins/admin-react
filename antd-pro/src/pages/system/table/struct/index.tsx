@@ -24,24 +24,30 @@ export default () => {
     {
       title: '字段名',
       dataIndex: 'COLUMN_NAME',
-      key: 'name',
+      key: 'columnName',
+      formItemProps: {
+        allowClear: true,
+      },
     },
     {
       title: '类型',
       dataIndex: 'COLUMN_TYPE',
+      hideInSearch: true,
     },
     {
       title: '是否为空',
       dataIndex: 'IS_NULLABLE',
+      hideInSearch: true,
     },
     {
       title: '键',
       dataIndex: 'COLUMN_KEY',
+      hideInSearch: true,
     },
     {
       title: '注释',
       dataIndex: 'COLUMN_COMMENT',
-      key: 'comment',
+      hideInSearch: true,
     },
     {
       title: '操作',
@@ -84,7 +90,7 @@ export default () => {
         rowSelection={{}}
         request={async (params: any) => {
           const query = { ...params };
-          query.name = name;
+          query.tableName = name;
           if (query.createdAt) {
             query.createdAt = params.createdAt.map((it: string) => it.split(' ')[0]);
             query.createdAt[0] += ' 00:00:00';

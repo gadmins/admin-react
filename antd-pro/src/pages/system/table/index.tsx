@@ -93,7 +93,7 @@ export default () => {
     {
       title: '表名',
       dataIndex: 'TABLE_NAME',
-      key: 'name',
+      key: 'tableName',
       order: 2,
       formItemProps: {
         allowClear: true,

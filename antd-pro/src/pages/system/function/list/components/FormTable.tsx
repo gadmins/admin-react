@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useRef, useContext, useEffect, MutableRefObject } from 'react';
 import { Table, Select, Form, Input, Button, Popconfirm } from 'antd';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import * as HTML5Backend from 'react-dnd-html5-backend';
+import { DndProvider, useDrag, useDrop, createDndContext } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import '../index.less';
 import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
+const RNDContext = createDndContext(HTML5Backend);
 const EditableContext = React.createContext<any>({});
 const type = 'DragbleBodyRow';
 
@@ -230,8 +231,9 @@ export default (props: any) => {
     });
     onDataChange(updatedData);
   };
+  const manager = useRef(RNDContext);
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider manager={manager.current.dragDropManager}>
       <Button style={{ margin: 5, marginBottom: 10 }} icon={<PlusOutlined />} onClick={onAddRow}>
         添加
       </Button>

@@ -71,6 +71,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
   };
   return (
     <Modal
+      width={600}
       maskClosable={false}
       destroyOnClose
       title={formVals ? '复制菜单' : '添加菜单'}
@@ -140,11 +141,18 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
           <>
             <FormItem {...formLayout} label="功能组关联" name="funcId">
               <TreeSelect
+                showSearch
                 style={{ width: '100%' }}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 placeholder="请选择"
                 allowClear
                 treeDefaultExpandAll
+                filterTreeNode={(input, option) => {
+                  if (option?.title) {
+                    return option.title.toString().toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                  }
+                  return false;
+                }}
                 onChange={(e) => {
                   const func: any[] = functions.filter((it: any) => it.id === e);
                   if (func && func.length > 0) {

@@ -19,16 +19,20 @@ export default (props: React.PropsWithChildren<FormProps>) => {
   const [form] = Form.useForm();
   const initialValues = initVals
     ? {
-        name: initVals.name,
-        comment: initVals.comment,
+        tableName: initVals.name,
+        tableComment: initVals.comment,
       }
     : {};
 
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
     fieldsValue.newName = fieldsValue.name;
-    fieldsValue.name = initVals.name;
-    const rs: boolean = await onSubmit(fieldsValue);
+    fieldsValue.name = initVals.tableName;
+    const rs: boolean = await onSubmit({
+      name: initVals.tableName,
+      newName: fieldsValue.tableName,
+      comment: fieldsValue.tableComment,
+    });
     if (rs) {
       form.resetFields();
     }
@@ -49,7 +53,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         <FormItem
           {...formLayout}
           label="表名"
-          name="name"
+          name="tableName"
           rules={[{ required: true, message: '表名不能为空' }]}
         >
           <Input placeholder="请输入" />
@@ -57,7 +61,7 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         <FormItem
           {...formLayout}
           label="表注释"
-          name="comment"
+          name="tableComment"
           rules={[{ required: true, message: '表注释不能为空' }]}
         >
           <Input placeholder="请输入" />

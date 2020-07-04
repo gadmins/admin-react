@@ -2,7 +2,7 @@
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
-import Request, { extend, RequestOptionsWithResponse } from 'umi-request';
+import Request, { extend, RequestOptionsInit } from 'umi-request';
 import { notification, message } from 'antd';
 import { stringify } from 'qs';
 import { history } from 'umi';
@@ -80,8 +80,9 @@ const umiRequest = extend({
   prefix: process.env.apiUrl,
   credentials: 'include', // 默认请求是否带上cookie
 });
+
 let cancel: () => void;
-const request = (url: string, options: RequestOptionsWithResponse) => {
+const request = (url: string, options?: RequestOptionsInit | undefined) => {
   return umiRequest(url, {
     ...options,
     cancelToken: new CancelToken(function executor(c) {
