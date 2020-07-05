@@ -19,7 +19,7 @@ export default () => {
     fetchStruct({
       currentPage: 0,
       pageSize: 100,
-      name,
+      tableName: name,
     }).then((result) => {
       if (Resp.isOk(result)) {
         const {
@@ -28,18 +28,23 @@ export default () => {
         const colms: ProColumns<TableListItem>[] = [];
         data.forEach((it: any) => {
           const col: ProColumns<TableListItem> = {
-            title: it.COLUMN_COMMENT || it.COLUMN_NAME,
+            title: it.COLUMN_NAME, // + (it.COLUMN_COMMENT ? `\n-${it.COLUMN_COMMENT}` : ''),
             dataIndex: it.COLUMN_NAME,
             hideInSearch: true,
           };
           if (col.dataIndex === 'id') {
-            col.valueType = 'indexBorder';
+            // col.valueType = 'indexBorder';
             col.width = 64;
             col.fixed = 'left';
           } else if (col.dataIndex === 'enable') {
             col.render = (txt) => (txt ? '是' : '否');
           }
           colms.push(col);
+        });
+        colms.push({
+          key: 'operation',
+          fixed: 'right',
+          width: 100,
         });
         setColumns(colms);
       }
@@ -64,11 +69,11 @@ export default () => {
         headerTitle={`表数据 - ${name}`}
         actionRef={actionRef}
         rowKey="id"
-        scroll={{ x: 1600 }}
+        scroll={{ x: 1550 }}
         rowSelection={{}}
         request={async (params: any) => {
           const query = { ...params };
-          query.name = name;
+          query.tableName = name;
           if (query.createdAt) {
             query.createdAt = params.createdAt.map((it: string) => it.split(' ')[0]);
             query.createdAt[0] += ' 00:00:00';

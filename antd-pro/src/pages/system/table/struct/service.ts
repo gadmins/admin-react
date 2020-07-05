@@ -16,17 +16,18 @@ export async function add(params: TableListParams) {
   });
 }
 
-export async function remove(ids: number[]) {
-  return request(`/adminapi/db/column/${ids.join(',')}`, {
-    method: 'DELETE',
-  });
-}
-
 export async function update(params: TableListParams) {
-  return request(`/adminapi/db/column/${params.id}`, {
+  return request('/adminapi/db/column', {
     method: 'PUT',
     data: {
       ...params,
     },
+  });
+}
+
+export async function remove(params: any) {
+  return request('/adminapi/db/column', {
+    method: 'DELETE',
+    params,
   });
 }
