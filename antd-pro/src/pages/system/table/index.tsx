@@ -6,6 +6,8 @@ import { Divider, message, Button, Dropdown, Menu, Modal } from 'antd';
 import { history } from 'umi';
 import { Resp } from '@/utils/request';
 import { PlusOutlined, DownOutlined } from '@ant-design/icons';
+import AuthorizedBtn from '@/components/Authorized/AuthorizedBtn';
+import { useAuthorizedBtn } from '@/hooks/custom';
 import { queryList, add, update, remove } from './service';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -126,37 +128,45 @@ export default () => {
       fixed: 'right',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              handleUpdateModalVisible(true);
-              setSelectRecord({
-                name: record.TABLE_NAME,
-                comment: record.TABLE_COMMENT,
-              });
-            }}
-          >
-            编辑
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={() => {
-              history.push(`/system/table/struct/${record.TABLE_NAME}`);
-            }}
-          >
-            结构
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={() => {
-              history.push(`/system/table/data/${record.TABLE_NAME}`);
-            }}
-          >
-            数据
-          </a>
+          <AuthorizedBtn code="sys:table:update">
+            <a
+              onClick={() => {
+                handleUpdateModalVisible(true);
+                setSelectRecord({
+                  name: record.TABLE_NAME,
+                  comment: record.TABLE_COMMENT,
+                });
+              }}
+            >
+              编辑
+            </a>
+          </AuthorizedBtn>
+          <AuthorizedBtn code="sys:table:column:list">
+            <Divider type="vertical" />
+            <a
+              onClick={() => {
+                history.push(`/system/table/struct/${record.TABLE_NAME}`);
+              }}
+            >
+              结构
+            </a>
+          </AuthorizedBtn>
+          <AuthorizedBtn code="sys:table:data:list">
+            <Divider type="vertical" />
+            <a
+              onClick={() => {
+                history.push(`/system/table/data/${record.TABLE_NAME}`);
+              }}
+            >
+              数据
+            </a>
+          </AuthorizedBtn>
         </>
       ),
     },
   ];
+  const hasNew = useAuthorizedBtn('sys:table:add');
+  const hasDel = useAuthorizedBtn('sys:table:del');
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
@@ -165,16 +175,18 @@ export default () => {
         rowKey="TABLE_NAME"
         rowSelection={{}}
         toolBarRender={(action, { selectedRows }) => [
-          <Button
-            icon={<PlusOutlined />}
-            type="primary"
-            onClick={() => {
-              setSelectRecord(undefined);
-              handleModalVisible(true);
-            }}
-          >
-            新建
-          </Button>,
+          hasNew && (
+            <Button
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => {
+                setSelectRecord(undefined);
+                handleModalVisible(true);
+              }}
+            >
+              新建
+            </Button>
+          ),
           selectedRows && selectedRows.length > 0 && (
             <Dropdown
               overlay={
@@ -194,7 +206,7 @@ export default () => {
                   }}
                   selectedKeys={[]}
                 >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
+                  {hasDel && <Menu.Item key="remove">批量删除</Menu.Item>}
                 </Menu>
               }
             >

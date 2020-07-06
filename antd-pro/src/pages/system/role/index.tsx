@@ -170,7 +170,7 @@ const TableList: React.FC<{}> = () => {
               新建
             </Button>
           ),
-          selectedRows && selectedRows.length > 0 && hasDel && (
+          selectedRows && selectedRows.length > 0 && (
             <Dropdown
               overlay={
                 <Menu
@@ -189,7 +189,7 @@ const TableList: React.FC<{}> = () => {
                   }}
                   selectedKeys={[]}
                 >
-                  <Menu.Item key="remove">批量删除</Menu.Item>
+                  {hasDel && <Menu.Item key="remove">批量删除</Menu.Item>}
                 </Menu>
               }
             >
