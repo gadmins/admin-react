@@ -13,6 +13,7 @@ import {
   SettingOutlined,
   ToolOutlined,
   CloudOutlined,
+  FileOutlined,
 } from '@ant-design/icons';
 
 export function string2Icon(icon: string) {
@@ -56,6 +57,9 @@ export function string2Icon(icon: string) {
       break;
     case 'cloud':
       iconCP = <CloudOutlined />;
+      break;
+    case 'file':
+      iconCP = <FileOutlined />;
       break;
     default:
       iconCP = icon;

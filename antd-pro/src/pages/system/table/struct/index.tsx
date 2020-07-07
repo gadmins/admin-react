@@ -7,6 +7,8 @@ import { useParams, history } from 'umi';
 import { LeftOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import { Resp } from '@/utils/request';
+import { useAuthorizedBtn } from '@/hooks/custom';
+import AuthorizedBtn from '@/components/Authorized/AuthorizedBtn';
 import { queryList, remove, update, add } from './service';
 import Edit from './components/Edit';
 
@@ -127,17 +129,21 @@ export default () => {
       fixed: 'right',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              editColumn(record);
-            }}
-          >
-            编辑
-          </a>
+          <AuthorizedBtn code="sys:table:column:update">
+            <a
+              onClick={() => {
+                editColumn(record);
+              }}
+            >
+              编辑
+            </a>
+          </AuthorizedBtn>
         </>
       ),
     },
   ];
+  const hasAdd = useAuthorizedBtn('sys:table:column:add');
+  const hasDel = useAuthorizedBtn('sys:table:column:del');
   return (
     <PageHeaderWrapper
       title="表结构"
@@ -170,17 +176,19 @@ export default () => {
         }}
         columns={columns}
         toolBarRender={(action, { selectedRows }) => [
-          <Button
-            icon={<PlusOutlined />}
-            type="primary"
-            onClick={() => {
-              setSelectRecord(undefined);
-              handleModalVisible(true);
-            }}
-          >
-            添加
-          </Button>,
-          selectedRows && selectedRows.length > 0 && (
+          hasAdd && (
+            <Button
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => {
+                setSelectRecord(undefined);
+                handleModalVisible(true);
+              }}
+            >
+              添加
+            </Button>
+          ),
+          selectedRows && selectedRows.length > 0 && hasDel && (
             <Button
               icon={<DeleteOutlined />}
               onClick={() => {

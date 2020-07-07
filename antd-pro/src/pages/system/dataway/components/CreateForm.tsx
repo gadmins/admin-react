@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import SchemaForm, { useForm, createFormActions, ISchema } from '@formily/antd';
 import { setup } from '@formily/antd-components';
-import { Resp } from '@/utils/request';
+import { Resp, abortRequest } from '@/utils/request';
 import { groupOptions } from '../service';
 
 interface FormProps {
@@ -86,6 +86,9 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         setGroupTypes(data.data);
       }
     });
+    return () => {
+      abortRequest();
+    };
   }, []);
   useEffect(() => {
     if (initVals && initVals.groupType && initVals.urlPrefix) {

@@ -150,6 +150,11 @@ export default defineConfig({
               component: './system/dataway/apilist/edit',
             },
             {
+              name: 'log',
+              path: '/system/log',
+              component: './system/log',
+            },
+            {
               name: 'tool',
               icon: 'cloud',
               path: '/system/tool',
