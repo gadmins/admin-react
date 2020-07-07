@@ -12,19 +12,11 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
-  },
-  test: {
-    '/adminapi/': {
-      target: 'https://preview.pro.ant.design',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
-  },
-  pre: {
-    '/adminapi/': {
-      target: 'your pre url',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
+    '/ws/**': {
+      target: 'ws://localhost:9999',
+      ws: true,
+      secure: false,
+      logLevel: 'debug',
     },
   },
 };

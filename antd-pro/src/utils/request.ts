@@ -10,6 +10,11 @@ import Cookies from 'js-cookie';
 
 const { CancelToken } = Request;
 
+interface IResponse {
+  code: number;
+  msg: string;
+}
+
 const codeMessage = {
   400: '参数错误。',
   401: '未登录。',
@@ -27,15 +32,18 @@ const codeMessage = {
 /**
  * 异常处理程序
  */
-const errorHandler = (error: { response: Response }): Response => {
+const errorHandler = (error: any): Response => {
   const { response } = error;
+  if (error.constructor.name === 'Cancel') {
+    return response;
+  }
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
     response
       .clone()
       .json()
-      .then((data) => {
+      .then((data: IResponse) => {
         if (data && data.msg) {
           if (data.code === 501) {
             if (history.location.pathname !== '/account/login') {
