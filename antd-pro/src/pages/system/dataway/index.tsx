@@ -10,7 +10,9 @@ import { groupOptions, queryList, add, update, remove } from './service';
 // import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 
-const CreateForm = React.lazy(() => import('./components/CreateForm'));
+const CreateForm = React.lazy(() =>
+  import(/* webpackChunkName: "c_dataway_create" */ './components/CreateForm'),
+);
 
 /**
  * 添加节点
