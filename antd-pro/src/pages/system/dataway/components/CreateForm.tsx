@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'antd';
-import SchemaForm, { useForm, createFormActions, ISchema } from '@formily/antd';
-import { setup } from '@formily/antd-components';
+import { SchemaForm, createFormActions, ISchema } from '@formily/antd';
 import { Resp, abortRequest } from '@/utils/request';
 import { groupOptions } from '../service';
 
@@ -16,7 +15,6 @@ const formLayout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 15 },
 };
-setup();
 const actions = createFormActions();
 
 export default (props: React.PropsWithChildren<FormProps>) => {
@@ -43,10 +41,6 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         desc: initVals.desc,
       }
     : {};
-  const form = useForm({
-    value: initialValues,
-    actions,
-  });
   const schema: ISchema = {
     type: 'object',
     properties: {
@@ -78,6 +72,42 @@ export default (props: React.PropsWithChildren<FormProps>) => {
           addonBefore: currentPrefix,
         },
       },
+      hasMenu: {
+        type: 'boolean',
+        title: '菜单',
+        'x-linkages': [
+          {
+            type: 'value:visible',
+            target: 'menuCode',
+            condition: '{{$value}}',
+          },
+          {
+            type: 'value:visible',
+            target: 'menuParentCode',
+            condition: '{{$value}}',
+          },
+          {
+            type: 'value:visible',
+            target: 'menuTitle',
+            condition: '{{$value}}',
+          },
+        ],
+      },
+      menuCode: {
+        type: 'string',
+        title: '菜单编码',
+        required: true,
+      },
+      menuParentCode: {
+        type: 'string',
+        title: '菜单父级编码',
+        required: true,
+      },
+      menuTitle: {
+        type: 'string',
+        title: '菜单标题',
+        required: true,
+      },
     },
   };
   useEffect(() => {
@@ -102,14 +132,14 @@ export default (props: React.PropsWithChildren<FormProps>) => {
 
   const okHandle = async () => {
     try {
-      await form.validate();
-      await form.submit(async (values: any) => {
+      await actions.validate();
+      await actions.submit(async (values: any) => {
         const rs: boolean = await onSubmit({
           ...values,
           urlPrefix: currentPrefix + values.urlPrefix,
         });
         if (rs) {
-          form.reset();
+          actions.reset();
         }
       });
       // eslint-disable-next-line no-empty
@@ -123,11 +153,11 @@ export default (props: React.PropsWithChildren<FormProps>) => {
       title={initVals ? '复制分组' : '创建分组'}
       onOk={okHandle}
       onCancel={() => {
-        form.reset();
+        actions.reset();
         onCancel();
       }}
     >
-      <SchemaForm schema={schema} form={form} {...formLayout} />
+      <SchemaForm initialValues={initialValues} schema={schema} actions={actions} {...formLayout} />
     </Modal>
   );
 };

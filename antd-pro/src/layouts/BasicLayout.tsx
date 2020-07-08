@@ -25,7 +25,11 @@ import { string2Icon } from '@/utils/icon';
 import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
 import logo from '@/assets/logo.svg';
 import { pathToRegexp } from 'path-to-regexp';
+import { setup } from '@formily/antd-components';
 import defaultSettings from '../../config/defaultSettings';
+
+// 全局加载formily内置组件
+setup();
 
 const enableI18n = false;
 

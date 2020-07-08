@@ -125,6 +125,7 @@ export default () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      width: 300,
       fixed: 'right',
       render: (_, record) => (
         <>
@@ -161,6 +162,8 @@ export default () => {
               数据
             </a>
           </AuthorizedBtn>
+          <Divider type="vertical" />
+          <a onClick={() => {}}>查看DDL</a>
         </>
       ),
     },

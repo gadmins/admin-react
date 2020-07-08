@@ -3069,17 +3069,17 @@
     react-intl "3.12.0"
     warning "^4.0.3"
 
-"@umijs/plugin-model@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.npm.taobao.org/@umijs/plugin-model/download/@umijs/plugin-model-2.5.0.tgz?cache=0&sync_timestamp=1593762317186&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fplugin-model%2Fdownload%2F%40umijs%2Fplugin-model-2.5.0.tgz#3cd4e70402a9b9685edc114b6e1260a51cdf9670"
-  integrity sha1-PNTnBAKpuWhe3BFLbhJgpRzflnA=
+"@umijs/plugin-model@2.5.1":
+  version "2.5.1"
+  resolved "https://registry.npm.taobao.org/@umijs/plugin-model/download/@umijs/plugin-model-2.5.1.tgz?cache=0&sync_timestamp=1594108752992&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fplugin-model%2Fdownload%2F%40umijs%2Fplugin-model-2.5.1.tgz#35f4b18eab1b2d86edbf35e1760f62dab61452c3"
+  integrity sha1-NfSxjqsbLYbtvzXhdg9i2rYUUsM=
   dependencies:
     fast-deep-equal "3.1.1"
 
-"@umijs/plugin-request@2.4.0":
-  version "2.4.0"
-  resolved "https://registry.npm.taobao.org/@umijs/plugin-request/download/@umijs/plugin-request-2.4.0.tgz#c8c34355d3bebbf04385b2fa1c4cce62449a80de"
-  integrity sha1-yMNDVdO+u/BDhbL6HEzOYkSagN4=
+"@umijs/plugin-request@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.npm.taobao.org/@umijs/plugin-request/download/@umijs/plugin-request-2.4.1.tgz?cache=0&sync_timestamp=1594108753188&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fplugin-request%2Fdownload%2F%40umijs%2Fplugin-request-2.4.1.tgz#7295749caddd3c52be472eef6623a7b441ed17d6"
+  integrity sha1-cpV0nK3dPFK+Ry7vZiOntEHtF9Y=
   dependencies:
     "@ahooksjs/use-request" "^2.0.0"
     umi-request "^1.2.14"
@@ -3159,10 +3159,10 @@
     umi-webpack-bundle-analyzer "3.5.0"
     zlib "1.0.5"
 
-"@umijs/preset-react@^1.5.15":
-  version "1.5.15"
-  resolved "https://registry.npm.taobao.org/@umijs/preset-react/download/@umijs/preset-react-1.5.15.tgz?cache=0&sync_timestamp=1593762317509&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fpreset-react%2Fdownload%2F%40umijs%2Fpreset-react-1.5.15.tgz#420f7b4aa1dd902592433a5ef3b4b45bff1ef8ab"
-  integrity sha1-Qg97SqHdkCWSQzpe87S0W/8e+Ks=
+"@umijs/preset-react@^1.5.16":
+  version "1.5.16"
+  resolved "https://registry.npm.taobao.org/@umijs/preset-react/download/@umijs/preset-react-1.5.16.tgz?cache=0&sync_timestamp=1594108753416&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fpreset-react%2Fdownload%2F%40umijs%2Fpreset-react-1.5.16.tgz#27e1261b009bf0a14c601ad49238524f778c65f8"
+  integrity sha1-J+EmGwCb8KFMYBrUkjhST3eMZfg=
   dependencies:
     "@umijs/plugin-access" "2.3.1"
     "@umijs/plugin-analytics" "0.2.2"
@@ -3173,8 +3173,8 @@
     "@umijs/plugin-initial-state" "2.2.1"
     "@umijs/plugin-layout" "0.11.10"
     "@umijs/plugin-locale" "0.9.0"
-    "@umijs/plugin-model" "2.5.0"
-    "@umijs/plugin-request" "2.4.0"
+    "@umijs/plugin-model" "2.5.1"
+    "@umijs/plugin-request" "2.4.1"
     "@umijs/plugin-test" "1.0.0"
 
 "@umijs/preset-ui@^2.2.1":
@@ -8478,6 +8478,11 @@ hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/hex-color-regex/download/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha1-TAb8y0YC/iYCs8k9+C1+fb8aio4=
+
+highlight.js@^10.1.1:
+  version "10.1.1"
+  resolved "https://registry.npm.taobao.org/highlight.js/download/highlight.js-10.1.1.tgz#691a2148a8d922bf12e52a294566a0d993b94c57"
+  integrity sha1-aRohSKjZIr8S5SopRWag2ZO5TFc=
 
 history-with-query@4.10.3:
   version "4.10.3"

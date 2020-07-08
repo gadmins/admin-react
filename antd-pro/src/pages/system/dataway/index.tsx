@@ -1,14 +1,16 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownOutlined, PlusOutlined, ImportOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Divider, message, Modal } from 'antd';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { history } from 'umi';
 import { TableListItem } from '@/pages/data';
 import { Resp, abortRequest } from '@/utils/request';
 import { groupOptions, queryList, add, update, remove } from './service';
-import CreateForm from './components/CreateForm';
+// import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
+
+const CreateForm = React.lazy(() => import('./components/CreateForm'));
 
 /**
  * 添加节点
@@ -182,6 +184,9 @@ const TableList: React.FC<{}> = () => {
         actionRef={actionRef}
         rowKey="id"
         toolBarRender={(action, { selectedRows }) => [
+          <Button icon={<ImportOutlined />} type="primary" onClick={() => {}}>
+            导入
+          </Button>,
           <Button
             icon={<PlusOutlined />}
             type="primary"
@@ -200,7 +205,7 @@ const TableList: React.FC<{}> = () => {
                     if (e.key === 'remove') {
                       Modal.confirm({
                         title: '删除提示',
-                        content: '确定要删除这些字典?',
+                        content: '确定要删除您所选的内容?',
                         onOk() {
                           handleRemove(selectedRows).then(() => {
                             action.reload();
@@ -212,6 +217,7 @@ const TableList: React.FC<{}> = () => {
                   selectedKeys={[]}
                 >
                   <Menu.Item key="remove">批量删除</Menu.Item>
+                  <Menu.Item key="export">批量导出</Menu.Item>
                 </Menu>
               }
             >
@@ -235,29 +241,31 @@ const TableList: React.FC<{}> = () => {
         rowSelection={{}}
       />
       {createModalVisible && (
-        <CreateForm
-          initVals={selectRecord}
-          modalVisible={createModalVisible}
-          onSubmit={async (value) => {
-            const success = await handleAdd(value);
-            if (success) {
+        <Suspense fallback>
+          <CreateForm
+            initVals={selectRecord}
+            modalVisible={createModalVisible}
+            onSubmit={async (value) => {
+              const success = await handleAdd(value);
+              if (success) {
+                setSelectRecord(undefined);
+                setTimeout(() => {
+                  handleModalVisible(false);
+                  if (actionRef.current) {
+                    actionRef.current.reload();
+                  }
+                }, 0);
+              }
+              return success;
+            }}
+            onCancel={() => {
               setSelectRecord(undefined);
               setTimeout(() => {
                 handleModalVisible(false);
-                if (actionRef.current) {
-                  actionRef.current.reload();
-                }
               }, 0);
-            }
-            return success;
-          }}
-          onCancel={() => {
-            setSelectRecord(undefined);
-            setTimeout(() => {
-              handleModalVisible(false);
-            }, 0);
-          }}
-        />
+            }}
+          />
+        </Suspense>
       )}
       {updateModalVisible && (
         <UpdateForm

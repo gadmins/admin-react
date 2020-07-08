@@ -1,7 +1,6 @@
 import React from 'react';
 import { Modal } from 'antd';
-import SchemaForm, { useForm, createFormActions, ISchema } from '@formily/antd';
-import { setup } from '@formily/antd-components';
+import SchemaForm, { createFormActions, ISchema } from '@formily/antd';
 
 interface FormProps {
   modalVisible: boolean;
@@ -14,7 +13,6 @@ const formLayout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 15 },
 };
-setup();
 const actions = createFormActions();
 
 export default (props: React.PropsWithChildren<FormProps>) => {
@@ -26,10 +24,6 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         dcode: initVals.dcode,
       }
     : {};
-  const form = useForm({
-    value: initialValues,
-    actions,
-  });
   const schema: ISchema = {
     type: 'object',
     properties: {
@@ -47,11 +41,11 @@ export default (props: React.PropsWithChildren<FormProps>) => {
   };
   const okHandle = async () => {
     try {
-      await form.validate();
-      await form.submit(async values => {
+      await actions.validate();
+      await actions.submit(async (values) => {
         const rs: boolean = await onSubmit(values);
         if (rs) {
-          form.reset();
+          actions.reset();
         }
       });
       // eslint-disable-next-line no-empty
@@ -65,11 +59,11 @@ export default (props: React.PropsWithChildren<FormProps>) => {
       title="编辑字典"
       onOk={okHandle}
       onCancel={() => {
-        form.reset();
+        actions.reset();
         onCancel();
       }}
     >
-      <SchemaForm schema={schema} form={form} {...formLayout} />
+      <SchemaForm initialValues={initialValues} schema={schema} actions={actions} {...formLayout} />
     </Modal>
   );
 };

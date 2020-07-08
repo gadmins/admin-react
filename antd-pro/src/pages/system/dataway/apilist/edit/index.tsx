@@ -19,6 +19,7 @@ import {
   Popconfirm,
   Row,
   Col,
+  Switch,
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import { Resp } from '@/utils/request';
@@ -37,24 +38,24 @@ const layout = {
 };
 
 const matchPathVars = (path: string) => {
-  const split_start = '{';
-  const split_end = '}';
+  const splitStart = '{';
+  const splitEnd = '}';
   const keys = [];
-  let find_start = false;
-  let temp_key = '';
+  let findStart = false;
+  let tempKey = '';
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < path.length; i++) {
     const c = path[i];
-    if (c === split_end) {
-      keys.push(temp_key);
-      temp_key = '';
-      find_start = false;
+    if (c === splitEnd) {
+      keys.push(tempKey);
+      tempKey = '';
+      findStart = false;
     }
-    if (find_start) {
-      temp_key += c;
+    if (findStart) {
+      tempKey += c;
     }
-    if (c === split_start) {
-      find_start = true;
+    if (c === splitStart) {
+      findStart = true;
     }
   }
   return keys.filter((it) => it !== '');
@@ -462,6 +463,11 @@ export default () => {
               rules={[{ required: true, message: '请输入接口描述' }]}
             >
               <TextArea rows={2} maxLength={220} />
+            </Form.Item>
+          </Card>
+          <Card title="权限配置" style={{ marginTop: 10 }}>
+            <Form.Item label="启用" name="auth">
+              <Switch />
             </Form.Item>
           </Card>
           <Row>
