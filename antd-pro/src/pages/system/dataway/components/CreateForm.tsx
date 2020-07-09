@@ -91,6 +91,11 @@ export default (props: React.PropsWithChildren<FormProps>) => {
             target: 'menuTitle',
             condition: '{{$value}}',
           },
+          {
+            type: 'value:visible',
+            target: 'menuLink',
+            condition: '{{$value}}',
+          },
         ],
       },
       menuCode: {
@@ -107,6 +112,16 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         type: 'string',
         title: '菜单标题',
         required: true,
+      },
+      menuLink: {
+        type: 'string',
+        title: '菜单链接',
+        required: true,
+      },
+      menuSort: {
+        type: 'int',
+        title: '菜单排序',
+        default: 0,
       },
     },
   };

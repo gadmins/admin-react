@@ -78,6 +78,7 @@ export default () => {
   const [urlPrefix, setUrlPrefix] = useState('');
   const [aceType, setAceType] = useState('javascript');
   const [aceFontSize, setAceFontSize] = useState(15);
+  const [openAuth, setOpenAuth] = useState(false);
   const [formInit, setFormInit] = useState<any>({
     apiMethod: 'GET',
     scriptType: 'DataQL',
@@ -466,9 +467,39 @@ export default () => {
             </Form.Item>
           </Card>
           <Card title="权限配置" style={{ marginTop: 10 }}>
-            <Form.Item label="启用" name="auth">
-              <Switch />
+            <Form.Item label="启用">
+              <Switch
+                onChange={(value) => {
+                  setOpenAuth(value);
+                }}
+              />
             </Form.Item>
+            {openAuth && (
+              <>
+                <Form.Item wrapperCol={{ span: 12 }}>
+                  <Divider>配置</Divider>
+                </Form.Item>
+                <Form.Item valuePropName="checked" label="关联菜单" name="isMenu">
+                  <Switch />
+                </Form.Item>
+                <Form.Item
+                  wrapperCol={{ span: 4 }}
+                  label="权限编码"
+                  name="funcCode"
+                  rules={[{ required: true, message: '请输入权限编码' }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  wrapperCol={{ span: 4 }}
+                  label="权限名称"
+                  name="funcName"
+                  rules={[{ required: true, message: '请输入权限名称' }]}
+                >
+                  <Input />
+                </Form.Item>
+              </>
+            )}
           </Card>
           <Row>
             <Col span={17}>
