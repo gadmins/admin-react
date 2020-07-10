@@ -4,8 +4,6 @@ import { Dispatch } from 'redux';
 import { FormattedMessage, connect } from 'umi';
 import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
-
-import BaseView from './components/base';
 import { CurrentUser } from './data.d';
 import SecurityView from './components/security';
 import styles from './style.less';
@@ -34,7 +32,7 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
   constructor(props: AccountSettingsProps) {
     super(props);
     const menuMap = {
-      base: <FormattedMessage id="accountsettings.menuMap.basic" defaultMessage="Basic Settings" />,
+      // base: <FormattedMessage id="accountsettings.menuMap.basic" defaultMessage="Basic Settings" />,
       security: (
         <FormattedMessage
           id="accountsettings.menuMap.security"
@@ -54,7 +52,7 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
     this.state = {
       mode: 'inline',
       menuMap,
-      selectKey: 'base',
+      selectKey: 'security',
       pwdVisible: false,
     };
   }
@@ -113,8 +111,8 @@ class AccountSettings extends Component<AccountSettingsProps, AccountSettingsSta
   renderChildren = () => {
     const { selectKey } = this.state;
     switch (selectKey) {
-      case 'base':
-        return <BaseView />;
+      // case 'base':
+      //   return <BaseView />;
       case 'security':
         return (
           <SecurityView

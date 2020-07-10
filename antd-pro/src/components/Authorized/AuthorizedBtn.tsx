@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
-import { connect } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { useModel } from 'umi';
 
 interface AuthorizedBtnProps {
   code: string;
@@ -8,11 +7,10 @@ interface AuthorizedBtnProps {
   children?: ReactNode;
 }
 
-const AuthorizedBtn: React.FC<AuthorizedBtnProps> = (props) => {
-  const { children, code, authFuncs } = props;
+const AuthorizedBtn: React.FC<AuthorizedBtnProps> = ({ code, children }) => {
+  const { initialState } = useModel('@@initialState');
+  const authFuncs = initialState?.menuData?.authFuncs || [];
   return authFuncs.some((i: any) => i.code === code) ? <>{children}</> : <></>;
 };
 
-export default connect(({ account }: ConnectState) => ({
-  authFuncs: account.authFuncs,
-}))(AuthorizedBtn);
+export default AuthorizedBtn;

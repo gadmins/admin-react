@@ -1,98 +1,64 @@
-import { Effect } from 'umi';
-import { Reducer } from 'redux';
-import Cookies from 'js-cookie';
-
-import { queryCurrent, queryMenu } from '@/services/account';
 import { MenuDataItem } from '@ant-design/pro-layout';
 import { message } from 'antd';
+import { requestLogin, LoginParamsType, requestLogout } from '@/services/account';
+import { getPageQuery } from '@/utils/utils';
+import { history } from 'umi';
+import Cookies from 'js-cookie';
+import { stringify } from 'qs';
 
-export interface CurrentAccount {
+export interface AccountInfo {
   name?: string;
   avatar?: string;
 }
 
-export interface AccountModelState {
-  currentAccount?: CurrentAccount;
-  hasSysMenu: boolean;
+export interface MenuData {
   menus: MenuDataItem[];
   authFuncs: any[];
-  defMenuTxt: Map<string, string>;
+  defTex: Map<string, string>;
 }
 
-export interface AccountModelType {
-  state: AccountModelState;
-  effects: {
-    fetchCurrent: Effect;
-    fetchMenu: Effect;
-  };
-  reducers: {
-    saveCurrentAccout: Reducer<AccountModelState>;
-    saveMenu: Reducer<AccountModelState>;
-    changeNotifyCount: Reducer<AccountModelState>;
-  };
-}
-
-const UserModel: AccountModelType = {
-  state: {
-    currentAccount: {},
-    hasSysMenu: true,
-    menus: [],
-    authFuncs: [],
-    defMenuTxt: new Map(),
-  },
-
-  effects: {
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
-      if (response.code === 501) {
-        Cookies.remove('Admin-Token');
-        message.error('Token已过期，请重新登陆');
+export default () => {
+  const login = async (param: LoginParamsType, success: () => void) => {
+    const response = await requestLogin(param);
+    // Login successfully
+    if (response.code === 0) {
+      await success();
+      message.success('登录成功');
+      const urlParams = new URL(window.location.href);
+      const params = getPageQuery();
+      let { redirect } = params as { redirect: string };
+      if (redirect) {
+        const redirectUrlParams = new URL(redirect);
+        if (redirectUrlParams.origin === urlParams.origin) {
+          redirect = redirect.substr(urlParams.origin.length);
+          if (redirect.match(/^\/.*#/)) {
+            redirect = redirect.substr(redirect.indexOf('#') + 1);
+          }
+        } else {
+          window.location.href = '/';
+          return;
+        }
       }
-      yield put({
-        type: 'saveCurrentAccount',
-        payload: response.data,
-      });
-    },
-    *fetchMenu({ callback }, { call, put }) {
-      yield put({
-        type: 'saveMenu',
-        payload: {},
-      });
-      const response = yield call(queryMenu);
-      if (callback) callback(response.data);
-      yield put({
-        type: 'saveMenu',
-        payload: response.data,
-      });
-    },
-  },
+      history.replace(redirect || '/');
+    }
+  };
 
-  reducers: {
-    saveCurrentAccount(state: any, action: { payload: any }) {
-      return {
-        ...state,
-        currentAccount: action.payload,
-      };
-    },
-    saveMenu(state, action) {
-      return {
-        ...state,
-        menus: action.payload.menus || [],
-        authFuncs: action.payload.authFuncs || [],
-        defMenuTxt: action.payload.defTex || new Map(),
-      };
-    },
-    changeNotifyCount(state: any, action) {
-      return {
-        ...state,
-        currentAccout: {
-          ...state.currentAccount,
-          notifyCount: action.payload.totalCount,
-          unreadCount: action.payload.unreadCount,
-        },
-      };
-    },
-  },
+  const logout = async () => {
+    await requestLogout();
+    Cookies.remove('Admin-Token');
+    const { redirect } = getPageQuery();
+    // Note: There may be security issues, please note
+    if (window.location.pathname !== '/account/login' && !redirect) {
+      history.replace({
+        pathname: '/account/login',
+        search: stringify({
+          redirect: window.location.href,
+        }),
+      });
+    }
+  };
+  return {
+    login,
+    logout,
+  };
 };
-
-export default UserModel;

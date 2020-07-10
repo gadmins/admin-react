@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Form, Input, message } from 'antd';
 import request, { Resp } from '@/utils/request';
 import MD5 from 'crypto-js/md5';
-import { connect } from 'umi';
+import { useModel } from 'umi';
 
 const service = {
   modifyPwd(data: any) {
@@ -18,7 +18,6 @@ const FormItem = Form.Item;
 interface FormProps {
   modalVisible: boolean;
   onCancel: () => void;
-  dispatch: any;
 }
 
 const formLayout = {
@@ -27,8 +26,9 @@ const formLayout = {
 };
 
 const UpdatePwdModal = (props: React.PropsWithChildren<FormProps>) => {
-  const { modalVisible, onCancel, dispatch } = props;
+  const { modalVisible, onCancel } = props;
   const [form] = Form.useForm();
+  const { logout } = useModel('account');
 
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
@@ -39,11 +39,7 @@ const UpdatePwdModal = (props: React.PropsWithChildren<FormProps>) => {
       message.success('修改成功，请重新登录');
       form.resetFields();
       onCancel();
-      if (dispatch) {
-        dispatch({
-          type: 'login/logout',
-        });
-      }
+      logout();
     } else {
       message.error(rs.msg);
     }
@@ -104,4 +100,4 @@ const UpdatePwdModal = (props: React.PropsWithChildren<FormProps>) => {
   );
 };
 
-export default connect()(UpdatePwdModal);
+export default UpdatePwdModal;

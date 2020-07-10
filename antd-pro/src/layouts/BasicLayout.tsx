@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /**
  * Ant Design Pro v4 use `@ant-design/pro-layout` to handle Layout.
  * You can view component api by:
@@ -7,40 +8,24 @@
 import ProLayout, {
   MenuDataItem,
   BasicLayoutProps as ProLayoutProps,
-  Settings,
   DefaultFooter,
+  SettingDrawer,
 } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
-import { Link, useIntl, history, connect } from 'umi';
+import { Link, useIntl, history, useModel } from 'umi';
 import { Dispatch } from 'redux';
-import { Result, Button, Menu, Breadcrumb } from 'antd';
+import { Result, Button, Menu } from 'antd';
 
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { ConnectState } from '@/models/connect';
 
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import { WithFalse } from '@ant-design/pro-layout/lib/typings';
-import { string2Icon } from '@/utils/icon';
-import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
 import logo from '@/assets/logo.svg';
 import { pathToRegexp } from 'path-to-regexp';
-import { setup } from '@formily/antd-components';
+import { MenuData } from '@/models/account';
+import { parseIcon, getAuthority, getAllRoutes, findSubMenuKey } from '@/utils/menu.utils';
 import defaultSettings from '../../config/defaultSettings';
 
-// 全局加载formily内置组件
-setup();
-
 const enableI18n = false;
-
-const UmiRoutes = require('@@/core/routes');
-
-let allRoutes: any[] = [];
-if (UmiRoutes.routes) {
-  allRoutes = UmiRoutes.routes
-    .filter((it: any) => it.path === '/')[0]
-    .routes[0].routes.filter((it: any) => it.path !== undefined);
-}
 
 const noMatch = (
   <Result
@@ -62,9 +47,7 @@ export interface BasicLayoutProps extends ProLayoutProps {
   route: ProLayoutProps['route'] & {
     authority: string[];
   };
-  settings: Settings;
   dispatch: Dispatch;
-  hasSysMenu: boolean;
   menus: MenuDataItem[];
   authFuncs: any[];
   defMenuTxt: Map<string, string>;
@@ -80,29 +63,56 @@ const defaultFooterDom = <DefaultFooter copyright={defaultSettings.copyright} li
 const footerRender: BasicLayoutProps['footerRender'] = () => {
   return <>{defaultFooterDom}</>;
 };
-let lastFuncId: number | undefined;
-let lastMenuKey: string | undefined;
-let lastPathname: string | undefined;
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
-  const {
-    dispatch,
-    children,
-    settings,
-    hasSysMenu,
-    menus,
-    authFuncs,
-    defMenuTxt,
-    collapsed,
-  } = props;
+  const { initialState, setInitialState } = useModel('@@initialState');
+  const { settings = defaultSettings, menuData = {} as MenuData } = initialState || {};
+  const { dispatch, children } = props;
   const location = props.location as any;
   const intl = useIntl();
-  // 权限准备完毕
-  const [ready, setReady] = useState<boolean>(false);
-  // 默认有权限,authority = 'none' 无权限
-  const [authority, setAuthority] = useState<string | undefined>(undefined);
 
-  const [breadcrumbs, setBreadcrumbs] = useState<any[]>([]);
+  const menus = parseIcon(menuData.menus);
+  const defMenuTxt = menuData.defTex;
+  const { authFuncs } = menuData;
+
+  const [leftMenuData, setLeftMenuData] = useState(menus);
+  const [leftMenuSelectKey, setLeftMenuSelectKey] = useState('');
+  const [leftOpenKeys, setLeftOpenKeys] = useState<string[]>([]);
+
+  const authority = getAuthority(authFuncs, location.pathname);
+
+  const formatMessage = (e: any) => {
+    const defTxt = e.defaultMessage && defMenuTxt[e.defaultMessage];
+    if (defTxt) {
+      e.defaultMessage = defTxt;
+    }
+    if (enableI18n === false) {
+      return e.defaultMessage;
+    }
+    return intl.formatMessage(e);
+  };
+
+  function loopMenu(arr: any[]): any[] {
+    return arr.map((it) => {
+      return it.children ? (
+        <Menu.SubMenu key={it.name} icon={it.icon} title={it.name && defMenuTxt[it.name]}>
+          {loopMenu(it.children)}
+        </Menu.SubMenu>
+      ) : (
+        <Menu.Item key={it.name}>
+          <Link
+            to={{
+              pathname: it.path || '/',
+            }}
+          >
+            {it.icon}
+            {it.name && defMenuTxt[it.name]}
+          </Link>
+        </Menu.Item>
+      );
+    });
+  }
+
   useEffect(() => {
     if (dispatch) {
       dispatch({
@@ -119,50 +129,27 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     }
   }, []);
 
-  const formatMsg = (id: String, key: string) => {
-    const e: any = { id };
-    if (!e.defaultMessage) {
-      e.defaultMessage = key;
+  useEffect(() => {
+    const last: string = location.pathname;
+    if (settings.layout === 'mix' && settings.splitMenus) {
+      const idx = menus.findIndex((it) => it.name === last.split('/')[1]);
+      if (idx > -1) {
+        setLeftMenuData(menus[idx].children);
+      }
+    } else {
+      setLeftMenuData(menus);
     }
-    const defTxt = e.defaultMessage && defMenuTxt[e.defaultMessage];
-    if (defTxt) {
-      e.defaultMessage = defTxt;
-    }
-    if (enableI18n === false) {
-      return e.defaultMessage;
-    }
-    return intl.formatMessage(e);
-  };
-
-  /**
-   * init variables
-   */
-  const handleMenuCollapse = (payload: boolean): void => {
-    if (dispatch) {
-      dispatch({
-        type: 'global/changeLayoutCollapsed',
-        payload,
-      });
-    }
-  };
-  history.listen((data: any) => {
-    const { pathname } = data;
-    if (pathname === '/account/login') {
-      lastPathname = '/account/login';
-      lastFuncId = undefined;
-      lastMenuKey = undefined;
-    }
-  });
-  const showPage = () => {
-    setReady(false);
-    // 显示界面
+    const allRoutes = getAllRoutes();
+    const routeIdx = allRoutes.findIndex((it: any) => pathToRegexp(it.path).exec(last));
     setTimeout(() => {
-      setReady(true);
-      lastPathname = history.location.pathname;
-      const routeIdx = allRoutes.findIndex(
-        (it: any) => lastPathname && pathToRegexp(it.path).exec(lastPathname),
-      );
       if (routeIdx > -1) {
+        const keys = last.split('/');
+        const menuKey = keys[2];
+        const subKey = findSubMenuKey(menuKey, leftMenuData);
+        setLeftMenuSelectKey(menuKey);
+        if (subKey) {
+          setLeftOpenKeys([subKey]);
+        }
         const { title, name } = allRoutes[routeIdx];
         const pageTitle = title || defMenuTxt[name];
         if (pageTitle && pageTitle !== '') {
@@ -173,269 +160,80 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       } else {
         document.title = defaultSettings.title;
       }
-    }, 10);
-  };
-  const onOpenChange = (keys: WithFalse<string[]>) => {
-    if (authFuncs.length === 0) {
-      return;
-    }
-    if (lastPathname && history.location.pathname === lastPathname) {
-      if (ready === false) {
-        showPage();
-      }
-      return;
-    }
-    const idx = authFuncs.findIndex((it) => history.location.pathname === it.url);
-    if (!keys || keys.length === 0) {
-      let auth;
-      if (idx === -1) {
-        // 存在且需要认证
-        const routeIdx = allRoutes.findIndex((it: any) => it.path === history.location.pathname);
-        if (routeIdx > -1 && allRoutes[routeIdx].authority !== false) {
-          auth = 'none';
-        }
-      }
-      setAuthority(auth);
-      showPage();
-      return;
-    }
-    let childs: any[] = menus;
-    const bcs: any[] = [];
-    let menuKey = '';
-    keys.forEach((k) => {
-      if (k === '/') {
-        bcs.push({
-          path: `/#${menus[0].path}`,
-          name: formatMsg(`menu.${menus[0].key}`, 'home'),
-        });
-      } else {
-        menuKey += `.${k}`;
-        const midx = childs.findIndex((it) => it.key === k);
-        if (midx > -1) {
-          bcs.push({
-            name: formatMsg(`menu.${menuKey}.${childs[midx].key}`, childs[midx].key),
-          });
-          childs = childs[midx].children;
-        }
-      }
-    });
-    setBreadcrumbs(bcs);
+    }, 0);
+    return () => {};
+  }, [location.pathname]);
 
-    lastMenuKey = keys[keys.length - 1];
-    if (idx > -1) {
-      if (!location.state) {
-        location.state = {};
-      }
-      if (authFuncs[idx].id) {
-        location.state.funcId = authFuncs[idx].id;
-      }
-    }
-    if (location.state && lastFuncId && lastFuncId === location.state.funcId) {
-      if (ready === false || history.location.pathname !== lastPathname) {
-        setAuthority(undefined);
-        showPage();
-      }
-      return;
-    }
-    if (location.state && location.state.funcId) {
-      lastFuncId = location.state.funcId;
-      dispatch({
-        type: 'schema/querySchema',
-        payload: lastFuncId,
-      });
-    }
-    setAuthority(undefined);
-    showPage();
-  };
-  const CustomMenu = () => {
-    let curKey: string[] = [];
-    let curIdx = -1;
-    const pathkeys = location.pathname
-      ? location.pathname.split('/').filter((it: any) => it !== '')
-      : [];
-    if (pathkeys.length > 0) {
-      curKey = [pathkeys[0]];
-      if (menus.length > 0) {
-        curIdx = menus.findIndex((it) => it.name === pathkeys[0]);
-      }
-    }
-    const customMenuDataRender = () => {
-      if (!hasSysMenu) {
-        return menus;
-      }
-      if (curIdx === -1) {
-        return [];
-      }
-      return menus[curIdx] ? menus[curIdx].children || [] : [];
-    };
-
-    let sysMenus: {
-      icon: any;
-      name?: string;
-      defTxt: any;
-      path?: string;
-      funcId?: string;
-    }[] = [];
-
-    const customHeaderRender = () => (
-      <div className="ant-pro-global-header">
-        <span
-          onClick={() => {
-            handleMenuCollapse(!collapsed);
-          }}
-          className="ant-pro-global-header-trigger"
-        >
-          {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        </span>
-        {hasSysMenu && (
+  const menuContentRender =
+    settings.layout === 'mix' && settings.splitMenus
+      ? () => (
           <Menu
-            mode="horizontal"
-            selectedKeys={curKey}
-            style={{
-              border: 'none',
+            mode="inline"
+            theme={settings.navTheme}
+            openKeys={leftOpenKeys}
+            selectedKeys={[leftMenuSelectKey]}
+            onOpenChange={(keys) => {
+              setLeftOpenKeys(keys);
             }}
           >
-            {sysMenus.map((it) => (
-              <Menu.Item key={it.name}>
-                <Link
-                  to={{
-                    pathname: it.path || '/',
-                  }}
-                >
-                  {it.icon}
-                  {it.name && defMenuTxt[it.name]}
-                </Link>
-              </Menu.Item>
-            ))}
+            {loopMenu(leftMenuData)}
           </Menu>
-        )}
-        {!hasSysMenu && (
-          <Breadcrumb>
-            {breadcrumbs.map((b) => (
-              <Breadcrumb.Item>{b.path ? <a href={b.path}>{b.name}</a> : b.name}</Breadcrumb.Item>
-            ))}
-          </Breadcrumb>
-        )}
-        <RightContent />
-      </div>
-    );
-    const customBreadcrumbRender = (routers: Route[] = []) => [
-      {
-        path: `/${menus[curIdx] ? menus[curIdx].path || '/' : ''}`,
-        breadcrumbName: enableI18n
-          ? intl.formatMessage({
-              id: `menu.${curKey[0] || 'home'}`,
-              defaultMessage: curKey[0] || 'Home',
-            })
-          : defMenuTxt[curKey[0] || 'Home'],
-      },
-      ...routers,
-    ];
-    if (hasSysMenu) {
-      sysMenus = menus.map((it) => ({
-        icon: it.icon,
-        name: it.name,
-        defTxt: it.defTxt,
-        path: it.path,
-        funcId: it.funcId,
-      }));
-    }
-    const formatMessage = (e: any) => {
-      const defTxt = e.defaultMessage && defMenuTxt[e.defaultMessage];
-      if (defTxt) {
-        e.defaultMessage = defTxt;
-      }
-      if (enableI18n === false) {
-        return e.defaultMessage;
-      }
-      return intl.formatMessage(e);
-    };
-    return {
-      breadcrumbRender: hasSysMenu ? customBreadcrumbRender : undefined,
-      headerRender: customHeaderRender,
-      menuDataRender: customMenuDataRender,
-      formatMessage,
-    };
-  };
+        )
+      : undefined;
 
-  const customProps = CustomMenu();
+  const customProps: any = {};
+  if (menuContentRender) {
+    customProps.menuContentRender = menuContentRender;
+  }
+
   return (
-    <ProLayout
-      logo={logo}
-      menuHeaderRender={(logoDom, titleDom) => {
-        return (
-          menus.length > 0 && (
-            <Link to={(menus[0] && menus[0].path) || '/'}>
-              {logoDom}
-              {titleDom}
-            </Link>
-          )
-        );
-      }}
-      onOpenChange={onOpenChange}
-      onCollapse={handleMenuCollapse}
-      menuProps={{
-        onClick: (item) => {
-          if (item.key === lastMenuKey) {
-            return;
+    <>
+      <ProLayout
+        logo={logo}
+        formatMessage={formatMessage}
+        onMenuHeaderClick={() => history.push(initialState?.rootRoutePath)}
+        menuItemRender={(menuItemProps, defaultDom) => {
+          if (menuItemProps.isUrl || !menuItemProps.path) {
+            return defaultDom;
           }
-          setReady(false);
-        },
-      }}
-      menuItemRender={(menuItemProps, defaultDom) => {
-        if (menuItemProps.isUrl || menuItemProps.children || !menuItemProps.path) {
-          return defaultDom;
-        }
-        return (
-          <Link
-            to={{
-              pathname: menuItemProps.path,
-            }}
-          >
-            {defaultDom}
-          </Link>
-        );
-      }}
-      itemRender={(route, _, routes, paths) => {
-        const first = routes.indexOf(route) === 0;
-        return first ? (
-          <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-        ) : (
-          <span>{route.breadcrumbName}</span>
-        );
-      }}
-      footerRender={footerRender}
-      rightContentRender={() => <RightContent />}
-      {...props}
-      {...settings}
-      {...customProps}
-    >
-      {ready && (
+          return (
+            <Link to={menuItemProps.path}>
+              {menuItemProps.icon} {menuItemProps.name}
+            </Link>
+          );
+        }}
+        itemRender={(route, _, routes, paths) => {
+          const first = routes.indexOf(route) === 0;
+          return first ? (
+            <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
+          ) : (
+            <span>{route.breadcrumbName}</span>
+          );
+        }}
+        footerRender={footerRender}
+        menuDataRender={() => menus || []}
+        rightContentRender={() => <RightContent />}
+        {...props}
+        {...settings}
+        {...customProps}
+      >
         <Authorized authority={authority} noMatch={noMatch}>
           {children}
         </Authorized>
-      )}
-    </ProLayout>
+      </ProLayout>
+      <SettingDrawer
+        settings={settings}
+        onSettingChange={(config) => {
+          if (initialState) {
+            setInitialState({
+              ...initialState,
+              settings: config,
+            });
+          }
+        }}
+      />
+    </>
   );
 };
 
-const parseIcon = (menus: any[]) =>
-  menus.map((it: any) => {
-    const item = { ...it };
-    if (it.icon) {
-      item.icon = string2Icon(it.icon);
-    }
-    if (it.children) {
-      item.children = parseIcon(it.children);
-    }
-    return item;
-  });
-
-export default connect(({ global, account, settings }: ConnectState) => ({
-  collapsed: global.collapsed,
-  hasSysMenu: account.hasSysMenu,
-  menus: parseIcon(account.menus),
-  authFuncs: account.authFuncs,
-  defMenuTxt: account.defMenuTxt,
-  settings,
-}))(BasicLayout);
+export default BasicLayout;

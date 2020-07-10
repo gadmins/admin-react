@@ -1,6 +1,7 @@
 import { defineConfig, utils } from 'umi';
 import proxy from './proxy';
 import webpackPlugin from './plugin.config';
+import defaultSettings from './defaultSettings';
 
 const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION, REACT_APP_ENV } = process.env;
 const { winPath } = utils;
@@ -9,6 +10,9 @@ export default defineConfig({
   antd: {
     // dark: true,
     // compact: true,
+  },
+  qiankun: {
+    master: {},
   },
   dva: {
     hmr: true,
@@ -177,6 +181,7 @@ export default defineConfig({
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     // ...darkTheme,
+    'primary-color': defaultSettings.primaryColor,
   },
   define: {
     REACT_APP_ENV: REACT_APP_ENV || false,
