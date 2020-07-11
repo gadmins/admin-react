@@ -19,6 +19,7 @@ import {
   Popconfirm,
   Row,
   Col,
+  Switch,
 } from 'antd';
 import copy from 'copy-to-clipboard';
 import { Resp } from '@/utils/request';
@@ -37,24 +38,24 @@ const layout = {
 };
 
 const matchPathVars = (path: string) => {
-  const split_start = '{';
-  const split_end = '}';
+  const splitStart = '{';
+  const splitEnd = '}';
   const keys = [];
-  let find_start = false;
-  let temp_key = '';
+  let findStart = false;
+  let tempKey = '';
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < path.length; i++) {
     const c = path[i];
-    if (c === split_end) {
-      keys.push(temp_key);
-      temp_key = '';
-      find_start = false;
+    if (c === splitEnd) {
+      keys.push(tempKey);
+      tempKey = '';
+      findStart = false;
     }
-    if (find_start) {
-      temp_key += c;
+    if (findStart) {
+      tempKey += c;
     }
-    if (c === split_start) {
-      find_start = true;
+    if (c === splitStart) {
+      findStart = true;
     }
   }
   return keys.filter((it) => it !== '');
@@ -77,6 +78,7 @@ export default () => {
   const [urlPrefix, setUrlPrefix] = useState('');
   const [aceType, setAceType] = useState('javascript');
   const [aceFontSize, setAceFontSize] = useState(15);
+  const [openAuth, setOpenAuth] = useState(false);
   const [formInit, setFormInit] = useState<any>({
     apiMethod: 'GET',
     scriptType: 'DataQL',
@@ -463,6 +465,41 @@ export default () => {
             >
               <TextArea rows={2} maxLength={220} />
             </Form.Item>
+          </Card>
+          <Card title="权限配置" style={{ marginTop: 10 }}>
+            <Form.Item label="启用">
+              <Switch
+                onChange={(value) => {
+                  setOpenAuth(value);
+                }}
+              />
+            </Form.Item>
+            {openAuth && (
+              <>
+                <Form.Item wrapperCol={{ span: 12 }}>
+                  <Divider>配置</Divider>
+                </Form.Item>
+                <Form.Item valuePropName="checked" label="关联菜单" name="isMenu">
+                  <Switch />
+                </Form.Item>
+                <Form.Item
+                  wrapperCol={{ span: 4 }}
+                  label="权限编码"
+                  name="funcCode"
+                  rules={[{ required: true, message: '请输入权限编码' }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  wrapperCol={{ span: 4 }}
+                  label="权限名称"
+                  name="funcName"
+                  rules={[{ required: true, message: '请输入权限名称' }]}
+                >
+                  <Input />
+                </Form.Item>
+              </>
+            )}
           </Card>
           <Row>
             <Col span={17}>

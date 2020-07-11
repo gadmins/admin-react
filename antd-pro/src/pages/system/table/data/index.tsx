@@ -36,13 +36,15 @@ export default () => {
             // col.valueType = 'indexBorder';
             col.width = 64;
             col.fixed = 'left';
+            col.hideInSearch = false;
           } else if (col.dataIndex === 'enable') {
             col.render = (txt) => (txt ? '是' : '否');
           }
           colms.push(col);
         });
         colms.push({
-          key: 'operation',
+          dataIndex: 'option',
+          valueType: 'option',
           fixed: 'right',
           width: 100,
         });

@@ -1,18 +1,13 @@
 import { Tooltip, Tag } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { connect } from 'umi';
-import { ConnectProps, ConnectState } from '@/models/connect';
+import { useModel } from 'umi';
 import Avatar from './AvatarDropdown';
-import HeaderSearch from '../HeaderSearch';
-import SelectLang from '../SelectLang';
+// import HeaderSearch from '../HeaderSearch';
+// import SelectLang from '../SelectLang';
 import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
-export interface GlobalHeaderRightProps extends ConnectProps {
-  theme?: SiderTheme;
-  layout: 'sidemenu' | 'topmenu';
-}
 
 const ENVTagColor = {
   dev: 'orange',
@@ -20,17 +15,23 @@ const ENVTagColor = {
   pre: '#87d068',
 };
 
-const GlobalHeaderRight: React.FC<GlobalHeaderRightProps> = (props) => {
-  const { theme, layout } = props;
+const GlobalHeaderRight: React.FC<{}> = () => {
+  const { initialState } = useModel('@@initialState');
+
+  if (!initialState || !initialState.settings) {
+    return null;
+  }
+
+  const { navTheme, layout } = initialState.settings;
   let className = styles.right;
 
-  if (theme === 'dark' && layout === 'topmenu') {
+  if ((navTheme === 'dark' && layout === 'top') || layout === 'mix') {
     className = `${styles.right}  ${styles.dark}`;
   }
 
   return (
     <div className={className}>
-      <HeaderSearch
+      {/* <HeaderSearch
         className={`${styles.action} ${styles.search}`}
         placeholder="站内搜索"
         defaultValue="umi ui"
@@ -52,16 +53,16 @@ const GlobalHeaderRight: React.FC<GlobalHeaderRightProps> = (props) => {
         // onSearch={value => {
         //   //console.log('input', value);
         // }}
-      />
+      /> */}
       <Tooltip title="使用文档">
-        <a
-          target="_blank"
-          href="https://pro.ant.design/docs/getting-started"
-          rel="noopener noreferrer"
+        <span
           className={styles.action}
+          onClick={() => {
+            window.location.href = 'https://pro.ant.design/docs/getting-started';
+          }}
         >
           <QuestionCircleOutlined />
-        </a>
+        </span>
       </Tooltip>
       <Avatar />
       {REACT_APP_ENV && (
@@ -69,12 +70,9 @@ const GlobalHeaderRight: React.FC<GlobalHeaderRightProps> = (props) => {
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
         </span>
       )}
-      <SelectLang className={styles.action} />
+      {/* <SelectLang className={styles.action} /> */}
     </div>
   );
 };
 
-export default connect(({ settings }: ConnectState) => ({
-  theme: settings.navTheme,
-  layout: settings.layout,
-}))(GlobalHeaderRight);
+export default GlobalHeaderRight;
