@@ -21,9 +21,11 @@ const Login: React.FC<LoginProps> = () => {
     setSubmitting(true);
     const params = { ...values };
     params.password = MD5(values.password).toString();
-    login({ ...params, type }, async () => {
+    const isOk = await login({ ...params, type });
+    setSubmitting(false);
+    if (isOk) {
       await refresh();
-    });
+    }
   };
   return (
     <div className={styles.main}>

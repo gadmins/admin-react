@@ -6,7 +6,7 @@ import Request, { extend, RequestOptionsInit } from 'umi-request';
 import { notification, message } from 'antd';
 import { stringify } from 'qs';
 import { history } from 'umi';
-import Cookies from 'js-cookie';
+import { clearToken, loginPath } from './account.utils';
 
 const { CancelToken } = Request;
 
@@ -46,13 +46,13 @@ const errorHandler = (error: any): Response => {
       .then((data: IResponse) => {
         if (data && data.msg) {
           if (data.code === 501) {
-            if (history.location.pathname !== '/account/login') {
-              Cookies.remove('Admin-Token');
+            if (history.location.pathname !== loginPath) {
+              clearToken();
               message.error(data.msg);
               const queryString = stringify({
                 redirect: window.location.href,
               });
-              history.replace(`/account/login?${queryString}`);
+              history.replace(`${loginPath}?${queryString}`);
             }
           } else {
             message.error(data.msg);

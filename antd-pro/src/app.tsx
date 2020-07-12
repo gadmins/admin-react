@@ -7,8 +7,10 @@ import { AccountInfo, MenuData } from '@/models/account';
 import { history } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import { Resp } from './utils/request';
+import { isLogin } from './utils/account.utils';
 
-let firstRoutePath = '/home/welcome';
+const HOME_ROOT = '/home/welcome';
+let firstRoutePath = HOME_ROOT;
 let menus: MenuDataItem[] = [];
 
 // 创建微服务
@@ -57,17 +59,20 @@ export async function getInitialState(): Promise<{
   rootRoutePath: string;
   settings: Partial<Settings>;
 }> {
-  const resp = await queryCurrent();
+  let accountResp = { data: {} as AccountInfo };
   let respMenu = { data: {} as MenuData };
-  if (Resp.isOk(resp)) {
-    respMenu = await queryMenu();
-    if (respMenu.data) {
-      menus = respMenu.data.menus || [];
-      firstRoutePath = respMenu.data.menus[0].path || '/home/welcome';
+  if (isLogin()) {
+    accountResp = await queryCurrent();
+    if (Resp.isOk(accountResp)) {
+      respMenu = await queryMenu();
+      if (respMenu.data) {
+        menus = respMenu.data.menus || [];
+        firstRoutePath = respMenu.data.menus[0].path || HOME_ROOT;
+      }
     }
   }
   return {
-    currentAccount: resp.data,
+    currentAccount: accountResp.data,
     menuData: respMenu.data,
     rootRoutePath: firstRoutePath,
     settings: defaultSettings,
@@ -79,7 +84,8 @@ let extraRoutes: any[] = [];
 export async function render(oldRender: () => {}) {
   const remoteRoutes = [
     {
-      path: '/user/test',
+      path: '/system/account/test',
+      authority: false,
       microApp: 'app1',
     },
   ];
@@ -88,14 +94,15 @@ export async function render(oldRender: () => {}) {
 }
 
 export function patchRoutes(params: { routes: any[] }) {
+  const { routes } = params.routes[1].routes[0];
   extraRoutes.forEach((it) => {
-    params.routes.push(it);
+    routes.splice(routes.length - 1, 0, it);
   });
 }
 
 // eslint-disable-next-line no-shadow
 function findPath(menus: MenuDataItem[]): string {
-  const path: string = '/home/welcome';
+  const path: string = HOME_ROOT;
   if (menus.length > 0) {
     if (menus[0].path) {
       return menus[0].path;
@@ -108,7 +115,7 @@ function findPath(menus: MenuDataItem[]): string {
 }
 
 const findRoutePath = (pathname: string) => {
-  const path = '/home/welcome';
+  const path = HOME_ROOT;
   const route = menus.filter((it) => it.path === pathname);
   if (route && route.length === 1 && route[0].children) {
     if (route[0].children[0].path) {
@@ -117,7 +124,7 @@ const findRoutePath = (pathname: string) => {
     if (route[0].children[0].children) {
       return findPath(route[0].children[0].children);
     }
-    return '/home/welcome';
+    return HOME_ROOT;
   }
   return path;
 };

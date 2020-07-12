@@ -1,7 +1,7 @@
 import { SyncOutlined } from '@ant-design/icons';
 import { Button, message } from 'antd';
 import React, { useRef } from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { history } from 'umi';
 import { TableListItem } from '@/pages/data';
@@ -61,7 +61,7 @@ const TableList: React.FC<{}> = () => {
   ];
 
   return (
-    <PageHeaderWrapper title="功能组管理">
+    <PageContainer title="功能组管理">
       <ProTable<TableListItem>
         headerTitle="查询表格"
         actionRef={actionRef}
@@ -107,7 +107,7 @@ const TableList: React.FC<{}> = () => {
         }}
         columns={columns}
       />
-    </PageHeaderWrapper>
+    </PageContainer>
   );
 };
 
