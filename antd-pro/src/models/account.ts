@@ -5,7 +5,7 @@ import { requestLogin, LoginParamsType, requestLogout } from '@/services/account
 import { getPageQuery } from '@/utils/utils';
 import { history } from 'umi';
 import { stringify } from 'qs';
-import { clearToken, loginPath } from '@/utils/account.utils';
+import { clearToken, LOGIN_PATH } from '@/utils/account.utils';
 
 export interface AccountInfo {
   name?: string;
@@ -49,9 +49,9 @@ export default () => {
     clearToken();
     const { redirect } = getPageQuery();
     // Note: There may be security issues, please note
-    if (window.location.pathname !== loginPath && !redirect) {
+    if (window.location.pathname !== LOGIN_PATH && !redirect) {
       history.replace({
-        pathname: loginPath,
+        pathname: LOGIN_PATH,
         search: stringify({
           redirect: window.location.href,
         }),

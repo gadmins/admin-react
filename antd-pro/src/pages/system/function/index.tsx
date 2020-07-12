@@ -6,6 +6,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { history } from 'umi';
 import { TableListItem } from '@/pages/data';
 import { Resp } from '@/utils/request';
+import AuthorizedBtn from '@/components/Authorized/AuthorizedBtn';
 import { queryList, refresh, reset } from './service';
 
 const TableList: React.FC<{}> = () => {
@@ -48,13 +49,15 @@ const TableList: React.FC<{}> = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
-            onClick={() => {
-              history.push(`/system/function/list/${record.id}`);
-            }}
-          >
-            查看功能点
-          </a>
+          <AuthorizedBtn code="sys:function:group:list">
+            <a
+              onClick={() => {
+                history.push(`/system/function/list/${record.id}`);
+              }}
+            >
+              查看功能点
+            </a>
+          </AuthorizedBtn>
         </>
       ),
     },

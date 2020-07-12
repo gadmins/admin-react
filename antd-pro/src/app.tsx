@@ -5,9 +5,10 @@ import { Settings, MenuDataItem } from '@ant-design/pro-layout';
 import { queryCurrent, queryMenu } from '@/services/account';
 import { AccountInfo, MenuData } from '@/models/account';
 import { history } from 'umi';
+import { message } from 'antd';
+import { isLogin, LOGIN_PATH } from '@/utils/account.utils';
 import defaultSettings from '../config/defaultSettings';
 import { Resp } from './utils/request';
-import { isLogin } from './utils/account.utils';
 
 const HOME_ROOT = '/home/welcome';
 let firstRoutePath = HOME_ROOT;
@@ -70,6 +71,11 @@ export async function getInitialState(): Promise<{
         firstRoutePath = respMenu.data.menus[0].path || HOME_ROOT;
       }
     }
+  } else {
+    message.error('请登录');
+    history.replace({
+      pathname: LOGIN_PATH,
+    });
   }
   return {
     currentAccount: accountResp.data,

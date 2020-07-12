@@ -6,6 +6,7 @@ import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from '@/pages/data';
 import { history, useParams } from 'umi';
 import { Resp } from '@/utils/request';
+import AuthorizedBtn from '@/components/Authorized/AuthorizedBtn';
 import { queryList, update } from './service';
 import UpdateForm from './components/UpdateForm';
 
@@ -73,14 +74,16 @@ const TableList: React.FC<{}> = () => {
       render: (_, record) => (
         <>
           {record && record.apiMethod && record.apiMethod.toUpperCase() !== 'DELETE' && (
-            <a
-              onClick={() => {
-                handleUpdateModalVisible(true);
-                setSelectRecord(record);
-              }}
-            >
-              配置
-            </a>
+            <AuthorizedBtn code="sys:function:group:list:edit">
+              <a
+                onClick={() => {
+                  handleUpdateModalVisible(true);
+                  setSelectRecord(record);
+                }}
+              >
+                配置
+              </a>
+            </AuthorizedBtn>
           )}
         </>
       ),
