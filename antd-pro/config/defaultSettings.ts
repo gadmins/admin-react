@@ -21,10 +21,10 @@ const proSettings: DefaultSettings = {
     locale: true,
   },
   title,
+  iconfontUrl: '',
+  pwa: false,
   desc: '通用管理系统-接口+后台管理一体化',
   copyright: `2020 ${title}`,
-  pwa: false,
-  iconfontUrl: '',
 };
 
 export type { DefaultSettings };

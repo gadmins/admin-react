@@ -1,7 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable global-require */
+import React from 'react';
 import { pathToRegexp } from 'path-to-regexp';
 import { MenuDataItem } from '@ant-design/pro-layout';
+import { Menu } from 'antd';
+import { Link } from 'umi';
 import { string2Icon } from './icon';
 
 export const getAllRoutes = () => {
@@ -59,3 +62,24 @@ export const findSubMenuKey = (menuKey: string, menus: MenuDataItem[]) => {
   }
   return key;
 };
+
+export function loopMenu(arr: any[], defMenuTxt: any): any[] {
+  return arr.map((it) => {
+    return it.children ? (
+      <Menu.SubMenu key={it.name} icon={it.icon} title={it.name && defMenuTxt[it.name]}>
+        {loopMenu(it.children, defMenuTxt)}
+      </Menu.SubMenu>
+    ) : (
+      <Menu.Item key={it.name}>
+        <Link
+          to={{
+            pathname: it.path || '/',
+          }}
+        >
+          {it.icon}
+          {it.name && defMenuTxt[it.name]}
+        </Link>
+      </Menu.Item>
+    );
+  });
+}
