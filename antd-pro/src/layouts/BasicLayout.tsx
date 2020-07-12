@@ -79,9 +79,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const location = props.location as any;
   const intl = useIntl();
 
-  const menus = parseIcon(menuData.menus);
-  const defMenuTxt = menuData.defTex;
-  const { authFuncs } = menuData;
+  const menus = parseIcon(menuData.menus || []);
+  const defMenuTxt = menuData.defTex || {};
+  const { authFuncs = [] } = menuData;
 
   const [leftMenuData, setLeftMenuData] = useState(menus);
   const [leftMenuSelectKey, setLeftMenuSelectKey] = useState('');
@@ -100,8 +100,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     return intl.formatMessage(e);
   };
 
-  // 监听路由变化：处理菜单的选择和打开
-  useEffect(() => {
+  const changeLeftMenu = () => {
     const last: string = location.pathname;
     if (settings.layout === 'mix' && settings.splitMenus) {
       const idx = menus.findIndex((it) => it.name === last.split('/')[1]);
@@ -111,6 +110,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     } else {
       setLeftMenuData(menus);
     }
+  };
+
+  const changeMenuAndTitle = () => {
+    const last: string = location.pathname;
     const allRoutes = getAllRoutes();
     const routeIdx = allRoutes.findIndex((it: any) => pathToRegexp(it.path).exec(last));
     setTimeout(() => {
@@ -133,8 +136,25 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         document.title = defaultSettings.title;
       }
     }, 10);
+  };
+
+  // 监听服务器菜单数据
+  useEffect(() => {
+    changeLeftMenu();
+    return () => {};
+  }, [menuData]);
+
+  // 监听路由变化：处理菜单的选择和打开
+  useEffect(() => {
+    changeLeftMenu();
     return () => {};
   }, [location.pathname]);
+
+  // 监听菜单变化
+  useEffect(() => {
+    changeMenuAndTitle();
+    return () => {};
+  }, [leftMenuData]);
 
   /**
    * 自定义左侧导航菜单

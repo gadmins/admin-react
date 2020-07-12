@@ -3,7 +3,6 @@ import { useModel } from 'umi';
 
 interface AuthorizedBtnProps {
   code: string;
-  authFuncs: any[];
   children?: ReactNode;
 }
 
