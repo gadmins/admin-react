@@ -59,7 +59,7 @@
     "@formily/antd": "^1.2.5",
     "@formily/antd-components": "^1.2.5",
     "ace-builds": "^1.4.12",
-    "ahooks": "^2.1.0",
+    "ahooks": "^2.2.0",
     "animejs": "^3.2.0",
     "antd": "^4.4.2",
     "classnames": "^2.2.6",

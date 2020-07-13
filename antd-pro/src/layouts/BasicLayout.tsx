@@ -10,6 +10,7 @@ import ProLayout, {
   BasicLayoutProps as ProLayoutProps,
   DefaultFooter,
   SettingDrawer,
+  PageContainer,
 } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
 import { Link, useIntl, history, useModel } from 'umi';
@@ -76,6 +77,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { settings = defaultSettings, menuData = {} as MenuData } = initialState || {};
   const { children } = props;
+  const curRoute = props.route;
   const location = props.location as any;
   const intl = useIntl();
 
@@ -86,6 +88,13 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const [leftMenuData, setLeftMenuData] = useState(menus);
   const [leftMenuSelectKey, setLeftMenuSelectKey] = useState('');
   const [leftOpenKeys, setLeftOpenKeys] = useState<string[]>([]);
+
+  const isMicroApp =
+    (curRoute.children
+      ? curRoute.children
+          .filter((it) => it.path)
+          .findIndex((it: any) => pathToRegexp(it.path).exec(location.pathname) && it.microApp)
+      : -1) !== -1;
 
   const authority = getAuthority(authFuncs, location.pathname);
 
@@ -184,14 +193,13 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       const newRouters = routers.map((it) => {
         const keys = it.path.split('/');
         return {
-          path: it.path,
           breadcrumbName: formatMessage({ defaultMessage: keys[2] }),
         };
       });
       const last: string = location.pathname;
       const keys = last.split('/');
       const findMenus = menus.filter((it) => it.name === keys[1]);
-      const path = findMenus.length > 0 ? findMenus[0].path.replace(findMenus[0].key, '') : '';
+      const path = findMenus.length > 0 ? findMenus[0].path : '';
       return [
         {
           path,
@@ -200,6 +208,16 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         ...newRouters,
       ];
     },
+    // 自定义面包屑渲染
+    itemRender: (route: any, _: any, routes: any[]) => {
+      const first = routes.indexOf(route) === 0;
+      return first ? (
+        <Link to={route.path}>{route.breadcrumbName}</Link>
+      ) : (
+        <span>{route.breadcrumbName}</span>
+      );
+    },
+    // 自定义菜单渲染
     menuItemRender: (menuItemProps: any, defaultDom: any) => {
       if (menuItemProps.isUrl || !menuItemProps.path) {
         return defaultDom;
@@ -208,14 +226,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         <Link to={menuItemProps.path}>
           {menuItemProps.icon} {menuItemProps.name}
         </Link>
-      );
-    },
-    itemRender: (route: any, _: any, routes: any[], paths: any[]) => {
-      const first = routes.indexOf(route) === 0;
-      return first ? (
-        <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-      ) : (
-        <span>{route.breadcrumbName}</span>
       );
     },
   };
@@ -237,7 +247,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         {...customProps}
       >
         <Authorized authority={authority} noMatch={noMatch}>
-          {children}
+          {isMicroApp ? <PageContainer>{children}</PageContainer> : children}
         </Authorized>
       </ProLayout>
       <SettingDrawer
