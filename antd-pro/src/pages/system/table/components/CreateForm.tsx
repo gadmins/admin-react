@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Form, Input, Switch } from 'antd';
+import { Modal, Form, Input, Switch, Col, Row } from 'antd';
 
 const FormItem = Form.Item;
 interface FormProps {
@@ -21,10 +21,10 @@ export default (props: React.PropsWithChildren<FormProps>) => {
     ? {
         tableName: initVals.name,
         tableComment: initVals.comment,
-        hasDelete: false,
       }
     : {
         hasDelete: false,
+        hasCreateApi: true,
       };
 
   const okHandle = async () => {
@@ -67,9 +67,30 @@ export default (props: React.PropsWithChildren<FormProps>) => {
         >
           <Input placeholder="请输入" />
         </FormItem>
-        <FormItem {...formLayout} label="逻辑删除" name="hasDelete">
-          <Switch />
-        </FormItem>
+        {initVals === undefined && (
+          <Row>
+            <Col span={12}>
+              <FormItem
+                labelCol={{ span: 10 }}
+                label="逻辑删除"
+                name="hasDelete"
+                valuePropName="checked"
+              >
+                <Switch />
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem
+                labelCol={{ span: 12 }}
+                label="默认RestApi"
+                name="hasCreateApi"
+                valuePropName="checked"
+              >
+                <Switch />
+              </FormItem>
+            </Col>
+          </Row>
+        )}
       </Form>
     </Modal>
   );

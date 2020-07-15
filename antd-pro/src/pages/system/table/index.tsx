@@ -162,8 +162,8 @@ export default () => {
               数据
             </a>
           </AuthorizedBtn>
-          <Divider type="vertical" />
-          <a onClick={() => {}}>查看DDL</a>
+          {/* <Divider type="vertical" />
+          <a onClick={() => {}}>查看DDL</a> */}
         </>
       ),
     },
