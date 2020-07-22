@@ -7,8 +7,12 @@ import { AccountInfo, MenuData } from '@/models/account';
 import { history } from 'umi';
 import { message } from 'antd';
 import { isLogin, LOGIN_PATH } from '@/utils/account.utils';
+import { setup } from '@formily/antd-components';
 import defaultSettings from '../config/defaultSettings';
 import { Resp } from './utils/request';
+
+// 全局加载formily内置组件
+setup();
 
 const HOME_ROOT = '/home/welcome';
 let firstRoutePath = HOME_ROOT;
