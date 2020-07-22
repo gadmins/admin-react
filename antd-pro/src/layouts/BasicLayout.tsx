@@ -18,7 +18,6 @@ import { Result, Button, Menu } from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { pathToRegexp } from 'path-to-regexp';
-import { setup } from '@formily/antd-components';
 import { MenuData } from '@/models/account';
 import {
   parseIcon,
@@ -31,9 +30,6 @@ import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
 import logo from '@/assets/logo.svg';
 import defaultSettings from '../../config/defaultSettings';
 import './BasicLayout.less';
-
-// 全局加载formily内置组件
-setup();
 
 const enableI18n = false;
 

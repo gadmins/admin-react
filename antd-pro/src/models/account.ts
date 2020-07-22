@@ -40,6 +40,7 @@ export default () => {
         }
       }
       history.replace(redirect || '/');
+      window.location.reload();
     }
     return response.code === 0;
   };

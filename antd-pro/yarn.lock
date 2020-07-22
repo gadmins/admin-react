@@ -81,10 +81,10 @@
     umi-utils "^1.5.1"
     yargs-parser "^16.1.0"
 
-"@ant-design/pro-layout@^6.2.4":
-  version "6.2.4"
-  resolved "https://registry.npm.taobao.org/@ant-design/pro-layout/download/@ant-design/pro-layout-6.2.4.tgz?cache=0&sync_timestamp=1594623688658&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ant-design%2Fpro-layout%2Fdownload%2F%40ant-design%2Fpro-layout-6.2.4.tgz#f3cef51b15c32fab2a177ad181f895db012f73cd"
-  integrity sha1-8871GxXDL6sqF3rRgfiV2wEvc80=
+"@ant-design/pro-layout@^6.2.5":
+  version "6.2.5"
+  resolved "https://registry.npm.taobao.org/@ant-design/pro-layout/download/@ant-design/pro-layout-6.2.5.tgz#8b89f6b195a748d67e87ee8284e079c11255db4c"
+  integrity sha1-i4n2sZWnSNZ+h+6ChOB5wRJV20w=
   dependencies:
     "@ant-design/icons" "^4.0.0"
     "@umijs/route-utils" "^1.0.5"
@@ -107,10 +107,10 @@
     use-merge-value "^1.0.1"
     warning "^4.0.3"
 
-"@ant-design/pro-table@2.4.2":
-  version "2.4.2"
-  resolved "https://registry.npm.taobao.org/@ant-design/pro-table/download/@ant-design/pro-table-2.4.2.tgz#937608291939a527c921ecc011c2d7e2cfeaa98e"
-  integrity sha1-k3YIKRk5pSfJIezAEcLX4s/qqY4=
+"@ant-design/pro-table@2.4.3":
+  version "2.4.3"
+  resolved "https://registry.npm.taobao.org/@ant-design/pro-table/download/@ant-design/pro-table-2.4.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ant-design%2Fpro-table%2Fdownload%2F%40ant-design%2Fpro-table-2.4.3.tgz#43cd9cf83373700b3345b95116f6d18c6a31517a"
+  integrity sha1-Q82c+DNzcAszRblRFvbRjGoxUXo=
   dependencies:
     "@ant-design/icons" "^4.1.0"
     antd "^4.1.5"
@@ -133,6 +133,17 @@
   resolved "https://registry.npm.taobao.org/@ant-design/react-slick/download/@ant-design/react-slick-0.26.2.tgz?cache=0&sync_timestamp=1592395376284&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ant-design%2Freact-slick%2Fdownload%2F%40ant-design%2Freact-slick-0.26.2.tgz#0ca89fe166c5035b0e49649d813663b92f73a90f"
   integrity sha1-DKif4WbFA1sOSWSdgTZjuS9zqQ8=
   dependencies:
+    classnames "^2.2.5"
+    json2mq "^0.2.0"
+    lodash "^4.17.15"
+    resize-observer-polyfill "^1.5.0"
+
+"@ant-design/react-slick@~0.26.3":
+  version "0.26.3"
+  resolved "https://registry.npm.taobao.org/@ant-design/react-slick/download/@ant-design/react-slick-0.26.3.tgz?cache=0&sync_timestamp=1594620709113&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ant-design%2Freact-slick%2Fdownload%2F%40ant-design%2Freact-slick-0.26.3.tgz#5ebdd0cc327ed1a92c0c69e4599efa00834a6ca8"
+  integrity sha1-Xr3QzDJ+0aksDGnkWZ76AINKbKg=
+  dependencies:
+    "@babel/runtime" "^7.10.4"
     classnames "^2.2.5"
     json2mq "^0.2.0"
     lodash "^4.17.15"
@@ -1323,71 +1334,71 @@
   resolved "https://registry.npm.taobao.org/@formatjs/macro/download/@formatjs/macro-0.2.8.tgz#e43228e02d0159817734ad80cc0326cfefaeeb6c"
   integrity sha1-5DIo4C0BWYF3NK2AzAMmz++u62w=
 
-"@formily/antd-components@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.npm.taobao.org/@formily/antd-components/download/@formily/antd-components-1.2.7.tgz#504fa381e38dab5b8f455ccb8e548cc40adf28ed"
-  integrity sha1-UE+jgeONq1uPRVzLjlSMxArfKO0=
+"@formily/antd-components@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npm.taobao.org/@formily/antd-components/download/@formily/antd-components-1.2.8.tgz#fb0860e10064a2bd91848baa55e3d98486ce87e9"
+  integrity sha1-+whg4QBkor2RhIuqVePZhIbOh+k=
   dependencies:
     "@ant-design/icons" "^4.0.0-rc.0"
-    "@formily/antd" "^1.2.7"
-    "@formily/react-schema-renderer" "^1.2.7"
-    "@formily/react-shared-components" "^1.2.7"
-    "@formily/shared" "^1.2.7"
+    "@formily/antd" "^1.2.8"
+    "@formily/react-schema-renderer" "^1.2.8"
+    "@formily/react-shared-components" "^1.2.8"
+    "@formily/shared" "^1.2.8"
     classnames "^2.2.6"
 
-"@formily/antd@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.npm.taobao.org/@formily/antd/download/@formily/antd-1.2.7.tgz#5beb78057455fc3b70646ca4c0536ec0de345318"
-  integrity sha1-W+t4BXRV/DtwZGykwFNuwN40Uxg=
+"@formily/antd@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npm.taobao.org/@formily/antd/download/@formily/antd-1.2.8.tgz#2a7f356ac808e518c4846564828df589598a2252"
+  integrity sha1-Kn81asgI5RjEhGVkgo31iVmKIlI=
   dependencies:
-    "@formily/react-schema-renderer" "^1.2.7"
-    "@formily/react-shared-components" "^1.2.7"
-    "@formily/shared" "^1.2.7"
+    "@formily/react-schema-renderer" "^1.2.8"
+    "@formily/react-shared-components" "^1.2.8"
+    "@formily/shared" "^1.2.8"
     classnames "^2.2.6"
     react-eva "^1.0.0-alpha.0"
     react-stikky "^0.1.15"
     rxjs "^6.5.1"
 
-"@formily/core@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.npm.taobao.org/@formily/core/download/@formily/core-1.2.7.tgz#d5585f3365fa4ca02f3c4abcdb454426af834359"
-  integrity sha1-1VhfM2X6TKAvPEq820VEJq+DQ1k=
+"@formily/core@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npm.taobao.org/@formily/core/download/@formily/core-1.2.8.tgz#cd4325d8b9b56f668238120a396a43627f22a615"
+  integrity sha1-zUMl2Lm1b2aCOBIKOWpDYn8iphU=
   dependencies:
-    "@formily/shared" "^1.2.7"
-    "@formily/validator" "^1.2.7"
+    "@formily/shared" "^1.2.8"
+    "@formily/validator" "^1.2.8"
     immer "^6.0.3"
 
-"@formily/react-schema-renderer@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.npm.taobao.org/@formily/react-schema-renderer/download/@formily/react-schema-renderer-1.2.7.tgz#a18891a86f71438693bcee540b8e196d47e09ba3"
-  integrity sha1-oYiRqG9xQ4aTvO5UC44ZbUfgm6M=
+"@formily/react-schema-renderer@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npm.taobao.org/@formily/react-schema-renderer/download/@formily/react-schema-renderer-1.2.8.tgz#b45ecd57c4ccb00c6e5b180e8e1e09a925d45027"
+  integrity sha1-tF7NV8TMsAxuWxgOjh4JqSXUUCc=
   dependencies:
-    "@formily/core" "^1.2.7"
-    "@formily/react" "^1.2.7"
-    "@formily/shared" "^1.2.7"
-    "@formily/validator" "^1.2.7"
+    "@formily/core" "^1.2.8"
+    "@formily/react" "^1.2.8"
+    "@formily/shared" "^1.2.8"
+    "@formily/validator" "^1.2.8"
     pascal-case "^2.0.1"
 
-"@formily/react-shared-components@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.npm.taobao.org/@formily/react-shared-components/download/@formily/react-shared-components-1.2.7.tgz#9e77978223c495e1802e83120d5e65b8a9a4cc86"
-  integrity sha1-nneXgiPEleGALoMSDV5luKmkzIY=
+"@formily/react-shared-components@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npm.taobao.org/@formily/react-shared-components/download/@formily/react-shared-components-1.2.8.tgz#f747c813c57f5bcc0ba20c152c91c3779ab836ba"
+  integrity sha1-90fIE8V/W8wLogwVLJHDd5q4Nro=
   dependencies:
-    "@formily/shared" "^1.2.7"
+    "@formily/shared" "^1.2.8"
     react-drag-listview "^0.1.6"
 
-"@formily/react@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.npm.taobao.org/@formily/react/download/@formily/react-1.2.7.tgz#84150a354d48fda9ed19517039194399f9b2171a"
-  integrity sha1-hBUKNU1I/antGVFwORlDmfmyFxo=
+"@formily/react@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npm.taobao.org/@formily/react/download/@formily/react-1.2.8.tgz#197445de75738b65ad38d22163bceb060675331f"
+  integrity sha1-GXRF3nVzi2WtONIhY7zrBgZ1Mx8=
   dependencies:
-    "@formily/core" "^1.2.7"
-    "@formily/shared" "^1.2.7"
+    "@formily/core" "^1.2.8"
+    "@formily/shared" "^1.2.8"
 
-"@formily/shared@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.npm.taobao.org/@formily/shared/download/@formily/shared-1.2.7.tgz#c7c1d48a9b9fc30f03a1f34247f3944ca5e6535a"
-  integrity sha1-x8HUipufww8DofNCR/OUTKXmU1o=
+"@formily/shared@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npm.taobao.org/@formily/shared/download/@formily/shared-1.2.8.tgz#8ef7dd15ed8f4dcf7940034b714732b9ccbf00eb"
+  integrity sha1-jvfdFe2PTc95QANLcUcyucy/AOs=
   dependencies:
     camel-case "~3.0.0"
     cool-path "^0.1.23"
@@ -1395,12 +1406,12 @@
     scheduler "~0.19.0"
     upper-case "~1.1.3"
 
-"@formily/validator@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.npm.taobao.org/@formily/validator/download/@formily/validator-1.2.7.tgz#7f840bb4c4da85d752c188afd9c7ac9cc0f9705b"
-  integrity sha1-f4QLtMTahddSwYiv2cesnMD5cFs=
+"@formily/validator@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npm.taobao.org/@formily/validator/download/@formily/validator-1.2.8.tgz#0341d5b62a5985e5daecf3f6c28977ad7422b583"
+  integrity sha1-A0HVtipZheXa7PP2wol3rXQitYM=
   dependencies:
-    "@formily/shared" "^1.2.7"
+    "@formily/shared" "^1.2.8"
 
 "@hapi/address@2.x.x", "@hapi/address@^2.1.2":
   version "2.1.4"
@@ -2158,10 +2169,10 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^26.0.4":
-  version "26.0.4"
-  resolved "https://registry.npm.taobao.org/@types/jest/download/@types/jest-26.0.4.tgz?cache=0&sync_timestamp=1594073132102&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fjest%2Fdownload%2F%40types%2Fjest-26.0.4.tgz#d2e513e85aca16992816f192582b5e67b0b15efb"
-  integrity sha1-0uUT6FrKFpkoFvGSWCteZ7CxXvs=
+"@types/jest@^26.0.5":
+  version "26.0.5"
+  resolved "https://registry.npm.taobao.org/@types/jest/download/@types/jest-26.0.5.tgz?cache=0&sync_timestamp=1595087436145&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fjest%2Fdownload%2F%40types%2Fjest-26.0.5.tgz#23a8eecf4764a770ea8d3a0d1ea16b96c822035d"
+  integrity sha1-I6juz0dkp3DqjToNHqFrlsgiA10=
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
@@ -3081,10 +3092,10 @@
   dependencies:
     "@umijs/block-sdk" "^2.2.1"
 
-"@umijs/plugin-crossorigin@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.npm.taobao.org/@umijs/plugin-crossorigin/download/@umijs/plugin-crossorigin-1.1.0.tgz#369a594812276458aa0a9284681349179b73662d"
-  integrity sha1-NppZSBInZFiqCpKEaBNJF5tzZi0=
+"@umijs/plugin-crossorigin@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/@umijs/plugin-crossorigin/download/@umijs/plugin-crossorigin-1.1.1.tgz?cache=0&sync_timestamp=1595226417352&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fplugin-crossorigin%2Fdownload%2F%40umijs%2Fplugin-crossorigin-1.1.1.tgz#0e5ffb8013c95470fce79cfbd6a29a9ad58df4c9"
+  integrity sha1-Dl/7gBPJVHD855z71qKamtWN9Mk=
 
 "@umijs/plugin-dva@0.7.4":
   version "0.7.4"
@@ -3109,10 +3120,10 @@
   resolved "https://registry.npm.taobao.org/@umijs/plugin-initial-state/download/@umijs/plugin-initial-state-2.2.1.tgz#cd7592aa90b6b369bd0df297254320088397ff67"
   integrity sha1-zXWSqpC2s2m9DfKXJUMgCIOX/2c=
 
-"@umijs/plugin-layout@0.11.11":
-  version "0.11.11"
-  resolved "https://registry.npm.taobao.org/@umijs/plugin-layout/download/@umijs/plugin-layout-0.11.11.tgz?cache=0&sync_timestamp=1594265632206&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fplugin-layout%2Fdownload%2F%40umijs%2Fplugin-layout-0.11.11.tgz#adcaa0c100a9679f39b7df470bde06d8de81aa4b"
-  integrity sha1-rcqgwQCpZ585t99HC94G2N6Bqks=
+"@umijs/plugin-layout@0.11.13":
+  version "0.11.13"
+  resolved "https://registry.npm.taobao.org/@umijs/plugin-layout/download/@umijs/plugin-layout-0.11.13.tgz?cache=0&sync_timestamp=1595228112122&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fplugin-layout%2Fdownload%2F%40umijs%2Fplugin-layout-0.11.13.tgz#4c9e1692b7be4eb28068721a2986bb8ef27e3c12"
+  integrity sha1-TJ4Wkre+TrKAaHIaKYa7jvJ+PBI=
   dependencies:
     "@umijs/route-utils" "^1.0.7"
     antd "^4.1.2"
@@ -3233,19 +3244,19 @@
     umi-webpack-bundle-analyzer "3.5.0"
     zlib "1.0.5"
 
-"@umijs/preset-react@^1.5.17":
-  version "1.5.17"
-  resolved "https://registry.npm.taobao.org/@umijs/preset-react/download/@umijs/preset-react-1.5.17.tgz#43caa3580ad24952ae625ade19c202cd54bc4499"
-  integrity sha1-Q8qjWArSSVKuYlreGcICzVS8RJk=
+"@umijs/preset-react@^1.5.19":
+  version "1.5.19"
+  resolved "https://registry.npm.taobao.org/@umijs/preset-react/download/@umijs/preset-react-1.5.19.tgz?cache=0&sync_timestamp=1595228111287&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40umijs%2Fpreset-react%2Fdownload%2F%40umijs%2Fpreset-react-1.5.19.tgz#3b36a3f12c263202765610ffc1ff4a8bea49385e"
+  integrity sha1-Ozaj8SwmMgJ2VhD/wf9Ki+pJOF4=
   dependencies:
     "@umijs/plugin-access" "2.3.1"
     "@umijs/plugin-analytics" "0.2.2"
     "@umijs/plugin-antd" "0.7.0"
-    "@umijs/plugin-crossorigin" "1.1.0"
+    "@umijs/plugin-crossorigin" "1.1.1"
     "@umijs/plugin-dva" "0.7.4"
     "@umijs/plugin-helmet" "1.0.2"
     "@umijs/plugin-initial-state" "2.2.1"
-    "@umijs/plugin-layout" "0.11.11"
+    "@umijs/plugin-layout" "0.11.13"
     "@umijs/plugin-locale" "0.9.0"
     "@umijs/plugin-model" "2.5.1"
     "@umijs/plugin-request" "2.4.1"
@@ -4001,14 +4012,14 @@ antd@^4.2.0:
     scroll-into-view-if-needed "^2.2.25"
     warning "^4.0.3"
 
-antd@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.npm.taobao.org/antd/download/antd-4.4.2.tgz?cache=0&sync_timestamp=1594455842670&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fantd%2Fdownload%2Fantd-4.4.2.tgz#0b55c0ecf1eec3ffc03c4351e787add3be2de664"
-  integrity sha1-C1XA7PHuw//APENR54et074t5mQ=
+antd@^4.4.3:
+  version "4.4.3"
+  resolved "https://registry.npm.taobao.org/antd/download/antd-4.4.3.tgz#338f724df733f5a9debb6f63ddfef2e2360d916c"
+  integrity sha1-M49yTfcz9aneu29j3f7y4jYNkWw=
   dependencies:
     "@ant-design/css-animation" "^1.7.2"
     "@ant-design/icons" "^4.2.1"
-    "@ant-design/react-slick" "~0.26.1"
+    "@ant-design/react-slick" "~0.26.3"
     "@babel/runtime" "^7.10.4"
     array-tree-filter "^2.1.0"
     classnames "^2.2.6"
@@ -4025,7 +4036,7 @@ antd@^4.4.2:
     rc-drawer "~4.1.0"
     rc-dropdown "~3.1.2"
     rc-field-form "~1.5.0"
-    rc-input-number "~5.1.0"
+    rc-input-number "~5.1.1"
     rc-mentions "~1.4.0"
     rc-menu "~8.5.0"
     rc-notification "~4.4.0"
@@ -14005,6 +14016,14 @@ rc-input-number@~5.1.0:
     classnames "^2.2.0"
     rc-util "^5.0.1"
 
+rc-input-number@~5.1.1:
+  version "5.1.1"
+  resolved "https://registry.npm.taobao.org/rc-input-number/download/rc-input-number-5.1.1.tgz?cache=0&sync_timestamp=1595226853396&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-input-number%2Fdownload%2Frc-input-number-5.1.1.tgz#0f767ce132ede2454059240dc66bf55e52d921ea"
+  integrity sha1-D3Z84TLt4kVAWSQNxmv1XlLZIeo=
+  dependencies:
+    classnames "^2.2.0"
+    rc-util "^5.0.1"
+
 rc-mentions@~1.3.0:
   version "1.3.0"
   resolved "https://registry.npm.taobao.org/rc-mentions/download/rc-mentions-1.3.0.tgz#275807b6beca082d8d7045f67e95443f2f82d2b9"
@@ -14672,10 +14691,10 @@ react-tween-state@^0.1.5:
     raf "^3.1.0"
     tween-functions "^1.0.1"
 
-react-use-websocket@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.npm.taobao.org/react-use-websocket/download/react-use-websocket-2.0.3.tgz#2da93354d1f8fc03f932241da34cedc30bc13ea3"
-  integrity sha1-LakzVNH4/AP5MiQdo0ztwwvBPqM=
+react-use-websocket@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npm.taobao.org/react-use-websocket/download/react-use-websocket-2.1.1.tgz#4c5289c60fbb21963436e0e289b067f91038ae8c"
+  integrity sha1-TFKJxg+7IZY0NuDiibBn+RA4row=
 
 react@^16.13.1:
   version "16.13.1"
